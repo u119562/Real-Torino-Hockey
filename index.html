@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<meta name="apple-mobile-web-app-title" content="Real Torino">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<title>Real Torino – calendario e trasferte</title>
+<style>
+:root{--ink:#000;--ice:#f2f3f5;--card:#fff;--line:#dcdee3;--red:#c8102e;--mut:#676b73;--acc:#0a66c2}
+@media (prefers-color-scheme:dark){:root{--ink:#fff;--ice:#0b0b0c;--card:#17181a;--line:#2b2d31;--mut:#a0a4ab;--acc:#58a6ff}}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+body{margin:0;background:var(--ice);color:var(--ink);font:16px/1.4 "Helvetica Neue",Arial,sans-serif}
+.rt,h2,.d b,.tot b,.st b,.tabs button,.seg button,.btn,.i .v,.a .c,.a a,.tag,th{font-family:"Arial Narrow","Roboto Condensed","Helvetica Neue",Arial,sans-serif;font-stretch:condensed;text-transform:uppercase;letter-spacing:.03em}
+.top{background:#000;color:#fff;position:sticky;top:0;z-index:5;border-bottom:4px solid var(--red)}
+.bar{max-width:860px;margin:0 auto;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.brand{display:flex;flex-direction:column;line-height:1.1}
+.rt{font-size:1.7rem;font-weight:800}
+.sea{font-size:.7rem;opacity:.75;text-transform:uppercase;letter-spacing:.1em}
+.logo{width:54px;height:54px;border-radius:50%;background:#fff;color:var(--red);display:flex;align-items:center;justify-content:center;font:800 1.2rem "Arial Narrow",Arial,sans-serif;cursor:pointer;overflow:hidden;border:2px solid #fff;flex:none}
+.logo img{width:100%;height:100%;object-fit:contain;background:#fff}
+.tabs{max-width:860px;margin:0 auto;display:flex;padding:0 6px;overflow-x:auto}
+.tabs button{flex:1 0 auto;white-space:nowrap;background:none;border:0;border-bottom:3px solid transparent;color:#fff;opacity:.65;padding:10px 9px;font-size:.85rem;font-weight:700;cursor:pointer}
+.tabs button[aria-pressed=true]{opacity:1;border-bottom-color:#fff}
+main{max-width:860px;margin:0 auto;padding:16px 14px 60px}
+.panel{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px;margin-bottom:14px}
+.row{display:flex;flex-wrap:wrap;gap:12px}
+.row>label{flex:1 1 160px;display:flex;flex-direction:column;font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--mut);gap:4px;font-weight:700}
+input,select{font:inherit;font-size:1rem;text-transform:none;letter-spacing:0;font-weight:400;padding:8px;border:1px solid var(--line);border-radius:4px;background:var(--card);color:var(--ink);width:100%}
+input:focus,select:focus,button:focus-visible,a:focus-visible,summary:focus-visible,.logo:focus-within{outline:3px solid var(--acc);outline-offset:1px}
+.seg{display:flex;gap:8px;margin:14px 0}
+.seg button{flex:1;padding:8px;border:1px solid var(--ink);background:var(--card);color:var(--ink);border-radius:99px;font-size:.95rem;font-weight:700;cursor:pointer}
+.seg button[aria-pressed=true]{background:var(--ink);color:var(--card)}
+.tot{display:flex;flex-wrap:wrap;gap:22px;font-size:.8rem;color:var(--mut);text-transform:uppercase}
+.tot b{font-size:1.7rem;display:block;color:var(--ink);font-weight:800}
+#list h2,#tlist h2{font-size:.95rem;margin:22px 0 0;padding:8px 12px;background:var(--ink);color:var(--card);border-radius:6px 6px 0 0;font-weight:700}
+.panel h2{font-size:1rem;margin:0 0 8px;font-weight:800}
+.m{display:grid;grid-template-columns:84px 1fr auto;background:var(--card);border:1px solid var(--line);border-top:0}
+.m:last-child{border-radius:0 0 6px 6px}
+.m.past{opacity:.5}
+.m.next{box-shadow:inset 5px 0 0 var(--red)}
+.d{text-align:center;padding:10px 4px;border-right:1px solid var(--line)}
+.d b{display:block;font-size:1.9rem;line-height:1;font-weight:800}
+.d span{font-size:.75rem;color:var(--mut);font-weight:700;text-transform:uppercase}
+.i{padding:10px 12px}
+.i .v{font-weight:800;font-size:1.15rem}
+.i .s{color:var(--mut);font-size:.85rem}
+.tag{display:inline-block;font-size:.7rem;font-weight:700;padding:1px 7px;border-radius:3px;background:var(--ink);color:var(--card);margin-right:4px}
+.tag.h{background:var(--red);color:#fff}
+.a{padding:10px 12px;text-align:right;display:flex;flex-direction:column;justify-content:center;align-items:flex-end;gap:6px}
+.a .c{font-weight:800;font-size:1.25rem}
+.a a{color:var(--ink);border:1px solid var(--ink);border-radius:99px;padding:3px 14px;text-decoration:none;font-weight:700;font-size:.8rem}
+@media(max-width:520px){.m{grid-template-columns:64px 1fr}.a{grid-column:1/-1;flex-direction:row;justify-content:space-between;align-items:center;border-top:1px solid var(--line)}.rt{font-size:1.4rem}.tabs button{font-size:.72rem}}
+table{width:100%;border-collapse:collapse;font-size:.9rem}
+td,th{padding:6px 4px;text-align:left;border-bottom:1px solid var(--line)}
+th{font-size:.72rem;color:var(--mut);border-bottom:2px solid var(--ink)}
+td input{padding:5px}
+summary{cursor:pointer;font-weight:700}
+.rw{display:grid;grid-template-columns:1fr 56px 56px;gap:6px;align-items:center;margin:6px 0;font-size:.92rem}
+.rw input{text-align:center}
+.st{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:8px;margin-bottom:14px}
+.st div{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:10px;font-size:.78rem;color:var(--mut);text-transform:uppercase}
+.st b{display:block;font-size:1.6rem;color:var(--ink);font-weight:800}
+.btn{padding:9px 20px;border:0;border-radius:99px;background:var(--ink);color:var(--card);font-size:.95rem;font-weight:700;cursor:pointer}
+.x{border:0;background:none;color:var(--red);font-size:1.2rem;cursor:pointer}
+.note{font-size:.82rem;color:var(--mut);margin-top:10px}
+.nx{background:#000;color:#fff;border-radius:6px;border-left:6px solid var(--red);padding:14px;margin-bottom:14px}
+.nx .nl{font-size:.75rem;text-transform:uppercase;letter-spacing:.1em;opacity:.75}
+.nx .nv{font:800 1.9rem/1.1 "Arial Narrow","Roboto Condensed",Arial,sans-serif;font-stretch:condensed;text-transform:uppercase;margin:2px 0}
+.nx .ns{font-size:.9rem;opacity:.85;margin-top:2px}
+.nx .nr{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-top:12px}
+.nx .c{font:800 1.5rem "Arial Narrow",Arial,sans-serif;font-stretch:condensed}
+.go{background:#fff;color:#000;border-radius:99px;padding:10px 26px;font:800 1rem "Arial Narrow",Arial,sans-serif;font-stretch:condensed;text-transform:uppercase;text-decoration:none}
+.rw2{display:flex;flex-wrap:wrap;align-items:center;gap:8px;padding:10px 0;border-top:1px solid var(--line)}
+.rn{flex:1 1 100%;font-weight:700}
+.stp{display:flex;align-items:center;gap:6px}
+.stp button{width:46px;height:46px;border-radius:50%;border:1px solid var(--ink);background:var(--card);color:var(--ink);font-size:1.5rem;font-weight:700;cursor:pointer;line-height:1}
+.stp output{min-width:30px;text-align:center;font-size:1.7rem;font-weight:800}
+.dash{font-size:1.4rem}
+.vnp{display:inline-block;min-width:22px;text-align:center;border-radius:3px;color:#fff;font-size:.75rem;padding:0 5px;margin-left:6px}
+.vnp.V{background:#1a7f37}.vnp.N{background:var(--mut)}.vnp.P{background:var(--red)}
+.warn{flex:1 1 100%;font-size:.82rem;color:var(--red);font-weight:600}
+.tag.ok{background:#1a7f37;color:#fff}.tag.nz{background:var(--mut);color:#fff}
+.gh{font:700 .8rem "Arial Narrow",Arial,sans-serif;font-stretch:condensed;text-transform:uppercase;color:var(--mut);margin:14px 0 6px;letter-spacing:.06em}
+.pg{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.pl{position:relative;min-height:48px;padding:8px 38px 8px 10px;text-align:left;border:1px solid var(--ink);border-radius:6px;background:var(--card);color:var(--ink);font:inherit;font-size:.9rem;font-weight:600;cursor:pointer}
+.pl.on{background:var(--ink);color:var(--card)}
+.pl b{position:absolute;right:8px;top:50%;transform:translateY(-50%);min-width:24px;height:24px;border-radius:99px;background:var(--red);color:#fff;font-size:.8rem;text-align:center;line-height:24px}
+.pl b:empty{display:none}
+.lk,.lk2{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.go.sec{background:none;color:#fff;border:1px solid #fff;font-size:.9rem;padding:8px 16px}
+.nx .nr{flex-wrap:wrap}
+.sc{overflow-x:auto}.sc text{font-size:10px;fill:var(--ink)}
+.bf{fill:var(--ink)}.bs{fill:var(--red)}
+.lg{display:inline-block;width:10px;height:10px;border-radius:2px;margin:0 4px 0 10px;vertical-align:middle}
+.lg.bf{background:var(--ink)}.lg.bs{background:var(--red)}
+.br{display:grid;grid-template-columns:minmax(90px,38%) 1fr auto;gap:8px;align-items:center;margin:6px 0;font-size:.9rem}
+.bt{background:var(--line);border-radius:3px;height:16px}
+.bt i{display:block;height:100%;background:var(--red);border-radius:3px}
+.br b{min-width:64px;text-align:right}
+</style>
+</head>
+<body>
+<header class="top">
+<div class="bar">
+ <div class="brand"><span class="rt">Real Torino</span><span class="sea">Hockey Club · U10 / U12 · 2026/27</span></div>
+ <label class="logo" title="Clicca per caricare il logo del Real Torino Hockey Club"><img id="lg" alt="Logo Real Torino Hockey Club" hidden><span id="lgp">RT</span><input id="lgf" type="file" accept="image/*" hidden aria-label="Carica il logo del Real Torino Hockey Club"></label>
+</div>
+<nav class="tabs" aria-label="Pagine"><button data-t="cal" aria-pressed="true">Raggruppamenti</button><button data-t="tor" aria-pressed="false">Tornei</button><button data-t="res" aria-pressed="false">Risultati</button><button data-t="gol" aria-pressed="false">Marcatori</button><button data-t="st" aria-pressed="false">Statistiche</button><button data-t="set" aria-pressed="false">Impostazioni</button></nav>
+</header>
+<main>
+<div id="p-cal">
+<div id="nx"></div>
+<p class="note" id="sm" style="margin-top:0"></p>
+
+<div class="seg" role="group" aria-label="Categoria">
+  <button data-f="all" aria-pressed="true">Tutte</button>
+  <button data-f="U10" aria-pressed="false">U10 · domenica</button>
+  <button data-f="U12" aria-pressed="false">U12 · sabato</button>
+</div>
+
+<section class="panel tot" aria-live="polite">
+  <div><b id="tN">0</b>partite</div>
+  <div><b id="tKm">0</b>km A/R totali</div>
+  <div><b id="tC">0 €</b>spesa totale</div>
+  <div><b id="tP">0 €</b>di cui pedaggi</div>
+</section>
+
+<div id="list"></div>
+<p style="margin-top:16px"><button class="btn" id="cx">Aggiungi tutte al calendario</button></p>
+<p class="note" id="cxn">Ogni partita ha anche il link “+ Calendario” (Google Calendar, serve internet). Il pulsante qui sopra esporta le partite della categoria selezionata.</p>
+<p class="note">Funziona senza connessione. Il tasto “Percorso” apre Google Maps e richiede internet. Pedaggi: stime, modificabili in Impostazioni.</p>
+</div>
+<div id="p-set" hidden>
+<section class="panel">
+  <div class="row">
+    <label>Mezzo
+      <select id="veh"></select>
+    </label>
+    <label>Consumo (km/l)
+      <input id="cons" type="number" step="0.1" min="1">
+    </label>
+    <label>Prezzo gasolio (€/l)
+      <input id="price" type="number" step="0.001" min="0">
+    </label>
+    <label>Partenza
+      <input id="origin" type="text">
+    </label>
+  </div>
+  <p class="note">Il consumo vale per il mezzo selezionato. Prezzo predefinito 2,27 €/l: media nazionale self del gasolio (MIMIT) al 17 settembre 2026 era 2,266 €/l. Modificalo quando cambia.</p>
+</section>
+<section class="panel">
+  <h2>Sedi: ricerca su Maps, km e pedaggio (solo andata)</h2>
+  <p class="note" style="margin-top:0">I km sono stime da Vinovo. Controllali su Maps e correggili qui: pedaggi e costo sono calcolati su andata e ritorno. I pedaggi (auto classe A) sono stime: verificali sul sito della concessionaria.</p>
+  <table><thead><tr><th>Sede</th><th>Cerca su Maps</th><th>Km</th><th>Pedaggio €</th></tr></thead><tbody id="vt"></tbody></table>
+</section>
+</div>
+<div id="p-tor" hidden>
+<p class="note" id="tsm" style="margin-top:0"></p>
+<section class="panel tot" aria-live="polite">
+  <div><b id="tTN">0</b>tornei</div>
+  <div><b id="tTK">0</b>km A/R totali</div>
+  <div><b id="tTC">0 €</b>spesa totale</div>
+  <div><b id="tTP">0 €</b>di cui pedaggi</div>
+</section>
+<div id="tlist"></div>
+<details class="panel" style="margin-top:20px">
+ <summary>Aggiungi torneo</summary>
+ <div class="row" style="margin-top:12px">
+  <label>Nome<input id="tn" placeholder="Nome del torneo"></label>
+  <label>Dal<input id="td1" type="date"></label>
+  <label>Al<input id="td2" type="date"></label>
+  <label>Orario (facoltativo)<input id="tt" type="time"></label>
+  <label>Viaggi A/R (facoltativo)<input id="tvg" type="number" min="1" placeholder="uno per giorno"></label>
+  <label>Sede<select id="tk"></select></label>
+ </div>
+ <div class="row" id="tx" hidden style="margin-top:12px">
+  <label>Cerca su Maps<input id="tq" placeholder="Palaghiaccio …"></label>
+  <label>Km andata<input id="tkm" type="number" min="0"></label>
+  <label>Pedaggio andata €<input id="tpe" type="number" min="0" step="0.1" value="0"></label>
+ </div>
+ <p><button class="btn" id="ta">Aggiungi</button></p>
+ <p class="note" id="tmsg"></p>
+</details>
+<p class="note">Il costo conta un viaggio di andata e ritorno per ogni giorno del torneo, tranne per le trasferte con pernottamento (Francia), dove ne conta uno solo. Mezzo, consumo e prezzo del gasolio sono quelli impostati in Impostazioni. Orari e categorie si aggiungono quando disponibili.</p>
+</div>
+<div id="p-res" hidden>
+ <p class="note" style="margin-top:0">Ogni giornata è un raggruppamento. Per ogni avversario tocca + e − per i gol di Real Torino (a sinistra) e dell'avversario (a destra). Fase 1 = andata, Fase 2 = ritorno. ✔ = tutti i risultati inseriti; ⚠ = i goal dei marcatori non coincidono con il risultato.</p>
+ <div id="resList"></div>
+</div>
+<div id="p-gol" hidden>
+ <section class="panel">
+  <div class="row">
+   <label>Giornata<select id="gM"></select></label>
+   <label>Partita<select id="gO"></select></label>
+  </div>
+  <p class="note" id="gInfo"></p>
+  <div id="gP"></div>
+  <p><button class="btn" id="gU" hidden>Annulla ultimo goal</button></p>
+  <div class="row" id="gAl" hidden style="align-items:flex-end">
+   <label>&nbsp;<input id="gT" placeholder="Cognome Nome" aria-label="Scrivi il nome del giocatore"></label>
+   <button class="btn" id="gA">Aggiungi goal</button>
+  </div>
+ </section>
+ <div id="gList"></div>
+</div>
+<div id="p-st" hidden>
+ <label class="row" style="display:block;max-width:260px;margin-bottom:12px">Categoria
+  <select id="sCat"><option value="all">Tutte</option><option value="U10">U10</option><option value="U12">U12</option></select></label>
+ <div id="stats"></div>
+</div>
+</main>
+
+<script>
+const VEH={kuga:{n:"Ford Kuga 2023 1.5 diesel 120 CV",c:18},stelvio:{n:"Alfa Romeo Stelvio 2.2 diesel 190 CV",c:14.5}};
+const V0={
+aosta:{n:"Aosta",q:"Palaghiaccio Aosta",km:125,t:13},
+pinerolo:{n:"Pinerolo",q:"Palazzetto del ghiaccio Pinerolo",km:27,t:0},
+valpellice:{n:"Valpellice",q:"Palaghiaccio Torre Pellice",km:45,t:0},
+real:{n:"Torino (Real Torino)",q:"Palaghiaccio Tazzoli Torino",km:15,t:0},
+bulls:{n:"Torino (Bulls)",q:"Palaghiaccio Tazzoli Torino",km:15,t:0},
+como:{n:"Como",q:"Palaghiaccio Como",km:175,t:24},
+chiavenna:{n:"Chiavenna",q:"Palaghiaccio Chiavenna",km:295,t:22},
+varese:{n:"Varese",q:"Palaghiaccio Varese",km:155,t:22},
+rho:{n:"Rho Fiera Ice Arena",q:"Rho Fiera Ice Arena",km:155,t:20},
+orcieres:{n:"Orcières Merlette (Francia)",q:"Patinoire Orcières Merlette 05170",km:255,t:7},
+nizza:{n:"Nizza (Francia)",q:"Patinoire Nice France",km:275,t:27}};
+// [data, ora, categoria, fase, sede, in casa, avversari]
+const M=[
+["2026-10-04","09:00","U10",1,"aosta",0,["Aosta","Valpellice","Pinerolo"]],
+["2026-10-18","12:00","U10",1,"pinerolo",0,["Pinerolo","Aosta","Valpellice"]],
+["2026-10-24","09:00","U12",1,"aosta",0,["Aosta","Varese","Torino Bulls"]],
+["2026-10-31","15:00","U12",1,"real",1,["Como","Aosta","Torino Bulls"]],
+["2026-11-07","18:00","U12",1,"como",0,["Como","Aosta","Pinerolo"]],
+["2026-11-08","12:15","U10",1,"valpellice",0,["Valpellice","Aosta","Pinerolo"]],
+["2026-11-21","15:00","U12",1,"bulls",0,["Torino Bulls","Valpellice","Pinerolo"]],
+["2026-11-29","09:00","U10",1,"real",1,["Aosta","Pinerolo","Valpellice"]],
+["2026-12-05","15:15","U12",1,"real",1,["Milano","Aosta","Torino Bulls"]],
+["2026-12-06","10:00","U10",1,"aosta",0,["Aosta","Valpellice","Pinerolo"]],
+["2027-01-17","11:00","U10",2,"chiavenna",0,["Chiavenna","Pinerolo","Varese"]],
+["2027-01-23","15:00","U12",2,"bulls",0,["Torino Bulls","Aosta","Varese"]],
+["2027-01-31","10:00","U10",2,"aosta",0,["Aosta","Chiavenna","Varese"]],
+["2027-02-06","09:00","U12",2,"aosta",0,["Aosta","Milano","Pinerolo"]],
+["2027-02-14","11:00","U10",2,"chiavenna",0,["Chiavenna","Como","Milano"]],
+["2027-02-20","17:30","U12",2,"real",1,["Aosta","Valpellice","Torino Bulls"]],
+["2027-02-28","10:30","U10",2,"real",1,["Valpellice","Varese","Aosta"]],
+["2027-03-06","18:10","U12",2,"rho",0,["Milano","Aosta","Como"]],
+["2027-03-14","12:00","U10",2,"pinerolo",0,["Pinerolo","Varese","Como"]],
+["2027-03-20","","U12",2,"varese",0,["Varese","Como","Aosta"]]];
+const $=id=>document.getElementById(id);
+const K="realtorino.v3";
+let S={veh:"kuga",cons:{kuga:18,stelvio:14.5},price:2.27,origin:"Vinovo (TO)",venues:{},f:"all",res:{},gol:[],tor:[],tab:"cal"};
+const ADMIN_HASH="0a4e3e70597a358b9447fa8a647aadf5b76dde95c8e4ab02e5f8cee6caa1cd28";
+const adminOK=()=>sessionStorage.getItem("rt.admin")==="1";
+async function requireAdmin(){
+  if(adminOK()) return true;
+  const p=prompt("Accesso amministratore\\nInserisci il PIN per modificare risultati e marcatori:");
+  if(p===null) return false;
+  try{
+    const b=new TextEncoder().encode(p);
+    const h=await crypto.subtle.digest("SHA-256",b);
+    const a=[...new Uint8Array(h)].map(x=>x.toString(16).padStart(2,"0")).join("");
+    if(a===ADMIN_HASH){sessionStorage.setItem("rt.admin","1");return true}
+  }catch(e){}
+  alert("PIN non corretto.");
+  return false;
+}
+
+try{const r=JSON.parse(localStorage.getItem(K));if(r)S=Object.assign(S,r)}catch(e){}
+const save=()=>{try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}};
+if(S.cv!==2){S.cons={kuga:18,stelvio:14.5};S.cv=2;save()}
+const ven=k=>Object.assign({},V0[k],S.venues[k]||{});
+const eur=n=>n.toLocaleString("it-IT",{style:"currency",currency:"EUR"});
+const mesi=["gennaio","febbraio","marzo","aprile","maggio","giugno","luglio","agosto","settembre","ottobre","novembre","dicembre"];
+const gg=["dom","lun","mar","mer","gio","ven","sab"];
+const gF=["domenica","lunedì","martedì","mercoledì","giovedì","venerdì","sabato"];
+
+function init(){
+  $("veh").innerHTML=Object.entries(VEH).map(([k,v])=>`<option value="${k}">${v.n}</option>`).join("");
+  $("veh").value=S.veh;$("cons").value=S.cons[S.veh];$("price").value=S.price;$("origin").value=S.origin;
+  $("veh").onchange=e=>{S.veh=e.target.value;$("cons").value=S.cons[S.veh];save();render()};
+  $("cons").oninput=e=>{S.cons[S.veh]=parseFloat(e.target.value)||0;save();render()};
+  $("price").oninput=e=>{S.price=parseFloat(e.target.value)||0;save();render()};
+  $("origin").oninput=e=>{S.origin=e.target.value;save();render()};
+  document.querySelectorAll(".seg button").forEach(b=>{
+    b.onclick=()=>{S.f=b.dataset.f;save();render()};
+  });
+  $("vt").innerHTML=Object.keys(V0).map(k=>{const v=ven(k);
+    return `<tr><td>${v.n}</td><td><input data-k="${k}" data-p="q" value="${v.q}"></td><td style="width:80px"><input data-k="${k}" data-p="km" type="number" min="0" value="${v.km}"></td><td style="width:90px"><input data-k="${k}" data-p="t" type="number" min="0" step="0.1" value="${v.t}"></td></tr>`}).join("");
+  $("vt").oninput=e=>{const t=e.target,k=t.dataset.k,p=t.dataset.p;
+    S.venues[k]=S.venues[k]||{};S.venues[k][p]=p==="q"?t.value:(parseFloat(t.value)||0);save();render()};
+}
+
+function render(){
+  document.querySelectorAll(".seg button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.f===S.f));
+  const cons=S.cons[S.veh]||0,today=new Date().toISOString().slice(0,10);
+  const list=M.filter(m=>S.f==="all"||m[2]===S.f).sort((a,b)=>a[0]<b[0]?-1:1);
+  $("sm").textContent=VEH[S.veh].n+" · gasolio "+S.price.toLocaleString("it-IT")+" €/l · "+cons.toLocaleString("it-IT")+" km/l · partenza: "+S.origin+". Modificabili in Impostazioni.";
+  const nm=M.slice().sort((a,b)=>a[0]<b[0]?-1:1).find(m=>m[0]>=today);
+  if(!nm){$("nx").innerHTML=""}else{
+    const v=ven(nm[4]),ar=v.km*2,f=cons>0?ar/cons*S.price:0,tl=(v.t||0)*2,nd=new Date(nm[0]+"T12:00:00"),
+      dd=Math.round((nd-new Date(today+"T12:00:00"))/864e5),
+      u="https://www.google.com/maps/dir/?api=1&travelmode=driving&origin="+encodeURIComponent(S.origin)+"&destination="+encodeURIComponent(v.q);
+    $("nx").innerHTML=`<section class="nx"><div class="nl">Prossima partita · ${dd===0?"oggi":dd===1?"domani":"tra "+dd+" giorni"}</div>
+      <div class="nv">${esc(v.n)}</div>
+      <div class="ns">${gF[nd.getDay()]} ${nd.getDate()} ${mesi[nd.getMonth()]} · ${nm[1]?"ore "+nm[1]:"orario da definire"}</div>
+      <div class="ns"><span class="tag">${nm[2]}</span><span class="tag${nm[5]?" h":""}">${nm[5]?"in casa":"trasferta"}</span>Contro: ${nm[6].map(esc).join(", ")}</div>
+      <div class="nr"><div><span class="c">${eur(f+tl)}</span><div class="ns">${ar} km A/R · gasolio ${eur(f)}${tl?" + pedaggi "+eur(tl):""}</div></div><div class="lk2"><a class="go" href="${u}" target="_blank" rel="noopener">Percorso</a><a class="go sec" href="${gcal(nm)}" target="_blank" rel="noopener">+ Calendario</a></div></div></section>`}
+  let km=0,cost=0,toll=0,html="",cur="",nextDone=false;
+  for(const m of list){const [d,t,cat,ph,k,home]=m;
+    const v=ven(k),dt=new Date(d+"T12:00:00"),ar=v.km*2,f=cons>0?ar/cons*S.price:0,tl=(v.t||0)*2,c=f+tl;
+    km+=ar;cost+=c;toll+=tl;
+    const ym=dt.getFullYear()+"-"+dt.getMonth();
+    if(ym!==cur){cur=ym;html+=`<h2>${mesi[dt.getMonth()]} ${dt.getFullYear()}</h2>`}
+    const past=d<today;let cls="m"+(past?" past":"");
+    if(!past&&!nextDone){cls+=" next";nextDone=true}
+    const url="https://www.google.com/maps/dir/?api=1&travelmode=driving&origin="+encodeURIComponent(S.origin)+"&destination="+encodeURIComponent(v.q);
+    html+=`<article class="${cls}">
+      <div class="d"><b>${dt.getDate()}</b><span>${gg[dt.getDay()]}</span></div>
+      <div class="i"><div class="v">${v.n}</div>
+        <div class="s"><span class="tag">${cat}</span><span class="tag${home?" h":""}">${home?"in casa":"trasferta"}</span>Fase ${ph} · ${t?"ore "+t:"orario da definire"}</div>
+        <div class="s">${ar} km A/R · gasolio ${eur(f)}${tl?" + pedaggi "+eur(tl):""}</div></div>
+      <div class="a"><span class="c">${eur(c)}</span><span class="lk"><a href="${url}" target="_blank" rel="noopener">Percorso</a><a href="${gcal(m)}" target="_blank" rel="noopener">+ Calendario</a></span></div>
+    </article>`;
+  }
+  $("list").innerHTML=html;
+  $("tN").textContent=list.length;$("tKm").textContent=km.toLocaleString("it-IT");$("tC").textContent=eur(cost);$("tP").textContent=eur(toll);
+}
+
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
+const fmt=d=>{const x=new Date(d+"T12:00:00");return gg[x.getDay()]+" "+x.getDate()+" "+mesi[x.getMonth()].slice(0,3)+" "+x.getFullYear()};
+const mid=m=>m[0]+m[2];
+const srt=()=>M.slice().sort((a,b)=>a[0]<b[0]?-1:1);
+function tab(t){S.tab=t;save();
+  ["cal","tor","res","gol","st","set"].forEach(x=>$("p-"+x).hidden=x!==t);
+  document.querySelectorAll(".tabs button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.t===t));
+  if(t==="tor")rTor();if(t==="res")rRes();if(t==="gol")rGol();if(t==="st")rSt()}
+const pad=n=>String(n).padStart(2,"0");
+function ev(m){const [d,t,cat,ph,k,home,opp]=m,v=ven(k);let s,e;const all=!t;
+  if(all){const n=new Date(d+"T12:00:00");n.setDate(n.getDate()+1);s=d.replace(/-/g,"");e=n.getFullYear()+pad(n.getMonth()+1)+pad(n.getDate())}
+  else{const [h,mi]=t.split(":").map(Number),b=new Date(+d.slice(0,4),+d.slice(5,7)-1,+d.slice(8,10),h,mi),f=new Date(b.getTime()+72e5);
+    const z=x=>x.getFullYear()+pad(x.getMonth()+1)+pad(x.getDate())+"T"+pad(x.getHours())+pad(x.getMinutes())+"00";s=z(b);e=z(f)}
+  const url="https://www.google.com/maps/dir/?api=1&travelmode=driving&origin="+encodeURIComponent(S.origin)+"&destination="+encodeURIComponent(v.q);
+  return {d,cat,all,s,e,t:"Real Torino "+cat+" – "+v.n,loc:v.q,det:(home?"In casa":"Trasferta")+" · Fase "+ph+" · Contro: "+opp.join(", ")+"\nPercorso: "+url}}
+const gcal=m=>{const x=ev(m);return "https://calendar.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent(x.t)+"&dates="+x.s+"/"+x.e+"&ctz=Europe%2FRome&location="+encodeURIComponent(x.loc)+"&details="+encodeURIComponent(x.det)};
+function icsOf(list){const q=s=>s.replace(/\\/g,"\\\\").replace(/[,;]/g,"\\$&").replace(/\n/g,"\\n"),st=new Date().toISOString().replace(/[-:]/g,"").slice(0,15)+"Z";
+  const L=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Real Torino//Calendario//IT","CALSCALE:GREGORIAN"];
+  for(const m of list){const x=ev(m);
+    L.push("BEGIN:VEVENT","UID:"+x.d+x.cat+"@realtorino-calendario","DTSTAMP:"+st,
+      x.all?"DTSTART;VALUE=DATE:"+x.s:"DTSTART:"+x.s,x.all?"DTEND;VALUE=DATE:"+x.e:"DTEND:"+x.e,
+      "SUMMARY:"+q(x.t),"LOCATION:"+q(x.loc),"DESCRIPTION:"+q(x.det),
+      "BEGIN:VALARM","ACTION:DISPLAY","DESCRIPTION:Partita tra 2 ore","TRIGGER:-PT2H","END:VALARM","END:VEVENT")}
+  L.push("END:VCALENDAR");return L.join("\r\n")}
+function csvOf(list){const c=v=>'"'+String(v).replace(/"/g,'""')+'"',
+  T=(h,mi)=>(h%12||12)+":"+pad(mi)+" "+(h<12?"AM":"PM"),D=x=>x.slice(4,6)+"/"+x.slice(6,8)+"/"+x.slice(0,4);
+  const R=[["Subject","Start Date","Start Time","End Date","End Time","All Day Event","Description","Location"].map(c).join(",")];
+  for(const m of list){const x=ev(m),sd=m[0].slice(5,7)+"/"+m[0].slice(8,10)+"/"+m[0].slice(0,4);
+    const row=x.all?[x.t,sd,"",sd,"","True",x.det,x.loc]:[x.t,sd,T(+x.s.slice(9,11),+x.s.slice(11,13)),D(x.e),T(+x.e.slice(9,11),+x.e.slice(11,13)),"False",x.det,x.loc];
+    R.push(row.map(c).join(","))}
+  return R.join("\r\n")}
+async function exportCal(){
+  const list=M.filter(m=>S.f==="all"||m[2]===S.f).sort((a,b)=>a[0]<b[0]?-1:1),n=$("cxn");
+  if(window.claude){
+    let dl=null;try{dl=await window.claude.use("downloads")}catch(e){}
+    if(!dl){n.textContent="Il download non è disponibile qui: usa il link “+ Calendario” su ogni partita.";return}
+    try{await dl.save({filename:"partite-real-torino.csv",data:csvOf(list)});
+      n.textContent="File CSV per Google Calendar: in Google Calendar (da PC) vai su Impostazioni > Importa ed esporta. Per Calendario Apple o Outlook serve il file .ics, disponibile aprendo la pagina scaricata come file."}
+    catch(e){if(!e||e.code!=="declined")n.textContent="Salvataggio non riuscito: usa il link “+ Calendario” su ogni partita."}
+    return}
+  const a=document.createElement("a");a.href=URL.createObjectURL(new Blob([icsOf(list)],{type:"text/calendar"}));
+  a.download="partite-real-torino.ics";document.body.appendChild(a);a.click();a.remove();
+  n.textContent="File .ics scaricato: aprilo per aggiungere le partite a Calendario (Apple, Google, Outlook)."}
+const T0=[
+{id:"ciaz",n:"Torneo Ciaz",d1:"2026-12-12",d2:"2026-12-13",k:"valpellice",t:""},
+{id:"tpc",n:"Trophée des Petits Champions U11",d1:"2027-04-16",d2:"2027-04-18",k:"orcieres",t:"10:00",vg:1,w:"https://aph-hockey.com/english/trophee-des-petits-champions/",nt:"Accoglienza venerdì dalle 10:00, inizio gare 12:30, premiazioni domenica alle 18:15. Iscrizione 150 € a squadra; pasti e alloggio da 45 a 97 € a persona (non inclusi nel costo)."},
+{id:"nissa",n:"Nissa Cup U11",d1:"2027-05-21",d2:"2027-05-23",k:"nizza",t:"",vg:1,nt:"Sede e orari non ancora disponibili."}];
+const tv=x=>x.k?ven(x.k):{n:x.q,q:x.q,km:x.km,t:x.vt||0};
+const tdays=x=>Math.round((new Date(x.d2+"T12:00:00")-new Date(x.d1+"T12:00:00"))/864e5)+1;
+const ymd=d=>d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate());
+function rTor(){
+  const cons=S.cons[S.veh]||0,today=new Date().toISOString().slice(0,10);
+  $("tsm").textContent=VEH[S.veh].n+" · "+cons.toLocaleString("it-IT")+" km/l · gasolio "+S.price.toLocaleString("it-IT")+" €/l · partenza: "+S.origin;
+  const L=T0.concat(S.tor).sort((a,b)=>a.d1<b.d1?-1:1);
+  let km=0,cost=0,toll=0,html="",cur="",nd=false;
+  for(const x of L){
+    const v=tv(x),dd=tdays(x),nv=x.vg||dd,ar=v.km*2*nv,f=cons>0?ar/cons*S.price:0,tl=(v.t||0)*2*nv,c=f+tl,
+      a=new Date(x.d1+"T12:00:00"),b=new Date(x.d2+"T12:00:00"),e=new Date(b.getTime());e.setDate(e.getDate()+1);
+    km+=ar;cost+=c;toll+=tl;
+    const ym=a.getFullYear()+"-"+a.getMonth();
+    if(ym!==cur){cur=ym;html+=`<h2>${mesi[a.getMonth()]} ${a.getFullYear()}</h2>`}
+    const past=x.d2<today;let cls="m"+(past?" past":"");if(!past&&!nd){cls+=" next";nd=true}
+    const url="https://www.google.com/maps/dir/?api=1&travelmode=driving&origin="+encodeURIComponent(S.origin)+"&destination="+encodeURIComponent(v.q);
+    const gc="https://calendar.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent(x.n)+"&dates="+ymd(a)+"/"+ymd(e)+"&ctz=Europe%2FRome&location="+encodeURIComponent(v.q)+"&details="+encodeURIComponent("Torneo · "+dd+(dd>1?" giorni":" giorno")+(x.t?" · ore "+x.t:"")+"\nPercorso: "+url);
+    html+=`<article class="${cls}">
+      <div class="d"><b>${a.getDate()}${dd>1?"–"+b.getDate():""}</b><span>${gg[a.getDay()]}${dd>1?"–"+gg[b.getDay()]:""}</span></div>
+      <div class="i"><div class="v">${esc(x.n)}</div>
+        <div class="s"><span class="tag">Torneo</span>${esc(v.n)} · ${dd} ${dd>1?"giorni":"giorno"} · ${x.t?"ore "+x.t:"orario da definire"}</div>
+        <div class="s">${ar} km totali (${nv} ${nv>1?"viaggi":"viaggio"} A/R) · gasolio ${eur(f)}${tl?" + pedaggi "+eur(tl):""}</div>${x.nt?`<div class="s">${esc(x.nt)}</div>`:""}</div>
+      <div class="a"><span class="c">${eur(c)}</span><span class="lk"><a href="${url}" target="_blank" rel="noopener">Percorso</a><a href="${gc}" target="_blank" rel="noopener">+ Calendario</a>${x.w?`<a href="${x.w}" target="_blank" rel="noopener">Sito</a>`:""}${T0.some(t=>t.id===x.id)?"":`<button class="x" data-d="${x.id}" aria-label="Elimina torneo">×</button>`}</span></div>
+    </article>`}
+  $("tlist").innerHTML=html;
+  $("tTN").textContent=L.length;$("tTK").textContent=km.toLocaleString("it-IT");$("tTC").textContent=eur(cost);$("tTP").textContent=eur(toll)}
+function tinit(){
+  $("tk").innerHTML=Object.keys(V0).map(k=>`<option value="${k}">${esc(V0[k].n)}</option>`).join("")+`<option value="">Altra sede…</option>`;
+  $("tk").onchange=()=>{$("tx").hidden=$("tk").value!==""};
+  $("ta").onclick=()=>{const n=$("tn").value.trim(),d1=$("td1").value,d2=$("td2").value||d1,k=$("tk").value,m=$("tmsg");
+    if(!n||!d1){m.textContent="Inserisci almeno il nome e la data di inizio.";return}
+    if(d2<d1){m.textContent="La data di fine è precedente a quella di inizio.";return}
+    const e={id:"c"+Date.now(),n,d1,d2,t:$("tt").value,k,vg:parseInt($("tvg").value)||0};
+    if(!k){e.q=$("tq").value.trim();e.km=parseFloat($("tkm").value)||0;e.vt=parseFloat($("tpe").value)||0;
+      if(!e.q){m.textContent="Per un'altra sede scrivi cosa cercare su Maps.";return}}
+    S.tor.push(e);save();["tn","td1","td2","tt","tvg","tq","tkm"].forEach(i=>$(i).value="");m.textContent="";rTor()};
+  $("tlist").onclick=e=>{const b=e.target.closest("button[data-d]");if(!b)return;S.tor=S.tor.filter(x=>x.id!==b.dataset.d);save();rTor()}}
+const goalsOf=(id,o)=>S.gol.filter(g=>g.id===id&&g.o===o).reduce((a,g)=>a+g.c,0);
+function rRes(){
+  const op=new Set([...document.querySelectorAll("#resList details[open]")].map(d=>d.dataset.i)),first=!document.querySelector("#resList details");
+  const today=new Date().toISOString().slice(0,10),cm=srt().filter(m=>m[0]<=today).pop(),curId=cm?mid(cm):"";
+  $("resList").innerHTML=srt().map(m=>{const id=mid(m),r=S.res[id]||{};let done=0,bad=0;
+    const rows=m[6].map(o=>{const v=r[o]||["",""],has=v[0]!==""&&v[1]!=="",q=esc(o);let vnp="",warn="";
+      if(has){done++;vnp=v[0]>v[1]?"V":v[0]<v[1]?"P":"N";const sg=goalsOf(id,o);
+        if(sg!==v[0]&&(v[0]>0||sg>0)){bad++;warn="⚠ goal con marcatore: "+sg+" su "+v[0]}}
+      return `<div class="rw2" data-i="${id}" data-o="${q}"><div class="rn">Real Torino – ${q}${vnp?` <span class="vnp ${vnp}">${vnp}</span>`:""}</div>
+        <div class="stp"><button data-a="0-" aria-label="Meno un gol Real Torino">−</button><output>${has?v[0]:"–"}</output><button data-a="0+" aria-label="Più un gol Real Torino">+</button></div><span class="dash">–</span>
+        <div class="stp"><button data-a="1-" aria-label="Meno un gol ${q}">−</button><output>${has?v[1]:"–"}</output><button data-a="1+" aria-label="Più un gol ${q}">+</button></div>
+        <button class="x" data-a="c" aria-label="Azzera risultato">×</button>${warn?`<div class="warn">${warn}</div>`:""}</div>`}).join("");
+    const n=m[6].length,st=done===n?`<span class="tag ok">✔ ${done}/${n}</span>`:`<span class="tag nz">${done}/${n}</span>`;
+    return `<details class="panel" data-i="${id}"${op.has(id)||(first&&id===curId)?" open":""}><summary>${fmt(m[0])} · ${m[2]} · ${esc(ven(m[4]).n)} <span class="tag${m[3]==1?"":" h"}">${m[3]==1?"andata":"ritorno"}</span> ${st}${bad?` <span class="tag h">⚠</span>`:""}</summary>${rows}</details>`}).join("")}
+const ROSTER={U8:["Pellegrino Matteo"],U9:["D'Ambrosio Mattia","Liuzzi Leonida","Panfilov Yan","Rodrigue Ordonez Matteo","Serralunga Nicolò","Spataro Cesare","Vibrati Tommaso"],U11:["Inchingolo Tommaso","Panfilov Rostyslav"],U10:["Albertone Luca","Allio Tommaso","Famà Tommaso","Panfilov Mark","Parella Dario","Zumbo Luigi Stefano"],U12:["Beraud Tommaso Leone","Fantino Filippo","Fassino Mattia","Goosen Ianni Mackenzie","Mamone Sara"]};
+const OR={U10:["U10","U9","U8","U11","U12"],U12:["U12","U11","U10","U9","U8"]};
+let lastG=null;
+const gCount=(id,o,n)=>S.gol.filter(g=>g.id===id&&g.o===o&&(n===undefined||g.n===n)).reduce((a,g)=>a+g.c,0);
+function addG(n,k){const id=$("gM").value,o=$("gO").value,m=M.find(x=>mid(x)===id);if(!m||!o)return;
+  const e=S.gol.find(g=>g.id===id&&g.o===o&&g.n===n);
+  if(e)e.c+=k;else S.gol.push({id,d:m[0],cat:m[2],n,c:k,o});
+  lastG={id,o,n};save();updG()}
+function undoG(){if(!lastG)return;
+  const e=S.gol.find(g=>g.id===lastG.id&&g.o===lastG.o&&g.n===lastG.n);
+  if(e){e.c--;if(e.c<1)S.gol.splice(S.gol.indexOf(e),1)}
+  lastG=null;save();updG()}
+function updG(){
+  const id=$("gM").value,o=$("gO").value;
+  document.querySelectorAll("#gP .pl[data-n]").forEach(b=>{const k=gCount(id,o,b.dataset.n);b.classList.toggle("on",k>0);b.querySelector("b").textContent=k||""});
+  const r=(S.res[id]||{})[o],has=r&&r[0]!==""&&r[1]!=="",sg=gCount(id,o);
+  $("gInfo").textContent=has?`Risultato: Real Torino ${r[0]}–${r[1]} ${o} · goal con marcatore: ${sg} su ${r[0]} ${sg===r[0]?"✔":"⚠"}`:`Risultato non ancora inserito · goal con marcatore: ${sg}`;
+  $("gU").hidden=!lastG;if(lastG)$("gU").textContent="Annulla ultimo goal ("+lastG.n+")";
+  const L=S.gol.map((g,i)=>Object.assign({i},g)).sort((a,b)=>a.d<b.d?1:-1);
+  $("gList").innerHTML=L.length?`<section class="panel"><table><thead><tr><th>Data</th><th>Giocatore</th><th>Goal</th><th></th></tr></thead><tbody>`+
+    L.map(g=>`<tr><td>${fmt(g.d)} · ${g.cat}${g.o?" · vs "+esc(g.o):""}</td><td>${esc(g.n)}</td><td>${g.c}</td><td style="white-space:nowrap"><button class="x" data-m="${g.i}" aria-label="Un goal in meno">−</button><button class="x" data-x="${g.i}" aria-label="Elimina">×</button></td></tr>`).join("")+`</tbody></table></section>`:`<p class="note">Nessun goal inserito.</p>`}
+function fillP(c){
+  const all=[].concat(...Object.values(ROSTER)),ex=[...new Set(S.gol.map(g=>g.n))].filter(n=>!all.includes(n));
+  const btn=n=>`<button class="pl" data-n="${esc(n)}">${esc(n)}<b></b></button>`;
+  const grp=(l,a)=>a.length?`<div class="gh">${l}</div><div class="pg">${a.map(btn).join("")}</div>`:"";
+  const g=OR[c]||Object.keys(ROSTER);
+  $("gP").innerHTML=grp(g[0],ROSTER[g[0]])+`<details><summary class="gh">Altre categorie</summary>${g.slice(1).map(x=>grp(x,ROSTER[x])).join("")}</details>`+grp("Altri",ex)+`<div class="pg" style="margin-top:12px"><button class="pl" id="gAltro" type="button">Altro (scrivi il nome)…</button></div>`;
+  updG()}
+function fillO(keep){const co=$("gO").value,m=M.find(x=>mid(x)===$("gM").value);
+  $("gO").innerHTML=m?m[6].map(o=>`<option value="${esc(o)}">Real Torino – ${esc(o)}</option>`).join(""):"";
+  if(keep&&[...$("gO").options].some(x=>x.value===co))$("gO").value=co;
+  fillP(m?m[2]:"U10")}
+function rGol(){
+  const cur=$("gM").value,today=new Date().toISOString().slice(0,10);
+  $("gM").innerHTML=srt().map(m=>`<option value="${mid(m)}">${fmt(m[0])} · ${m[2]} · ${esc(ven(m[4]).n)}</option>`).join("");
+  if(cur)$("gM").value=cur;else{const cm=srt().filter(m=>m[0]<=today).pop();if(cm)$("gM").value=mid(cm)}
+  fillO(true)}
+function chartG(gd){if(!gd.length)return"";
+  const W=44,H=130,mx=Math.max(1,...gd.flatMap(x=>[x.gf,x.gs])),hh=v=>Math.round(v/mx*(H-20));
+  const bars=gd.map((x,i)=>{const X=i*W+8,a=hh(x.gf),b=hh(x.gs),dt=new Date(x.d+"T12:00:00");
+    return `<rect class="bf" x="${X}" y="${H-a}" width="16" height="${a}"/><rect class="bs" x="${X+18}" y="${H-b}" width="16" height="${b}"/>`+
+      `<text x="${X+8}" y="${H-a-3}" text-anchor="middle">${x.gf}</text><text x="${X+26}" y="${H-b-3}" text-anchor="middle">${x.gs}</text>`+
+      `<text x="${X+17}" y="${H+14}" text-anchor="middle">${dt.getDate()}/${dt.getMonth()+1}</text>`}).join("");
+  return `<section class="panel"><h2>Gol per giornata</h2><div class="sc"><svg role="img" aria-label="Gol fatti e subiti per giornata" width="${gd.length*W+10}" height="${H+22}">${bars}</svg></div><p class="note"><i class="lg bf"></i>fatti <i class="lg bs"></i>subiti</p></section>`}
+function rSt(){
+  const cat=$("sCat").value,ms=srt().filter(m=>cat==="all"||m[2]===cat);
+  const T=()=>({g:0,w:0,n:0,p:0,f:0,s:0}),tot=T(),op={},ph={1:T(),2:T()},ha={h:T(),a:T()};
+  let best=null,worst=null;
+  const add=(o,a,b)=>{o.g++;o.f+=a;o.s+=b;if(a>b)o.w++;else if(a<b)o.p++;else o.n++};
+  const gd=[];
+  for(const m of ms){const r=S.res[mid(m)]||{};let gf=0,gs=0,gc=0;
+    for(const o of m[6]){const v=r[o];if(!v||v[0]===""||v[1]==="")continue;
+      const a=v[0],b=v[1];add(tot,a,b);add(op[o]=op[o]||T(),a,b);add(ph[m[3]],a,b);add(ha[m[5]?"h":"a"],a,b);
+      const x={m,o,a,b,d:a-b};if(!best||x.d>best.d)best=x;if(!worst||x.d<worst.d)worst=x;gf+=a;gs+=b;gc++}if(gc)gd.push({d:m[0],gf,gs})}
+  const sc={};let ag=0;
+  for(const g of S.gol){if(cat!=="all"&&g.cat!==cat)continue;sc[g.n]=(sc[g.n]||0)+g.c;ag+=g.c}
+  if(!tot.g&&!ag){$("stats").innerHTML="<p class=note>Nessun dato: inserisci risultati e goal nelle altre pagine.</p>";return}
+  const av=x=>tot.g?(x/tot.g).toFixed(1).replace(".",","):"-",df=tot.f-tot.s;
+  const c=(b,l)=>`<div><b>${b}</b>${l}</div>`;
+  const tr=(n,o)=>`<tr><td>${esc(n)}</td><td>${o.g}</td><td>${o.w}-${o.n}-${o.p}</td><td>${o.f}-${o.s}</td></tr>`;
+  const tb=(h,rows,f)=>`<section class="panel"><h2 style="margin-top:0">${h}</h2><table><thead><tr><th>${f||""}</th><th>G</th><th>V-N-P</th><th>GF-GS</th></tr></thead><tbody>${rows}</tbody></table></section>`;
+  const rs=x=>x?`${fmt(x.m[0])} contro ${esc(x.o)}: ${x.a}-${x.b}`:"-";
+  let h=`<div class="st">${c(tot.g,"partite")}${c(tot.w+"-"+tot.n+"-"+tot.p,"V-N-P")}${c(tot.w*3+tot.n,"punti (3-1-0)")}${c(tot.f+"-"+tot.s,"gol fatti-subiti")}${c((df>0?"+":"")+df,"differenza reti")}${c(av(tot.f),"gol fatti/partita")}${c(av(tot.s),"gol subiti/partita")}${c(tot.g?Math.round(tot.w/tot.g*100)+"%":"-","vittorie")}</div>`;
+  h+=`<p class="note">Miglior risultato: ${rs(best)}<br>Peggior risultato: ${rs(worst)}</p>`;
+  h+=chartG(gd);
+  h+=tb("Andata e ritorno",tr("Fase 1 · andata",ph[1])+tr("Fase 2 · ritorno",ph[2]));
+  h+=tb("In casa / in trasferta",tr("In casa",ha.h)+tr("In trasferta",ha.a));
+  h+=tb("Per avversario",Object.entries(op).sort((a,b)=>b[1].g-a[1].g||a[0].localeCompare(b[0])).map(([n,o])=>tr(n,o)).join(""),"Avversario");
+  const top=Object.entries(sc).sort((a,b)=>b[1]-a[1]||a[0].localeCompare(b[0]));
+  if(top.length){const mx=top[0][1];
+    h+=`<section class="panel"><h2>Marcatori</h2>`+top.map(([n,k])=>`<div class="br"><span>${esc(n)}</span><div class="bt"><i style="width:${Math.round(k/mx*100)}%"></i></div><b>${k}${tot.f?" · "+Math.round(k/tot.f*100)+"%":""}</b></div>`).join("")+`<p class="note">Goal con marcatore: ${ag} su ${tot.f} segnati.</p></section>`}
+  $("stats").innerHTML=h}
+function wire(){
+  document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>tab(b.dataset.t));
+  $("resList").onclick=async e=>{const b=e.target.closest("button[data-a]");if(!b)return;
+    if(!(await requireAdmin()))return;
+    const w=b.closest(".rw2"),i=w.dataset.i,o=w.dataset.o,a=b.dataset.a,r=S.res[i]=S.res[i]||{},
+      had=r[o]&&r[o][0]!==""&&r[o][1]!=="";
+    if(a==="c")delete r[o];
+    else{if(!had&&a[1]==="-")return;const v=r[o]=had?r[o]:[0,0],k=+a[0];v[k]=Math.max(0,v[k]+(a[1]==="+"?1:-1))}
+    save();rRes()};
+  $("gP").onclick=async e=>{const b=e.target.closest("button.pl");if(!b)return;
+    if(!(await requireAdmin()))return;
+    if(b.id==="gAltro"){$("gAl").hidden=!$("gAl").hidden;if(!$("gAl").hidden)$("gT").focus();return}
+    addG(b.dataset.n,1)};
+  $("gU").onclick=async()=>{if(await requireAdmin())undoG()};
+  $("gA").onclick=async()=>{if(!(await requireAdmin()))return;const n=$("gT").value.trim();if(!n)return;addG(n,1);$("gT").value="";$("gAl").hidden=true;fillO(true)};
+  $("gList").onclick=async e=>{const b=e.target.closest("button");if(!b)return;
+    if(!(await requireAdmin()))return;
+    if(b.dataset.x!==undefined)S.gol.splice(+b.dataset.x,1);
+    else if(b.dataset.m!==undefined){const g=S.gol[+b.dataset.m];if(g&&--g.c<1)S.gol.splice(+b.dataset.m,1)}
+    else return;
+    lastG=null;save();updG()};
+  $("cx").onclick=exportCal;$("sCat").onchange=rSt;$("gM").onchange=()=>fillO(false);$("gO").onchange=updG}
+function logoInit(){
+  const show=()=>{const u=S.logo;$("lg").hidden=!u;$("lgp").hidden=!!u;if(u)$("lg").src=u};
+  $("lgf").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();
+    r.onload=()=>{const im=new Image();
+      im.onload=()=>{if(!im.width||!im.height){S.logo=r.result}else{
+        const k=Math.min(1,256/Math.max(im.width,im.height)),c=document.createElement("canvas");
+        c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);
+        c.getContext("2d").drawImage(im,0,0,c.width,c.height);S.logo=c.toDataURL("image/png")}
+        save();show()};
+      im.src=r.result};r.readAsDataURL(f)};
+  show()}
+init();render();wire();tinit();logoInit();tab(S.tab||"cal");
+</script>
+<script>
+if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}))}
+</script>
+</body>
+</html>

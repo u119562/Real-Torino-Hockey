@@ -3,7 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#000000">
+<meta name="theme-color" content="#0d1c30">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icons/icon-192.png" type="image/png">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
 <title>Real Torino – calendario e trasferte</title>
 <style>
 :root{--ink:#000;--ice:#f2f3f5;--card:#fff;--line:#dcdee3;--red:#c8102e;--mut:#676b73;--acc:#0a66c2}
@@ -115,16 +118,79 @@ summary{cursor:pointer;font-weight:700}
 .pt th button{background:none;border:0;font:inherit;text-transform:inherit;letter-spacing:inherit;color:inherit;cursor:pointer;padding:0}
 .pt .on{background:var(--ice);font-weight:800}
 .nx .pg summary{color:#fff}
+
+/* ===== restyling web ===== */
+body{background-image:radial-gradient(1100px 520px at 90% -8%,rgba(200,16,46,.10),transparent 60%),radial-gradient(900px 520px at -10% 8%,rgba(10,102,194,.10),transparent 58%);background-attachment:fixed}
+.top{position:relative;top:auto;overflow:hidden;z-index:1;border-bottom:0;background:linear-gradient(135deg,#05080d 0%,#0d1c30 55%,#32091a 100%)}
+.top::before{content:"";position:absolute;inset:0;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 260'><g fill='none' stroke-width='3'><rect x='6' y='6' width='588' height='248' rx='70' stroke='%23ffffff'/><line x1='300' y1='6' x2='300' y2='254' stroke='%23c8102e'/><line x1='200' y1='6' x2='200' y2='254' stroke='%234da3ff'/><line x1='400' y1='6' x2='400' y2='254' stroke='%234da3ff'/><circle cx='300' cy='130' r='38' stroke='%23c8102e'/><circle cx='110' cy='130' r='30' stroke='%23c8102e'/><circle cx='490' cy='130' r='30' stroke='%23c8102e'/></g></svg>") center/cover no-repeat;opacity:.2}
+.top::after{content:"";position:absolute;left:0;right:0;bottom:0;height:6px;background:linear-gradient(90deg,var(--red),#fff 50%,var(--red))}
+.bar{position:relative;z-index:1;padding:26px 18px 34px;align-items:flex-start}
+.brand{gap:6px}
+.sea{display:inline-block;align-self:flex-start;font-size:.72rem;font-weight:700;letter-spacing:.16em;padding:3px 10px;border:1px solid rgba(255,255,255,.35);border-radius:99px;opacity:1}
+.rt{font-size:clamp(2.1rem,8vw,3.6rem);line-height:.95;font-weight:800;letter-spacing:.01em}
+.tg{font-size:.9rem;opacity:.8;max-width:34em}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
+.chips span{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);backdrop-filter:blur(6px);border-radius:99px;padding:4px 12px;font-size:.8rem}
+.chips b{color:#ff8a98}
+.logo{width:72px;height:72px;box-shadow:0 0 0 5px rgba(255,255,255,.12),0 10px 28px rgba(0,0,0,.45);transition:transform .2s}
+.logo:hover{transform:rotate(-6deg) scale(1.05)}
+.tabs{position:sticky;top:0;z-index:10;max-width:none;margin:0;gap:6px;padding:8px max(10px,calc((100vw - 860px)/2));background:rgba(6,10,16,.94);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.tabs button{border:0;border-radius:99px;padding:9px 15px;opacity:.8;transition:background .2s,opacity .2s}
+.tabs button:hover{opacity:1;background:rgba(255,255,255,.12)}
+.tabs button[aria-pressed=true]{background:var(--red);opacity:1;border:0}
+main{padding-top:24px}
+#p-cal,#p-tor,#p-res,#p-gol,#p-st,#p-set{animation:rise .35s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.panel{border-radius:16px;box-shadow:0 2px 12px rgba(10,25,45,.07)}
+input,select{border-radius:10px;padding:10px;transition:border-color .15s,box-shadow .15s}
+input:focus,select:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(10,102,194,.25);outline:none}
+.seg button,.sg button{padding:10px;transition:transform .12s,background .15s}
+.seg button:active,.sg button:active,.pl:active,.stp button:active{transform:scale(.96)}
+#list h2,#tlist h2{background:none;color:var(--red);padding:0;margin:30px 0 12px;font-size:1.05rem;letter-spacing:.14em;display:flex;align-items:center;gap:12px;border-radius:0}
+#list h2::after,#tlist h2::after{content:"";flex:1;height:2px;background:linear-gradient(90deg,var(--red),transparent)}
+.m{grid-template-columns:96px 1fr auto;border:1px solid var(--line);border-radius:16px;margin-bottom:12px;box-shadow:0 2px 12px rgba(10,25,45,.07);transition:transform .18s,box-shadow .18s}
+.m:last-child{border-radius:16px}
+.m:hover{transform:translateY(-2px);box-shadow:0 12px 28px rgba(10,25,45,.15)}
+.m.next{box-shadow:0 0 0 2px var(--red),0 12px 30px rgba(200,16,46,.22)}
+.d{background:linear-gradient(160deg,#c8102e,#5e0818);color:#fff;border-right:0;display:flex;flex-direction:column;justify-content:center}
+.d b{font-size:2.4rem}.d span{color:rgba(255,255,255,.85)}
+.i{padding:14px 14px}
+.i .v{font-size:1.25rem}
+.tag{border-radius:99px;padding:2px 9px}
+.a .c{font-size:1.4rem}
+.a a{border-radius:99px;padding:6px 16px;transition:background .15s,color .15s}
+.a a:hover{background:var(--ink);color:var(--card)}
+.lk a:first-child{background:var(--red);border-color:var(--red);color:#fff}
+.lk a:first-child:hover{background:#8f0b21;color:#fff}
+.nx{border-radius:20px;border:1px solid rgba(255,255,255,.1);border-left:1px solid rgba(255,255,255,.1);background:linear-gradient(135deg,#0a1422,#1c0b13);position:relative;overflow:hidden;padding:22px;box-shadow:0 14px 36px rgba(0,0,0,.3)}
+.nx::before{content:"";position:absolute;right:-70px;top:-70px;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(200,16,46,.55),transparent 70%);pointer-events:none}
+.nx>*{position:relative}
+.nx .nl{color:#ff8a98;font-weight:700}
+.nx .nv{font-size:2.5rem}
+.go{transition:transform .15s,box-shadow .15s}
+.go:hover{transform:translateY(-2px);box-shadow:0 8px 20px rgba(255,255,255,.2)}
+.ld{border-radius:16px;box-shadow:0 2px 12px rgba(10,25,45,.07)}
+.ld h3{background:linear-gradient(90deg,#0d1b2a,#c8102e);color:#fff;padding:10px 14px}
+.ld li.f em{font-size:2.6rem}
+.st div{border-radius:14px}
+.btn{background:linear-gradient(135deg,#c8102e,#8f0b21);color:#fff;padding:11px 24px;box-shadow:0 6px 16px rgba(200,16,46,.3);transition:transform .15s,box-shadow .15s}
+.btn:hover{transform:translateY(-2px);box-shadow:0 10px 22px rgba(200,16,46,.4)}
+.pl{border-radius:12px;transition:transform .12s,background .15s}
+.pl:hover{background:var(--ice)}
+.foot{margin-top:40px;padding-top:18px;border-top:2px solid var(--red);text-align:center;color:var(--mut);font-size:.8rem;letter-spacing:.08em;text-transform:uppercase}
+@media (prefers-color-scheme:dark){.m,.panel,.ld{box-shadow:0 2px 14px rgba(0,0,0,.55)}.m:hover{box-shadow:0 12px 28px rgba(0,0,0,.7)}}
+@media(max-width:520px){.m{grid-template-columns:76px 1fr}.d b{font-size:2rem}.tabs button{font-size:.78rem;padding:8px 12px}.bar{padding:20px 14px 28px}.logo{width:60px;height:60px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
 </head>
 <body>
 <header class="top">
 <div class="bar">
- <div class="brand"><span class="rt">Real Torino</span><span class="sea">Hockey Club · U10 / U12 · 2026/27</span></div>
+ <div class="brand"><span class="sea">Stagione 2026/27</span><span class="rt">Real Torino<br>Hockey Club</span><span class="tg">Raggruppamenti, tornei, trasferte e statistiche · U10 · U12</span><div class="chips" id="chips"></div></div>
  <label class="logo" title="Clicca per caricare il logo del Real Torino Hockey Club"><img id="lg" alt="Logo Real Torino Hockey Club" hidden><span id="lgp">RT</span><input id="lgf" type="file" accept="image/*" hidden aria-label="Carica il logo del Real Torino Hockey Club"></label>
 </div>
-<nav class="tabs" aria-label="Pagine"><button data-t="cal" aria-pressed="true">Raggruppamenti</button><button data-t="tor" aria-pressed="false">Tornei</button><button data-t="res" aria-pressed="false">Risultati</button><button data-t="gol" aria-pressed="false">Goal/Assist</button><button data-t="st" aria-pressed="false">Statistiche</button><button data-t="set" aria-pressed="false">Impostazioni</button></nav>
 </header>
+<nav class="tabs" aria-label="Pagine"><button data-t="cal" aria-pressed="true">Raggruppamenti</button><button data-t="tor" aria-pressed="false">Tornei</button><button data-t="res" aria-pressed="false">Risultati</button><button data-t="gol" aria-pressed="false">Goal/Assist</button><button data-t="st" aria-pressed="false">Statistiche</button><button data-t="set" aria-pressed="false">Impostazioni</button></nav>
 <main>
 <div id="p-cal">
 <div id="nx"></div>
@@ -236,6 +302,7 @@ summary{cursor:pointer;font-weight:700}
   <p style="margin:6px 0"><b>AN</b> sta per <i>unassisted</i>: cioè goal su azione personale.</p>
  </section>
 </div>
+<footer class="foot">Real Torino Hockey Club · Stagione 2026/27 · U10 · U12</footer>
 </main>
 
 <script>
@@ -280,19 +347,6 @@ const K="realtorino.v3";
 let S={veh:"kuga",cons:{kuga:18,stelvio:14.5},price:2.27,origin:"Vinovo (TO)",venues:{},f:"all",res:{},gol:[],ast:[],tw:[],bl:[],an:[],tor:[],tab:"cal"};
 try{const r=JSON.parse(localStorage.getItem(K));if(r)S=Object.assign(S,r)}catch(e){}
 const save=()=>{try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}};
-
-// Amministratore: solo chi conosce il PIN può modificare risultati e marcatori.
-const ADMIN_PIN="4826";
-let ADMIN_UNLOCKED=false;
-function requireAdmin(){
-  if(ADMIN_UNLOCKED)return true;
-  const p=window.prompt("Area riservata Real Torino\nInserisci il PIN amministratore per modificare risultati o marcatori:");
-  if(p===null)return false;
-  if(p===ADMIN_PIN){ADMIN_UNLOCKED=true;return true}
-  window.alert("PIN non corretto. Nessuna modifica effettuata.");
-  return false;
-}
-
 if(S.cv!==2){S.cons={kuga:18,stelvio:14.5};S.cv=2;save()}
 const ven=k=>Object.assign({},V0[k],S.venues[k]||{});
 const eur=n=>n.toLocaleString("it-IT",{style:"currency",currency:"EUR"});
@@ -395,7 +449,7 @@ async function exportData(){
   const d=new Date().toISOString().slice(0,10),n="dati-real-torino-"+d+".json",
     r=await saveFile(n,JSON.stringify({app:"real-torino",v:1,data:S}),"application/json");
   $("dmsg").textContent=r?"Dati esportati: "+n+". Conserva il file; per ripristinarli usa “Importa dati”.":r===null?"":"Salvataggio non riuscito: il download non è disponibile in questo ambiente."}
-function importData(f){if(!requireAdmin())return;const rd=new FileReader();
+function importData(f){const rd=new FileReader();
   rd.onload=()=>{let o=null;try{o=JSON.parse(rd.result)}catch(e){}
     if(!o||o.app!=="real-torino"||!o.data||typeof o.data!=="object"){$("dmsg").textContent="File non valido: scegli un file esportato da questa pagina.";return}
     Object.assign(S,o.data);
@@ -457,6 +511,10 @@ function tinit(){
     S.tor.push(e);save();["tn","td1","td2","tt","tvg","tq","tkm"].forEach(i=>$(i).value="");m.textContent="";rTor()};
   $("tlist").onclick=e=>{const b=e.target.closest("button[data-d]");if(!b)return;S.tor=S.tor.filter(x=>x.id!==b.dataset.d);save();rTor()}}
 const goalsOf=(id,o)=>S.gol.filter(g=>g.id===id&&g.o===o).reduce((a,g)=>a+g.c,0);
+function chips(){const today=new Date().toISOString().slice(0,10),
+  nm=M.slice().sort((a,b)=>a[0]<b[0]?-1:1).find(m=>m[0]>=today),nt=T0.concat(S.tor).sort((a,b)=>a.d1<b.d1?-1:1).find(x=>x.d2>=today),
+  dl=d=>{const n=Math.round((new Date(d+"T12:00:00")-new Date(today+"T12:00:00"))/864e5);return n<=0?"oggi":n===1?"domani":"tra "+n+" giorni"};
+  $("chips").innerHTML=`<span><b>${M.length}</b> partite</span><span><b>${T0.length+S.tor.length}</b> tornei</span>`+(nm?`<span>Prossima partita <b>${dl(nm[0])}</b></span>`:"")+(nt?`<span>${esc(nt.n)} <b>${dl(nt.d1)}</b></span>`:"")}
 function rSum(){
   const cons=S.cons[S.veh]||0,fu=ar=>cons>0?ar/cons*S.price:0;
   const grp=cat=>{const o={c:0,km:0,f:0,tl:0};for(const m of M){if(m[2]!==cat)continue;const v=ven(m[4]),ar=v.km*2;o.c++;o.km+=ar;o.f+=fu(ar);o.tl+=(v.t||0)*2}return o};
@@ -464,7 +522,7 @@ function rSum(){
   const a=grp("U10"),b=grp("U12"),r={c:a.c+b.c,km:a.km+b.km,f:a.f+b.f,tl:a.tl+b.tl},g={c:r.c+tor.c,km:r.km+tor.km,f:r.f+tor.f,tl:r.tl+tor.tl};
   const row=(n,o,bold)=>`<tr${bold?` class="on"`:""}><td>${n}</td><td>${o.c}</td><td>${o.km.toLocaleString("it-IT")}</td><td>${eur(o.f)}</td><td>${eur(o.tl)}</td><td><b>${eur(o.f+o.tl)}</b></td></tr>`;
   $("sumT").innerHTML=`<table class="pt"><thead><tr><th></th><th class="n">N.</th><th class="n">Km A/R</th><th class="n">Gasolio</th><th class="n">Pedaggi</th><th class="n">Totale</th></tr></thead><tbody>`+
-    row("Raggruppamenti U10",a)+row("Raggruppamenti U12",b)+row("Tutti i raggruppamenti",r,1)+row("Tornei",tor,1)+row("Totale stagione",g,1)+`</tbody></table>`}
+    row("Raggruppamenti U10",a)+row("Raggruppamenti U12",b)+row("Tutti i raggruppamenti",r,1)+row("Tornei",tor,1)+row("Totale stagione",g,1)+`</tbody></table>`;chips()}
 function rRes(){
   const op=new Set([...document.querySelectorAll("#resList details[open]")].map(d=>d.dataset.i)),first=!document.querySelector("#resList details");
   const today=new Date().toISOString().slice(0,10),cm=srt().filter(m=>m[0]<=today).pop(),curId=cm?mid(cm):"";
@@ -484,11 +542,11 @@ let lastG=null,gMode="g";
 const KL={g:"goal",a:"assist",t:"TW",b:"BL",n:"AN"},TL={g:"Goal",a:"Assist",t:"TW",b:"BL",n:"AN"},KS=["g","a","t","b","n"];
 const arr=k=>k==="a"?S.ast:k==="t"?S.tw:k==="b"?S.bl:k==="n"?S.an:S.gol;
 const gCount=(id,o,n,k)=>arr(k||"g").filter(g=>g.id===id&&g.o===o&&(n===undefined||g.n===n)).reduce((a,g)=>a+g.c,0);
-function addG(n){if(!requireAdmin())return;const id=$("gM").value,o=$("gO").value,m=M.find(x=>mid(x)===id);if(!m||!o)return;
+function addG(n){const id=$("gM").value,o=$("gO").value,m=M.find(x=>mid(x)===id);if(!m||!o)return;
   const A=arr(gMode),e=A.find(g=>g.id===id&&g.o===o&&g.n===n);
   if(e)e.c++;else A.push({id,d:m[0],cat:m[2],n,c:1,o});
   lastG={id,o,n,k:gMode};save();updG()}
-function undoG(){if(!requireAdmin()||!lastG)return;
+function undoG(){if(!lastG)return;
   const A=arr(lastG.k),e=A.find(g=>g.id===lastG.id&&g.o===lastG.o&&g.n===lastG.n);
   if(e){e.c--;if(e.c<1)A.splice(A.indexOf(e),1)}
   lastG=null;save();updG()}
@@ -573,7 +631,6 @@ function rTeam(){
 function wire(){
   document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>tab(b.dataset.t));
   $("resList").onclick=e=>{const b=e.target.closest("button[data-a]");if(!b)return;
-    if(!requireAdmin())return;
     const w=b.closest(".rw2"),i=w.dataset.i,o=w.dataset.o,a=b.dataset.a,r=S.res[i]=S.res[i]||{},
       had=r[o]&&r[o][0]!==""&&r[o][1]!=="";
     if(a==="c")delete r[o];
@@ -584,7 +641,7 @@ function wire(){
     addG(b.dataset.n)};
   $("gU").onclick=undoG;
   $("gA").onclick=()=>{const n=$("gT").value.trim();if(!n)return;addG(n);$("gT").value="";$("gAl").hidden=true;fillO(true)};
-  $("gList").onclick=e=>{const b=e.target.closest("button");if(!b)return;if(!requireAdmin())return;const A=arr(b.dataset.t||"g");
+  $("gList").onclick=e=>{const b=e.target.closest("button");if(!b)return;const A=arr(b.dataset.t||"g");
     if(b.dataset.x!==undefined)A.splice(+b.dataset.x,1);
     else if(b.dataset.m!==undefined){const g=A[+b.dataset.m];if(g&&--g.c<1)A.splice(+b.dataset.m,1)}
     else return;
@@ -606,8 +663,11 @@ function logoInit(){
   show()}
 init();render();wire();tinit();logoInit();tab(S.tab||"cal");
 </script>
+
 <script>
-if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./sw.js").catch(()=>{}))}
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+  window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(err => console.warn('Service worker non registrato:', err)); });
+}
 </script>
 </body>
 </html>

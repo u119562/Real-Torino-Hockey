@@ -3,10 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#0d1c30">
-<link rel="manifest" href="./manifest.webmanifest">
-<link rel="icon" href="./icons/icon-192.png" type="image/png">
-<link rel="apple-touch-icon" href="./icons/icon-192.png">
+<meta name="theme-color" content="#000000">
 <title>Real Torino – calendario e trasferte</title>
 <style>
 :root{--ink:#000;--ice:#f2f3f5;--card:#fff;--line:#dcdee3;--red:#c8102e;--mut:#676b73;--acc:#0a66c2}
@@ -181,7 +178,28 @@ input:focus,select:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(10,10
 @media (prefers-color-scheme:dark){.m,.panel,.ld{box-shadow:0 2px 14px rgba(0,0,0,.55)}.m:hover{box-shadow:0 12px 28px rgba(0,0,0,.7)}}
 @media(max-width:520px){.m{grid-template-columns:76px 1fr}.d b{font-size:2rem}.tabs button{font-size:.78rem;padding:8px 12px}.bar{padding:20px 14px 28px}.logo{width:60px;height:60px}}
 @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+.sh{font:800 1.1rem "Arial Narrow","Roboto Condensed",Arial,sans-serif;font-stretch:condensed;text-transform:uppercase;letter-spacing:.1em;color:var(--red);margin:30px 0 12px;display:flex;align-items:center;gap:12px}
+.sh::after{content:"";flex:1;height:2px;background:linear-gradient(90deg,var(--red),transparent)}
+.seg2{padding:10px 18px;border:1px solid var(--ink);border-radius:99px;background:var(--card);color:var(--ink);font:inherit;font-weight:700;cursor:pointer}
+.ch{width:100%;max-width:640px;height:auto;display:block;margin:0 auto}
+.gl{stroke:var(--line);stroke-width:1}.ax{font-size:10px;fill:var(--mut)}
+.ln{fill:none;stroke-width:2.5;stroke-linejoin:round;stroke-linecap:round}
+.ln.k0{stroke:var(--ink)}.ln.k1{stroke:var(--red)}.ln.k2{stroke:var(--acc)}
+.dot{cursor:pointer;stroke:var(--card);stroke-width:2}
+.dot.k0{fill:var(--ink)}.dot.k1{fill:var(--red)}.dot.k2{fill:var(--acc)}
+.lg.k0{background:var(--ink)}.lg.k1{background:var(--red)}.lg.k2{background:var(--acc)}
+.scr{max-height:340px;overflow-y:auto}
+.br[data-pl]{cursor:pointer}
+.g5{display:grid;grid-template-columns:30px 1fr auto;gap:10px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}
+.pt tr[data-pl]{cursor:pointer}
+.det{min-height:1.2em;font-weight:600;color:var(--ink)}
+@media print{.tabs,.top,.foot,#stCtl,#stMsg,.sg,.btn,.seg2{display:none!important}#p-cal,#p-tor,#p-res,#p-gol,#p-set{display:none!important}body{background:#fff!important}.panel,.ld,.st div{box-shadow:none!important}}
 </style>
+
+<meta name="description" content="Calendario, trasferte e statistiche del Real Torino Hockey Club.">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
 </head>
 <body>
 <header class="top">
@@ -288,18 +306,25 @@ input:focus,select:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(10,10
  <div id="gList"></div>
 </div>
 <div id="p-st" hidden>
- <div class="row" style="margin-bottom:12px">
+ <div class="row" id="stCtl">
   <label>Categoria<select id="sCat"><option value="all">Tutte</option><option value="U10">U10</option><option value="U12">U12</option></select></label>
   <label>Fase<select id="sFase"><option value="all">Tutte</option><option value="1">Fase 1 · andata</option><option value="2">Fase 2 · ritorno</option></select></label>
+  <label>Avversario<select id="sOpp"></select></label>
+  <label>Giocatore<select id="sPl"></select></label>
+  <label>Dal<input id="sDal" type="date"></label>
+  <label>Al<input id="sAl" type="date"></label>
  </div>
- <div id="stats"></div>
- <details class="panel"><summary>Risultati di squadra</summary><div id="stT" style="margin-top:12px"></div></details>
+ <p class="note" id="stFlt"></p>
+ <p style="margin:10px 0"><button class="btn" id="exP">Esporta giocatori (CSV)</button> <button class="btn" id="exT">Esporta squadra (CSV)</button> <button class="btn" id="prt">Stampa / PDF</button> <button class="seg2" id="sRst">Azzera filtri</button></p>
+ <p class="note" id="stMsg"></p>
+ <div id="b1"></div><div id="b2"></div><div id="b3"></div><div id="b4"></div><div id="b5"></div>
  <section class="panel" id="leg">
   <h2>Leggenda</h2>
-  <p style="margin:6px 0"><b>G</b> goal · <b>A</b> assist · <b>P</b> punti (G + A)</p>
+  <p style="margin:6px 0"><b>G</b> goal · <b>A</b> assist · <b>P</b> punti (G + A) · <b>PG</b> partite giocate · <b>P/PG</b> media punti per partita · <b>%G</b> quota dei goal della squadra (dai risultati inseriti)</p>
   <p style="margin:6px 0"><b>TW</b> sta per <i>takeaway</i>: cioè disco recuperato dal possesso avversario.</p>
   <p style="margin:6px 0"><b>BL</b> sta per <i>blocks</i>: cioè recupero disco in extremis che potenzialmente impedisce un goal. Sostanzialmente davanti alla porta.</p>
   <p style="margin:6px 0"><b>AN</b> sta per <i>unassisted</i>: cioè goal su azione personale.</p>
+  <p style="margin:6px 0">Un trattino (–) indica un dato non registrato, non uno zero.</p>
  </section>
 </div>
 <footer class="foot">Real Torino Hockey Club · Stagione 2026/27 · U10 · U12</footer>
@@ -323,7 +348,10 @@ nizza:{n:"Nizza (Francia)",q:"Patinoire Nice France",km:275,t:27}};
 const M=[
 ["2026-10-04","09:00","U10",1,"aosta",0,["Varese-Milano","Valpellice","Como","Aosta","Pinerolo"],
  [["9:00–9:18","C","Varese-Milano",1],["9:25–9:43","C","Valpellice",0],["9:50–10:08","C","Como",1],["10:15–10:33","A","Aosta",1],["10:40–10:58","B","Pinerolo",1]]],
-["2026-10-18","12:00","U10",1,"pinerolo",0,["Pinerolo","Aosta","Valpellice"]],
+["2026-10-18","12:00","U10",1,"pinerolo",0,["Aosta","Pinerolo","Valpellice"],
+ [["12:00–12:27","B","Aosta",0],["12:32–12:59","A","Pinerolo",0],["13:04–13:31","B","Valpellice",0]],
+ ["Spogliatoio Real Torino: lato SUD (insieme ad Aosta e Valpellice). Pinerolo e squadra femminile: lato nord","4 contro 4 · 2 tempi da 12 minuti, 3 minuti di pausa tra i tempi · 5 minuti di pausa tra una partita e l'altra","Cambi volanti ogni 60 secondi · In caso di penalità esce il giocatore per il cambio in corso","Ingaggio solo a inizio partita e dopo un goal","Partite senza classifica"],
+ "Campo A e Campo B"],
 ["2026-10-24","09:00","U12",1,"aosta",0,["Aosta","Varese","Torino Bulls"]],
 ["2026-10-31","15:00","U12",1,"real",1,["Como","Aosta","Torino Bulls"]],
 ["2026-11-07","18:00","U12",1,"como",0,["Como","Aosta","Pinerolo"]],
@@ -383,7 +411,7 @@ function render(){
     $("nx").innerHTML=`<section class="nx"><div class="nl">Prossima partita · ${dd===0?"oggi":dd===1?"domani":"tra "+dd+" giorni"}</div>
       <div class="nv">${esc(v.n)}</div>
       <div class="ns">${gF[nd.getDay()]} ${nd.getDate()} ${mesi[nd.getMonth()]} · ${nm[1]?"ore "+nm[1]:"orario da definire"}</div>
-      <div class="ns"><span class="tag">${nm[2]}</span><span class="tag${nm[5]?" h":""}">${nm[5]?"in casa":"trasferta"}</span>Contro: ${nm[6].map(esc).join(", ")}</div>${nm[7]?`<details class="pg"><summary>Programma e campi</summary><div class="ns">${CAMPI}</div>${nm[7].map(g=>`<div class="ns">${esc(pgL(g))}</div>`).join("")}</details>`:""}
+      <div class="ns"><span class="tag">${nm[2]}</span><span class="tag${nm[5]?" h":""}">${nm[5]?"in casa":"trasferta"}</span>Contro: ${nm[6].map(esc).join(", ")}</div>${nm[7]?`<details class="pg"><summary>Programma e campi</summary><div class="ns">${nm[9]||CAMPI}</div>${nm[7].map(g=>`<div class="ns">${esc(pgL(g))}</div>`).join("")}${(nm[8]||[]).map(t=>`<div class="ns">• ${esc(t)}</div>`).join("")}</details>`:""}
       <div class="nr"><div><span class="c">${eur(f+tl)}</span><div class="ns">${ar} km A/R · gasolio ${eur(f)}${tl?" + pedaggi "+eur(tl):""}</div></div><div class="lk2"><a class="go" href="${u}" target="_blank" rel="noopener">Percorso</a><a class="go sec" href="${gcal(nm)}" target="_blank" rel="noopener">+ Calendario</a></div></div></section>`}
   let km=0,cost=0,toll=0,html="",cur="",nextDone=false;
   for(const m of list){const [d,t,cat,ph,k,home]=m;
@@ -398,7 +426,7 @@ function render(){
       <div class="d"><b>${dt.getDate()}</b><span>${gg[dt.getDay()]}</span></div>
       <div class="i"><div class="v">${v.n}</div>
         <div class="s"><span class="tag">${cat}</span><span class="tag${home?" h":""}">${home?"in casa":"trasferta"}</span>Fase ${ph} · ${t?"ore "+t:"orario da definire"}</div>
-        <div class="s">${ar} km A/R · gasolio ${eur(f)}${tl?" + pedaggi "+eur(tl):""}</div>${m[7]?`<details class="pg"><summary>Programma e campi</summary><div class="s">${CAMPI}</div>${m[7].map(g=>`<div class="s">${esc(pgL(g))}</div>`).join("")}</details>`:""}</div>
+        <div class="s">${ar} km A/R · gasolio ${eur(f)}${tl?" + pedaggi "+eur(tl):""}</div>${m[7]?`<details class="pg"><summary>Programma e campi</summary><div class="s">${m[9]||CAMPI}</div>${m[7].map(g=>`<div class="s">${esc(pgL(g))}</div>`).join("")}${(m[8]||[]).map(t=>`<div class="s">• ${esc(t)}</div>`).join("")}</details>`:""}</div>
       <div class="a"><span class="c">${eur(c)}</span><span class="lk"><a href="${url}" target="_blank" rel="noopener">Percorso</a><a href="${gcal(m)}" target="_blank" rel="noopener">+ Calendario</a></span></div>
     </article>`;
   }
@@ -422,7 +450,7 @@ function ev(m){const [d,t,cat,ph,k,home,opp]=m,v=ven(k);let s,e;const all=!t;
   else{const [h,mi]=t.split(":").map(Number),b=new Date(+d.slice(0,4),+d.slice(5,7)-1,+d.slice(8,10),h,mi),f=new Date(b.getTime()+72e5);
     const z=x=>x.getFullYear()+pad(x.getMonth()+1)+pad(x.getDate())+"T"+pad(x.getHours())+pad(x.getMinutes())+"00";s=z(b);e=z(f)}
   const url="https://www.google.com/maps/dir/?api=1&travelmode=driving&origin="+encodeURIComponent(S.origin)+"&destination="+encodeURIComponent(v.q);
-  return {d,cat,all,s,e,t:"Real Torino "+cat+" – "+v.n,loc:v.q,det:(home?"In casa":"Trasferta")+" · Fase "+ph+" · Contro: "+opp.join(", ")+(m[7]?"\nProgramma: "+m[7].map(pgL).join("; "):"")+"\nPercorso: "+url}}
+  return {d,cat,all,s,e,t:"Real Torino "+cat+" – "+v.n,loc:v.q,det:(home?"In casa":"Trasferta")+" · Fase "+ph+" · Contro: "+opp.join(", ")+(m[7]?"\nProgramma: "+m[7].map(pgL).join("; "):"")+(m[8]?"\n"+m[8].join(" · "):"")+"\nPercorso: "+url}}
 const gcal=m=>{const x=ev(m);return "https://calendar.google.com/calendar/render?action=TEMPLATE&text="+encodeURIComponent(x.t)+"&dates="+x.s+"/"+x.e+"&ctz=Europe%2FRome&location="+encodeURIComponent(x.loc)+"&details="+encodeURIComponent(x.det)};
 function icsOf(list){const q=s=>s.replace(/\\/g,"\\\\").replace(/[,;]/g,"\\$&").replace(/\n/g,"\\n"),st=new Date().toISOString().replace(/[-:]/g,"").slice(0,15)+"Z";
   const L=["BEGIN:VCALENDAR","VERSION:2.0","PRODID:-//Real Torino//Calendario//IT","CALSCALE:GREGORIAN"];
@@ -584,50 +612,105 @@ function chartG(gd){if(!gd.length)return"";
       `<text x="${X+8}" y="${H-a-3}" text-anchor="middle">${x.gf}</text><text x="${X+26}" y="${H-b-3}" text-anchor="middle">${x.gs}</text>`+
       `<text x="${X+17}" y="${H+14}" text-anchor="middle">${dt.getDate()}/${dt.getMonth()+1}</text>`}).join("");
   return `<section class="panel"><h2>Gol per giornata</h2><div class="sc"><svg role="img" aria-label="Gol fatti e subiti per giornata" width="${gd.length*W+10}" height="${H+22}">${bars}</svg></div><p class="note"><i class="lg bf"></i>fatti <i class="lg bs"></i>subiti</p></section>`}
-let sSort="p";
+let sSort="p",bMet="p",eMet="tw";
 const rc=n=>Object.keys(ROSTER).find(c=>ROSTER[c].includes(n))||"–";
-const SK=[["g","G"],["a","A"],["p","P"],["tw","TW"],["bl","BL"],["an","AN"]],ST={g:"Goal",a:"Assist",p:"Punti",tw:"TW · Takeaway",bl:"BL · Blocks",an:"AN · Unassisted"};
-function plRows(cat,fase){const P={};
-  const add=(A,k)=>{for(const g of A){if(cat!=="all"&&g.cat!==cat)continue;
-    if(fase!=="all"){const m=M.find(x=>mid(x)===g.id);if(!m||String(m[3])!==fase)continue}
-    const r=P[g.n]=P[g.n]||{n:g.n,g:0,a:0,tw:0,bl:0,an:0};r[k]+=g.c}};
-  add(S.gol,"g");add(S.ast,"a");add(S.tw,"tw");add(S.bl,"bl");add(S.an,"an");
-  return Object.values(P).map(r=>Object.assign(r,{p:r.g+r.a}))}
+const SK=[["g","G"],["a","A"],["p","P"],["pg","PG"],["pm","P/PG"],["tw","TW"],["bl","BL"],["an","AN"],["ct","%G"]];
+const ST={g:"Goal",a:"Assist",p:"Punti",tw:"TW · Takeaway",bl:"BL · Blocks",an:"AN · Unassisted"};
+const FL=()=>({c:$("sCat").value,f:$("sFase").value,o:$("sOpp").value,a:$("sDal").value,z:$("sAl").value,p:$("sPl").value});
+const okM=(f,m)=>(f.c==="all"||m[2]===f.c)&&(f.f==="all"||String(m[3])===f.f)&&(!f.a||m[0]>=f.a)&&(!f.z||m[0]<=f.z);
+const okEv=(f,g)=>{const m=M.find(x=>mid(x)===g.id);return !!m&&okM(f,m)&&(f.o==="all"||g.o===f.o)};
+const EV=()=>({g:S.gol,a:S.ast,tw:S.tw,bl:S.bl,an:S.an});
+const pc=(a,b)=>a>b?"V":a<b?"P":"N",sdt=d=>+d.slice(8,10)+"/"+ +d.slice(5,7);
+const avg=(v,n)=>n?(v/n).toFixed(1).replace(".",","):"–",pct=(v,n)=>n?Math.round(v/n*100)+"%":"–";
+function games(f){const L=[];for(const m of srt()){if(!okM(f,m))continue;const r=S.res[mid(m)]||{};
+  for(const o of m[6]){if(f.o!=="all"&&o!==f.o)continue;const v=r[o];if(!v||v[0]===""||v[1]==="")continue;L.push({m,o,a:v[0],b:v[1]})}}return L}
+const agg=G=>{const t={g:0,w:0,n:0,p:0,f:0,s:0,sc:0,cs:0};for(const x of G){t.g++;t.f+=x.a;t.s+=x.b;if(x.a>x.b)t.w++;else if(x.a<x.b)t.p++;else t.n++;if(x.a>0)t.sc++;if(x.b===0)t.cs++}return t};
+function plRows(f){const P={},E=EV();
+  for(const k in E)for(const g of E[k]){if(!okEv(f,g))continue;const r=P[g.n]=P[g.n]||{n:g.n,g:0,a:0,tw:0,bl:0,an:0};r[k]+=g.c}
+  return Object.values(P).map(r=>Object.assign(r,{p:r.g+r.a,pg:null,pm:null}))}
+function lineSvg(xs,ser,lab){
+  const W=360,H=200,L=28,R=12,T=12,B=26,n=xs.length;let mx=Math.max(1,...ser.flatMap(s=>s.v));const st=Math.ceil(mx/4);mx=st*Math.ceil(mx/st);
+  const X=i=>n<2?(L+W-R)/2:L+i*(W-L-R)/(n-1),Y=v=>H-B-v/mx*(H-B-T);
+  let o=`<svg viewBox="0 0 ${W} ${H}" class="ch" role="img" aria-label="${esc(lab)}">`;
+  for(let v=0;v<=mx;v+=st)o+=`<line class="gl" x1="${L}" x2="${W-R}" y1="${Y(v)}" y2="${Y(v)}"/><text class="ax" x="${L-4}" y="${Y(v)+3}" text-anchor="end">${v}</text>`;
+  const sp=Math.ceil(n/6);xs.forEach((x,i)=>{if(i%sp===0||i===n-1)o+=`<text class="ax" x="${X(i)}" y="${H-8}" text-anchor="middle">${esc(x)}</text>`});
+  for(const s of ser)o+=`<polyline class="ln ${s.c}" points="${s.v.map((v,i)=>X(i)+","+Y(v)).join(" ")}"/>`+s.v.map((v,i)=>`<circle class="dot ${s.c}" cx="${X(i)}" cy="${Y(v)}" r="6" data-t="${esc(s.t(i))}"><title>${esc(s.t(i))}</title></circle>`).join("");
+  return o+"</svg>"}
+function fillF(){
+  const keep=(id,h)=>{const el=$(id),v=el.value;el.innerHTML=h;if([...el.options].some(o=>o.value===v))el.value=v};
+  const ops=[...new Set(M.flatMap(m=>m[6]))].sort(),all=[].concat(...Object.values(ROSTER)),
+    ex=[...new Set(Object.values(EV()).flatMap(A=>A.map(g=>g.n)))].filter(n=>!all.includes(n));
+  keep("sOpp",`<option value="all">Tutti</option>`+ops.map(o=>`<option value="${esc(o)}">${esc(o)}</option>`).join(""));
+  keep("sPl",`<option value="">Nessuno</option>`+all.concat(ex).sort((a,b)=>a.localeCompare(b)).map(n=>`<option value="${esc(n)}">${esc(n)}</option>`).join(""))}
+const fDesc=f=>"Categoria: "+(f.c==="all"?"tutte":f.c)+" · Competizione: raggruppamenti"+(f.f==="all"?"":" (fase "+f.f+(f.f==="1"?" andata":" ritorno")+")")+" · Avversario: "+(f.o==="all"?"tutti":f.o)+" · Periodo: "+(f.a||f.z?(f.a?fmt(f.a):"inizio stagione")+" → "+(f.z?fmt(f.z):"oggi"):"tutta la stagione");
 function rSt(){
-  const cat=$("sCat").value,fase=$("sFase").value,R=plRows(cat,fase),key=sSort;
-  const srt2=k=>(a,b)=>b[k]-a[k]||b.p-a.p||b.g-a.g||a.n.localeCompare(b.n);
-  const card=k=>{const L=R.filter(r=>r[k]>0).sort(srt2(k)).slice(0,5);
-    return `<section class="ld"><h3>${ST[k]}</h3>`+(L.length?`<ol>${L.map((r,i)=>`<li${i?"":" class=f"}><span>${i+1}</span><div><b>${esc(r.n)}</b><small>${rc(r.n)}</small></div><em>${r[k]}</em></li>`).join("")}</ol>`:`<p class="note">Nessun dato</p>`)+`</section>`};
-  const th=(k,t)=>`<th class="n${key===k?" on":""}"><button data-s="${k}" aria-label="Ordina per ${t}">${t}${key===k?" ▼":""}</button></th>`;
-  const rows=R.slice().sort(srt2(key));
-  let h=`<div class="lds">${SK.map(([k])=>card(k)).join("")}</div>`;
-  h+=rows.length?`<section class="panel"><h2>Giocatori</h2><div class="sc"><table class="pt"><thead><tr><th>#</th><th>Giocatore</th><th>Cat.</th>${SK.map(([k,l])=>th(k,l)).join("")}</tr></thead><tbody>${rows.map((r,i)=>`<tr><td>${i+1}</td><td>${esc(r.n)}</td><td>${rc(r.n)}</td>${SK.map(([k])=>`<td class="n${key===k?" on":""}">${r[k]}</td>`).join("")}</tr>`).join("")}</tbody></table></div><p class="note">Tocca il titolo di una colonna per cambiare l'ordine. La leggenda è in fondo alla pagina.</p></section>`:`<p class="note">Nessun dato registrato per questi filtri.</p>`;
-  $("stats").innerHTML=h;$("stT").innerHTML=rTeam()}
-function rTeam(){
-  const cat=$("sCat").value,ms=srt().filter(m=>cat==="all"||m[2]===cat);
-  const T=()=>({g:0,w:0,n:0,p:0,f:0,s:0}),tot=T(),op={},ph={1:T(),2:T()},ha={h:T(),a:T()};
-  let best=null,worst=null;
-  const add=(o,a,b)=>{o.g++;o.f+=a;o.s+=b;if(a>b)o.w++;else if(a<b)o.p++;else o.n++};
-  const gd=[];
-  for(const m of ms){const r=S.res[mid(m)]||{};let gf=0,gs=0,gc=0;
-    for(const o of m[6]){const v=r[o];if(!v||v[0]===""||v[1]==="")continue;
-      const a=v[0],b=v[1];add(tot,a,b);add(op[o]=op[o]||T(),a,b);add(ph[m[3]],a,b);add(ha[m[5]?"h":"a"],a,b);
-      const x={m,o,a,b,d:a-b};if(!best||x.d>best.d)best=x;if(!worst||x.d<worst.d)worst=x;gf+=a;gs+=b;gc++}if(gc)gd.push({d:m[0],gf,gs})}
-  const sc={};let ag=0;
-  for(const g of S.gol){if(cat!=="all"&&g.cat!==cat)continue;sc[g.n]=(sc[g.n]||0)+g.c;ag+=g.c}
-  if(!tot.g)return "<p class=note>Nessun risultato inserito.</p>";
-  const av=x=>tot.g?(x/tot.g).toFixed(1).replace(".",","):"-",df=tot.f-tot.s;
+  fillF();
+  const f=FL(),G=games(f),t=agg(G),R=plRows(f),E=EV(),df=t.f-t.s,tf=t.f;
+  $("stFlt").textContent="Filtri attivi — "+fDesc(f)+(f.p?" · Giocatore: "+f.p:"");
   const c=(b,l)=>`<div><b>${b}</b>${l}</div>`;
-  const tr=(n,o)=>`<tr><td>${esc(n)}</td><td>${o.g}</td><td>${o.w}-${o.n}-${o.p}</td><td>${o.f}-${o.s}</td></tr>`;
-  const tb=(h,rows,f)=>`<section class="panel"><h2 style="margin-top:0">${h}</h2><table><thead><tr><th>${f||""}</th><th>G</th><th>V-N-P</th><th>GF-GS</th></tr></thead><tbody>${rows}</tbody></table></section>`;
-  const rs=x=>x?`${fmt(x.m[0])} contro ${esc(x.o)}: ${x.a}-${x.b}`:"-";
-  let h=`<div class="st">${c(tot.g,"partite")}${c(tot.w+"-"+tot.n+"-"+tot.p,"V-N-P")}${c(tot.w*3+tot.n,"punti (3-1-0)")}${c(tot.f+"-"+tot.s,"gol fatti-subiti")}${c((df>0?"+":"")+df,"differenza reti")}${c(av(tot.f),"gol fatti/partita")}${c(av(tot.s),"gol subiti/partita")}${c(tot.g?Math.round(tot.w/tot.g*100)+"%":"-","vittorie")}</div>`;
-  h+=`<p class="note">Miglior risultato: ${rs(best)}<br>Peggior risultato: ${rs(worst)}</p>`;
-  h+=chartG(gd);
-  h+=tb("Andata e ritorno",tr("Fase 1 · andata",ph[1])+tr("Fase 2 · ritorno",ph[2]));
-  h+=tb("In casa / in trasferta",tr("In casa",ha.h)+tr("In trasferta",ha.a));
-  h+=tb("Per avversario",Object.entries(op).sort((a,b)=>b[1].g-a[1].g||a[0].localeCompare(b[0])).map(([n,o])=>tr(n,o)).join(""),"Avversario");
-  return h}
+  const tr=(n,o)=>o.g?`<tr><td>${esc(n)}</td><td>${o.g}</td><td>${o.w}-${o.n}-${o.p}</td><td>${o.f}-${o.s}</td></tr>`:`<tr><td>${esc(n)}</td><td>–</td><td>–</td><td>–</td></tr>`;
+  const tb=(h,rows,fl)=>`<section class="panel"><h2>${h}</h2><table><thead><tr><th>${fl||""}</th><th>G</th><th>V-N-P</th><th>GF-GS</th></tr></thead><tbody>${rows}</tbody></table></section>`;
+  /* 1 · riepilogo squadra */
+  $("b1").innerHTML=`<h2 class="sh">1 · Riepilogo squadra</h2>`+(t.g?`<div class="st">${c(t.g,"partite")}${c(t.w+"-"+t.n+"-"+t.p,"V-N-P")}${c(t.w*3+t.n,"punti (3-1-0)")}${c(t.f+"-"+t.s,"gol fatti-subiti")}${c((df>0?"+":"")+df,"differenza reti")}${c(avg(t.f,t.g),"gol fatti/partita")}${c(avg(t.s,t.g),"gol subiti/partita")}${c(pct(t.w,t.g),"vittorie")}${c(pct(t.sc,t.g),"con almeno un goal")}${c(pct(t.cs,t.g),"senza goal subiti")}</div>`:`<p class="note">Nessun risultato inserito per questi filtri.</p>`);
+  /* 2 · statistiche individuali */
+  const val=(r,k)=>k==="ct"?(tf?r.g/tf:null):r[k];
+  const srt2=k=>(a,b)=>((val(b,k)??-1)-(val(a,k)??-1))||b.p-a.p||b.g-a.g||a.n.localeCompare(b.n);
+  const card=k=>{const L=R.filter(r=>r[k]>0).sort(srt2(k)).slice(0,5);
+    return `<section class="ld"><h3>${ST[k]}</h3>`+(L.length?`<ol>${L.map((r,i)=>`<li data-pl="${esc(r.n)}"${i?"":" class=f"}><span>${i+1}</span><div><b>${esc(r.n)}</b><small>${rc(r.n)}</small></div><em>${r[k]}</em></li>`).join("")}</ol>`:`<p class="note">Nessun dato</p>`)+`</section>`};
+  const th=(k,l)=>`<th class="n${sSort===k?" on":""}"><button data-s="${k}" aria-label="Ordina per ${l}">${l}${sSort===k?" ▼":""}</button></th>`;
+  const cell=(r,k)=>k==="ct"?(tf?Math.round(r.g/tf*100)+"%":"–"):(k==="tw"||k==="bl"||k==="an")?(r[k]||"–"):(r[k]??"–");
+  const rows=R.slice().sort(srt2(sSort));
+  let h=`<h2 class="sh">2 · Statistiche individuali</h2><div class="lds">${["g","a","p","tw","bl","an"].map(card).join("")}</div>`;
+  h+=rows.length?`<section class="panel"><h2>Giocatori</h2><div class="sc"><table class="pt"><thead><tr><th>#</th><th>Giocatore</th><th>Cat.</th>${SK.map(([k,l])=>th(k,l)).join("")}</tr></thead><tbody>${rows.map((r,i)=>`<tr data-pl="${esc(r.n)}"${f.p===r.n?" class=on":""}><td>${i+1}</td><td>${esc(r.n)}</td><td>${rc(r.n)}</td>${SK.map(([k])=>`<td class="n${sSort===k?" on":""}">${cell(r,k)}</td>`).join("")}</tr>`).join("")}</tbody></table></div><p class="note">Tocca un giocatore per aprire la sua scheda, o il titolo di una colonna per ordinare. PG e P/PG restano “–” finché non si registrano le presenze; %G = goal del giocatore sui goal segnati dalla squadra nei risultati inseriti.</p></section>`:`<p class="note">Nessun goal, assist o altra statistica registrati per questi filtri.</p>`;
+  /* scheda giocatore */
+  const sel=R.find(r=>r.n===f.p);
+  if(!f.p)h+=`<section class="panel" id="pc"><h2>Scheda giocatore</h2><p class="note">Seleziona un giocatore dal filtro “Giocatore”, dalla tabella o dalle classifiche.</p></section>`;
+  else{const PGm={};for(const k in E)for(const g of E[k]){if(g.n!==f.p||!okEv(f,g))continue;const key=g.id+"|"+(g.o||"");const e=PGm[key]=PGm[key]||{d:g.d,cat:g.cat,o:g.o,g:0,a:0,tw:0,bl:0,an:0};e[k]+=g.c}
+    const L=Object.values(PGm).sort((a,b)=>a.d<b.d?-1:1),v=k=>sel?((k==="tw"||k==="bl"||k==="an")?(sel[k]||"–"):sel[k]):"–";
+    h+=`<section class="panel" id="pc"><h2>Scheda · ${esc(f.p)} <small style="color:var(--mut)">${rc(f.p)}</small></h2><div class="st">${c(v("g"),"goal")}${c(v("a"),"assist")}${c(v("p"),"punti")}${c("–","partite giocate")}${c("–","media punti/partita")}${c(v("tw"),"TW")}${c(v("bl"),"BL")}${c(v("an"),"AN")}${c(sel&&tf?Math.round(sel.g/tf*100)+"%":"–","% gol squadra")}</div>`+
+      (L.length?`<div class="sc"><table><thead><tr><th>Partita</th><th class="n">G</th><th class="n">A</th><th class="n">TW</th><th class="n">BL</th><th class="n">AN</th></tr></thead><tbody>${L.map(x=>`<tr><td>${fmt(x.d)} · ${x.cat}${x.o?" · vs "+esc(x.o):""}</td><td class="n">${x.g||"–"}</td><td class="n">${x.a||"–"}</td><td class="n">${x.tw||"–"}</td><td class="n">${x.bl||"–"}</td><td class="n">${x.an||"–"}</td></tr>`).join("")}</tbody></table></div>`:`<p class="note">Nessun evento registrato per questo giocatore con i filtri attivi.</p>`)+`</section>`}
+  $("b2").innerHTML=h;
+  /* 3 · grafici individuali e classifica */
+  const mb=(a,k,l)=>`<button data-${a}="${k}" aria-pressed="${(a==="bm"?bMet:eMet)===k}">${l}</button>`;
+  const bars=(k)=>{const L=R.filter(r=>r[k]>0).sort(srt2(k)),mx=Math.max(1,...L.map(r=>r[k]));
+    return L.length?`<div class="scr">`+L.map(r=>`<div class="br" data-pl="${esc(r.n)}" tabindex="0"><span>${esc(r.n)}</span><div class="bt"><i style="width:${r[k]/mx*100}%"></i></div><b>${r[k]}</b></div>`).join("")+`</div>`:`<p class="note">Nessun dato registrato per questi filtri.</p>`};
+  let ca=`<p class="note">Seleziona un giocatore (filtro “Giocatore”, tabella o classifica) per vedere il suo andamento.</p>`;
+  if(f.p){const ids=[...new Set(Object.values(E).flatMap(A=>A.filter(g=>okEv(f,g)).map(g=>g.id)).concat(G.map(x=>mid(x.m))))].sort();
+    if(!ids.length)ca=`<p class="note">Nessuna partita con dati per questi filtri.</p>`;
+    else{let cg=0,cA=0;const gv=[],av=[];
+      for(const id of ids){const q=k=>E[k].filter(g=>g.id===id&&g.n===f.p&&okEv(f,g)).reduce((a,g)=>a+g.c,0);cg+=q("g");cA+=q("a");gv.push(cg);av.push(cA)}
+      const tt=i=>f.p+" · "+fmt(ids[i].slice(0,10))+" "+ids[i].slice(10)+": goal "+gv[i]+" · assist "+av[i]+" (cumulati)";
+      ca=lineSvg(ids.map(i=>sdt(i.slice(0,10))),[{c:"k1",v:gv,t:tt},{c:"k2",v:av,t:tt}],"Andamento di "+f.p)+`<p class="note"><i class="lg k1"></i>goal <i class="lg k2"></i>assist (cumulati, per giornata)</p>`}}
+  $("b3").innerHTML=`<h2 class="sh">3 · Grafici individuali e classifica</h2>
+   <section class="panel"><h2>Andamento individuale${f.p?" · "+esc(f.p):""}</h2>${ca}<p class="note det">Tocca un punto per i dettagli.</p></section>
+   <section class="panel"><h2>Classifica giocatori</h2><div class="sg">${mb("bm","g","Goal")}${mb("bm","a","Assist")}${mb("bm","p","Punti")}</div>${bars(bMet)}</section>
+   <section class="panel"><h2>Distribuzione TW · BL · AN</h2><div class="sg">${mb("em","tw","TW")}${mb("em","bl","BL")}${mb("em","an","AN")}</div>${bars(eMet)}</section>`;
+  /* 4 · andamento squadra */
+  const gm={};G.forEach(x=>{const e=gm[mid(x.m)]=gm[mid(x.m)]||{d:x.m[0],gf:0,gs:0};e.gf+=x.a;e.gs+=x.b});
+  const L5=G.slice(-5),a5=agg(L5),tg=i=>fmt(G[i].m[0])+" · "+G[i].m[2]+" vs "+G[i].o+": "+G[i].a+"–"+G[i].b+" ("+pc(G[i].a,G[i].b)+")";
+  $("b4").innerHTML=`<h2 class="sh">4 · Andamento della squadra</h2>
+   <section class="panel"><h2>Goal fatti e subiti partita per partita</h2>${G.length?lineSvg(G.map(x=>sdt(x.m[0])),[{c:"k0",v:G.map(x=>x.a),t:tg},{c:"k1",v:G.map(x=>x.b),t:tg}],"Goal fatti e subiti per partita")+`<p class="note"><i class="lg k0"></i>fatti <i class="lg k1"></i>subiti</p><p class="note det">Tocca un punto per vedere il risultato.</p>`:`<p class="note">Nessun risultato inserito per questi filtri.</p>`}</section>
+   <section class="panel"><h2>Ultime cinque partite</h2>${L5.length?L5.map(x=>`<div class="g5"><span class="vnp ${pc(x.a,x.b)}">${pc(x.a,x.b)}</span><span>${fmt(x.m[0])} · ${x.m[2]} · ${esc(x.o)}</span><b>${x.a}–${x.b}</b></div>`).join("")+`<p class="note">Media nel periodo: ${avg(a5.f,a5.g)} goal fatti · ${avg(a5.s,a5.g)} subiti a partita</p>`:`<p class="note">Nessun risultato inserito per questi filtri.</p>`}</section>
+   <section class="panel"><h2>Goal segnati e subiti per periodo</h2><p class="note">Il grafico sarà disponibile quando verrà registrato il periodo di gioco (1°, 2°, 3° periodo) per i goal: oggi l'app non salva questo dato e non lo stima.</p></section>
+   ${Object.keys(gm).length?`<section class="panel"><h2>Goal per giornata</h2>${chartG(Object.values(gm))}</section>`:""}`;
+  /* 5 · per partita e competizione */
+  const by=(fn)=>G.filter(fn),ops={};G.forEach(x=>{(ops[x.o]=ops[x.o]||[]).push(x)});
+  const bw=G.reduce((b,x)=>!b||x.a-x.b>b.a-b.b?x:b,null),ww=G.reduce((b,x)=>!b||x.a-x.b<b.a-b.b?x:b,null),rs=x=>x?`${fmt(x.m[0])} contro ${esc(x.o)}: ${x.a}–${x.b}`:"–";
+  $("b5").innerHTML=`<h2 class="sh">5 · Per partita e per competizione</h2>`+(G.length?`<p class="note" style="margin-top:0">Miglior risultato: ${rs(bw)}<br>Peggior risultato: ${rs(ww)}</p>`:"")+
+   tb("Andata e ritorno",tr("Fase 1 · andata",agg(by(x=>x.m[3]==1)))+tr("Fase 2 · ritorno",agg(by(x=>x.m[3]==2))))+
+   tb("In casa / in trasferta",tr("In casa",agg(by(x=>x.m[5])))+tr("In trasferta",agg(by(x=>!x.m[5]))))+
+   tb("Per avversario",Object.entries(ops).sort((a,b)=>b[1].length-a[1].length||a[0].localeCompare(b[0])).map(([n,A])=>tr(n,agg(A))).join("")||tr("–",agg([])),"Avversario")+
+   `<section class="panel"><h2>Tutte le partite</h2>${G.length?`<div class="sc"><table><thead><tr><th>Data</th><th>Avversario</th><th class="n">Risultato</th><th>Esito</th></tr></thead><tbody>${G.map(x=>`<tr><td>${fmt(x.m[0])} · ${x.m[2]}</td><td>${esc(x.o)}</td><td class="n">${x.a}–${x.b}</td><td><span class="vnp ${pc(x.a,x.b)}">${pc(x.a,x.b)}</span></td></tr>`).join("")}</tbody></table></div>`:`<p class="note">Nessun risultato inserito per questi filtri.</p>`}<p class="note">Competizione: i risultati dei tornei non sono ancora registrati nell'app, per questo qui compaiono solo i raggruppamenti del campionato.</p></section>`}
+const cs=a=>a.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(",");
+async function csvOut(name,head,rows){const f=FL(),fx=[f.c==="all"?"Tutte":f.c,f.f==="all"?"Tutte":f.f,f.o==="all"?"Tutti":f.o,f.a,f.z,"Raggruppamenti"],
+  txt="\ufeff"+[cs(head.concat(["Filtro categoria","Filtro fase","Filtro avversario","Dal","Al","Competizione"]))].concat(rows.map(r=>cs(r.concat(fx)))).join("\r\n"),
+  ok=await saveFile(name+"-"+new Date().toISOString().slice(0,10)+".csv",txt,"text/csv");
+  $("stMsg").textContent=ok?"File CSV esportato con i filtri attivi.":ok===null?"":"Salvataggio non riuscito: il download non è disponibile in questo ambiente."}
+function exP(){const f=FL(),tf=agg(games(f)).f;
+  csvOut("statistiche-giocatori",["Giocatore","Categoria giocatore","Goal","Assist","Punti","Partite giocate","Media punti/partita","TW","BL","AN","% gol squadra"],
+    plRows(f).sort((a,b)=>b.p-a.p||b.g-a.g||a.n.localeCompare(b.n)).map(r=>[r.n,rc(r.n),r.g,r.a,r.p,"","",r.tw||"",r.bl||"",r.an||"",tf?Math.round(r.g/tf*100)+"%":""]))}
+function exT(){csvOut("statistiche-squadra",["Data","Categoria","Fase","Sede","Avversario","Gol fatti","Gol subiti","Esito"],
+  games(FL()).map(x=>[x.m[0],x.m[2],x.m[3],x.m[5]?"In casa":"Trasferta",x.o,x.a,x.b,pc(x.a,x.b)]))}
 function wire(){
   document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>tab(b.dataset.t));
   $("resList").onclick=e=>{const b=e.target.closest("button[data-a]");if(!b)return;
@@ -649,7 +732,16 @@ function wire(){
   $("gMode").onclick=e=>{const b=e.target.closest("button[data-md]");if(!b)return;gMode=b.dataset.md;
     document.querySelectorAll("#gMode button").forEach(x=>x.setAttribute("aria-pressed",x===b));
     $("gA").textContent="Aggiungi "+KL[gMode]};
-  $("cx").onclick=exportCal;$("dx").onclick=exportData;$("impf").onchange=e=>{const f=e.target.files[0];if(f)importData(f);e.target.value=""};$("sCat").onchange=rSt;$("sFase").onchange=rSt;$("stats").onclick=e=>{const b=e.target.closest("button[data-s]");if(!b)return;sSort=b.dataset.s;rSt()};$("gM").onchange=()=>fillO(false);$("gO").onchange=updG}
+  $("cx").onclick=exportCal;$("dx").onclick=exportData;$("impf").onchange=e=>{const f=e.target.files[0];if(f)importData(f);e.target.value=""};["sCat","sFase","sOpp","sPl","sDal","sAl"].forEach(i=>$(i).onchange=rSt);
+  $("sRst").onclick=()=>{["sCat","sFase","sOpp"].forEach(i=>$(i).value="all");$("sPl").value="";$("sDal").value="";$("sAl").value="";rSt()};
+  $("exP").onclick=exP;$("exT").onclick=exT;
+  $("prt").onclick=()=>{try{window.print()}catch(e){$("stMsg").textContent="La stampa non è disponibile in questo ambiente."}};
+  $("p-st").onclick=e=>{const t=e.target;let b;
+    if(b=t.closest("[data-s]")){sSort=b.dataset.s;rSt()}
+    else if(b=t.closest("[data-bm]")){bMet=b.dataset.bm;rSt()}
+    else if(b=t.closest("[data-em]")){eMet=b.dataset.em;rSt()}
+    else if(b=t.closest("[data-pl]")){$("sPl").value=b.dataset.pl;rSt();const pcEl=$("pc");if(pcEl)pcEl.scrollIntoView({behavior:"smooth",block:"start"})}
+    else if(b=t.closest("[data-t]")){const d=b.closest("section").querySelector(".det");if(d)d.textContent=b.dataset.t}};$("gM").onchange=()=>fillO(false);$("gO").onchange=updG}
 function logoInit(){
   const show=()=>{const u=S.logo;$("lg").hidden=!u;$("lgp").hidden=!!u;if(u)$("lg").src=u};
   $("lgf").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();
@@ -665,8 +757,9 @@ init();render();wire();tinit();logoInit();tab(S.tab||"cal");
 </script>
 
 <script>
-if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
-  window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(err => console.warn('Service worker non registrato:', err)); });
+// Registrazione PWA: il service worker aggiorna la cache senza modificare i dati locali.
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(err => console.warn('PWA offline non disponibile:', err)); });
 }
 </script>
 </body>

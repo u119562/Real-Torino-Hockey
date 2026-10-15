@@ -1,12 +1,20 @@
-REAL TORINO HOCKEY — PWA
+REAL TORINO HOCKEY CLUB — PWA
 
-Pubblicazione su GitHub Pages:
+CONTENUTO
+- index.html: pagina HTML originale aggiornata con supporto PWA
+- manifest.webmanifest: nome, icone e impostazioni installazione
+- sw.js: service worker e cache offline di base
+- icons/: icone dell'app
+
+PUBBLICAZIONE SU GITHUB PAGES
 1. Estrai tutti i file dello ZIP.
-2. Carica index.html, manifest.webmanifest, sw.js e la cartella icons nella ROOT del repository (branch main).
-3. Conferma con Commit changes.
-4. In Settings > Pages seleziona main e /(root).
-5. Apri il sito tramite HTTPS e installalo dal menu del browser.
+2. Carica index.html, manifest.webmanifest, sw.js e la cartella icons nella cartella principale (root) del repository.
+3. Mantieni GitHub Pages su Deploy from a branch, branch main, cartella /(root).
+4. Attendi la pubblicazione e apri il sito tramite HTTPS.
+5. Su Chrome/Edge usa l'icona Installa nella barra degli indirizzi o il menu > Installa app. Su iPhone/iPad apri in Safari e scegli Condividi > Aggiungi alla schermata Home.
 
-Aggiornamenti: questa versione usa una cache versionata (real-torino-pwa-v3) e prova a caricare la pagina aggiornata dalla rete. Se il sito mostra ancora una versione vecchia, fai Ctrl+Shift+R oppure rimuovi la vecchia PWA e reinstallala.
+IMPORTANTE SUI DATI
+Questa versione conserva la logica e il codice della pagina HTML originale. I dati salvati con localStorage restano nel singolo browser/dispositivo e non vengono sincronizzati automaticamente tra utenti o dispositivi. Prima di sostituire la versione online, esporta o fai una copia di sicurezza dei dati se la pagina offre tale funzione.
 
-NOTA DATI: l'app conserva il sistema di salvataggio originale in localStorage. I dati sono locali al browser/dispositivo e non vengono sincronizzati automaticamente tra utenti o dispositivi.
+NOTA
+L'installazione PWA richiede la pubblicazione tramite HTTPS (ad esempio GitHub Pages); l'apertura diretta del file HTML dal computer non è sufficiente per installare la PWA.

@@ -194,12 +194,17 @@ input:focus,select:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(10,10
 .pt tr[data-pl]{cursor:pointer}
 .det{min-height:1.2em;font-weight:600;color:var(--ink)}
 @media print{.tabs,.top,.foot,#stCtl,#stMsg,.sg,.btn,.seg2{display:none!important}#p-cal,#p-tor,#p-res,#p-gol,#p-set{display:none!important}body{background:#fff!important}.panel,.ld,.st div{box-shadow:none!important}}
+.bar{cursor:pointer}.bar.k0{fill:var(--ink)}.bar.k1{fill:var(--red)}
+#list h2.pst,#tlist h2.pst{color:var(--mut);margin-top:46px}
+#list h2.pst::after,#tlist h2.pst::after{background:linear-gradient(90deg,var(--mut),transparent)}
 </style>
 
-<meta name="description" content="Calendario, trasferte e statistiche del Real Torino Hockey Club.">
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
-<link rel="apple-touch-icon" href="icons/icon-192.png">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 </head>
 <body>
 <header class="top">
@@ -272,6 +277,7 @@ input:focus,select:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(10,10
   <label>Al<input id="td2" type="date"></label>
   <label>Orario (facoltativo)<input id="tt" type="time"></label>
   <label>Viaggi A/R (facoltativo)<input id="tvg" type="number" min="1" placeholder="uno per giorno"></label>
+  <label>Categoria (facoltativa)<select id="tc"><option value="">–</option><option>U8</option><option>U9</option><option>U10</option><option>U11</option><option>U12</option></select></label>
   <label>Sede<select id="tk"></select></label>
  </div>
  <div class="row" id="tx" hidden style="margin-top:12px">
@@ -303,19 +309,36 @@ input:focus,select:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(10,10
    <button class="btn" id="gA">Aggiungi goal</button>
   </div>
  </section>
- <div id="gList"></div>
+ <section class="panel" id="evP">
+ <h2>Goal dettagliato (facoltativo)</h2>
+ <p class="note" style="margin-top:0">Usa la giornata e la partita scelte sopra. Sono obbligatori solo il tipo e, per i goal di Real Torino, il marcatore: assist, periodo, minuto e tipologia si possono lasciare vuoti. “Goal subito” serve per il grafico dei periodi.</p>
+ <div class="row">
+  <label>Tipo<select id="eK"><option value="g">Goal di Real Torino</option><option value="s">Goal subito</option></select></label>
+  <label id="eNl">Marcatore<select id="eN"></select></label>
+  <label id="eA1l">Assist primario<select id="eA1"></select></label>
+  <label id="eA2l">Assist secondario<select id="eA2"></select></label>
+  <label>Periodo<select id="eP"><option value="">–</option><option value="1">1°</option><option value="2">2°</option><option value="3">3°</option></select></label>
+  <label>Minuto<input id="eM" type="number" min="0" max="99"></label>
+  <label>Tipologia<select id="eT"><option value="">–</option><option value="pn">Parità numerica</option><option value="su">Superiorità numerica</option><option value="in">Inferiorità numerica</option><option value="ri">Rigore</option></select></label>
+ </div>
+ <p><button class="btn" id="eS">Salva goal</button> <button class="seg2" id="eC" hidden>Annulla modifica</button></p>
+ <p class="note" id="eMsg"></p>
+</section>
+<div id="evList"></div>
+<div id="gList"></div>
 </div>
 <div id="p-st" hidden>
  <div class="row" id="stCtl">
-  <label>Categoria<select id="sCat"><option value="all">Tutte</option><option value="U10">U10</option><option value="U12">U12</option></select></label>
+  <label>Categoria<select id="sCat"><option value="all">Tutte</option><option value="U10">U10</option><option value="U11">U11</option><option value="U12">U12</option></select></label>
   <label>Fase<select id="sFase"><option value="all">Tutte</option><option value="1">Fase 1 · andata</option><option value="2">Fase 2 · ritorno</option></select></label>
+  <label>Competizione<select id="sKind"><option value="all">Tutte</option><option value="r">Raggruppamenti</option><option value="t">Tornei</option></select></label>
   <label>Avversario<select id="sOpp"></select></label>
   <label>Giocatore<select id="sPl"></select></label>
   <label>Dal<input id="sDal" type="date"></label>
   <label>Al<input id="sAl" type="date"></label>
  </div>
  <p class="note" id="stFlt"></p>
- <p style="margin:10px 0"><button class="btn" id="exP">Esporta giocatori (CSV)</button> <button class="btn" id="exT">Esporta squadra (CSV)</button> <button class="btn" id="prt">Stampa / PDF</button> <button class="seg2" id="sRst">Azzera filtri</button></p>
+ <p style="margin:10px 0"><button class="btn" id="exP">Esporta giocatori (CSV)</button> <button class="btn" id="exT">Esporta squadra (CSV)</button> <button class="btn" id="prt">Report PDF</button> <button class="seg2" id="sRst">Azzera filtri</button></p>
  <p class="note" id="stMsg"></p>
  <div id="b1"></div><div id="b2"></div><div id="b3"></div><div id="b4"></div><div id="b5"></div>
  <section class="panel" id="leg">
@@ -372,7 +395,7 @@ const M=[
 ["2027-03-20","","U12",2,"varese",0,["Varese","Como","Aosta"]]];
 const $=id=>document.getElementById(id);
 const K="realtorino.v3";
-let S={veh:"kuga",cons:{kuga:18,stelvio:14.5},price:2.27,origin:"Vinovo (TO)",venues:{},f:"all",res:{},gol:[],ast:[],tw:[],bl:[],an:[],tor:[],tab:"cal"};
+let S={veh:"kuga",cons:{kuga:18,stelvio:14.5},price:2.27,origin:"Vinovo (TO)",venues:{},f:"all",res:{},gol:[],ast:[],tw:[],bl:[],an:[],tor:[],ev:[],tr:[],top:{},tbl:{g:1,e:1},tab:"cal"};
 try{const r=JSON.parse(localStorage.getItem(K));if(r)S=Object.assign(S,r)}catch(e){}
 const save=()=>{try{localStorage.setItem(K,JSON.stringify(S))}catch(e){}};
 if(S.cv!==2){S.cons={kuga:18,stelvio:14.5};S.cv=2;save()}
@@ -414,7 +437,9 @@ function render(){
       <div class="ns"><span class="tag">${nm[2]}</span><span class="tag${nm[5]?" h":""}">${nm[5]?"in casa":"trasferta"}</span>Contro: ${nm[6].map(esc).join(", ")}</div>${nm[7]?`<details class="pg"><summary>Programma e campi</summary><div class="ns">${nm[9]||CAMPI}</div>${nm[7].map(g=>`<div class="ns">${esc(pgL(g))}</div>`).join("")}${(nm[8]||[]).map(t=>`<div class="ns">• ${esc(t)}</div>`).join("")}</details>`:""}
       <div class="nr"><div><span class="c">${eur(f+tl)}</span><div class="ns">${ar} km A/R · gasolio ${eur(f)}${tl?" + pedaggi "+eur(tl):""}</div></div><div class="lk2"><a class="go" href="${u}" target="_blank" rel="noopener">Percorso</a><a class="go sec" href="${gcal(nm)}" target="_blank" rel="noopener">+ Calendario</a></div></div></section>`}
   let km=0,cost=0,toll=0,html="",cur="",nextDone=false;
-  for(const m of list){const [d,t,cat,ph,k,home]=m;
+  const ord=list.filter(m=>m[0]>=today).concat(list.filter(m=>m[0]<today).reverse());let pastH=false;
+  for(const m of ord){const [d,t,cat,ph,k,home]=m;
+    if(d<today&&!pastH){pastH=true;cur="";html+=`<h2 class="pst">Già giocate</h2>`}
     const v=ven(k),dt=new Date(d+"T12:00:00"),ar=v.km*2,f=cons>0?ar/cons*S.price:0,tl=(v.t||0)*2,c=f+tl;
     km+=ar;cost+=c;toll+=tl;
     const ym=dt.getFullYear()+"-"+dt.getMonth();
@@ -437,7 +462,15 @@ function render(){
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c]));
 const fmt=d=>{const x=new Date(d+"T12:00:00");return gg[x.getDay()]+" "+x.getDate()+" "+mesi[x.getMonth()].slice(0,3)+" "+x.getFullYear()};
 const mid=m=>m[0]+m[2];
-const srt=()=>M.slice().sort((a,b)=>a[0]<b[0]?-1:1);
+let resFocus="";
+const vnm=m=>{if(m[10]){const x=T0.concat(S.tor).find(t=>t.id===m[10].tor);return x?tv(x).n:""}return ven(m[4]).n};
+const mc=m=>m[10]?(m[10].cat||"U10"):m[2];
+const TM=()=>T0.concat(S.tor).map(x=>[x.d1,x.t||"",x.n,0,x.k||"",0,S.top[x.id]||[],null,null,null,{tor:x.id,cat:x.c||""}]);
+const AM=()=>M.concat(TM());
+const srt=()=>AM().sort((a,b)=>a[0]<b[0]?-1:1);
+function migTr(){let ch=0;for(const r of S.tr){if(r.mig)continue;const x=T0.concat(S.tor).find(t=>t.id===r.t);if(!x)continue;
+  const id=x.d1+x.n,L=S.top[x.id]=S.top[x.id]||[],R=S.res[id]=S.res[id]||{};let o=r.o;if(R[o])o+=" (2)";
+  if(!L.includes(o))L.push(o);R[o]=[r.a,r.b];r.mig=1;ch=1}if(ch)save()}
 function tab(t){S.tab=t;save();
   ["cal","tor","res","gol","st","set"].forEach(x=>$("p-"+x).hidden=x!==t);
   document.querySelectorAll(".tabs button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.t===t));
@@ -481,8 +514,8 @@ function importData(f){const rd=new FileReader();
   rd.onload=()=>{let o=null;try{o=JSON.parse(rd.result)}catch(e){}
     if(!o||o.app!=="real-torino"||!o.data||typeof o.data!=="object"){$("dmsg").textContent="File non valido: scegli un file esportato da questa pagina.";return}
     Object.assign(S,o.data);
-    ["gol","ast","tw","bl","an","tor"].forEach(k=>{if(!Array.isArray(S[k]))S[k]=[]});
-    if(!S.res||typeof S.res!=="object")S.res={};if(!S.venues||typeof S.venues!=="object")S.venues={};
+    ["gol","ast","tw","bl","an","tor","ev","tr"].forEach(k=>{if(!Array.isArray(S[k]))S[k]=[]});
+    if(!S.res||typeof S.res!=="object")S.res={};if(!S.top||typeof S.top!=="object")S.top={};migTr();if(!S.venues||typeof S.venues!=="object")S.venues={};
     S.tab="set";save();init();render();logoInit();tab("set");$("dmsg").textContent="Dati importati."};
   rd.readAsText(f)}
 async function exportCal(){
@@ -499,8 +532,8 @@ async function exportCal(){
   n.textContent="File .ics scaricato: aprilo per aggiungere le partite a Calendario (Apple, Google, Outlook)."}
 const T0=[
 {id:"ciaz",n:"Torneo Ciaz",d1:"2026-12-12",d2:"2026-12-13",k:"valpellice",t:""},
-{id:"tpc",n:"Trophée des Petits Champions U11",d1:"2027-04-16",d2:"2027-04-18",k:"orcieres",t:"10:00",vg:1,w:"https://aph-hockey.com/english/trophee-des-petits-champions/",nt:"Accoglienza venerdì dalle 10:00, inizio gare 12:30, premiazioni domenica alle 18:15. Iscrizione 150 € a squadra; pasti e alloggio da 45 a 97 € a persona (non inclusi nel costo)."},
-{id:"nissa",n:"Nissa Cup U11",d1:"2027-05-21",d2:"2027-05-23",k:"nizza",t:"",vg:1,nt:"Sede e orari non ancora disponibili."}];
+{id:"tpc",c:"U11",n:"Trophée des Petits Champions U11",d1:"2027-04-16",d2:"2027-04-18",k:"orcieres",t:"10:00",vg:1,w:"https://aph-hockey.com/english/trophee-des-petits-champions/",nt:"Accoglienza venerdì dalle 10:00, inizio gare 12:30, premiazioni domenica alle 18:15. Iscrizione 150 € a squadra; pasti e alloggio da 45 a 97 € a persona (non inclusi nel costo)."},
+{id:"nissa",c:"U11",n:"Nissa Cup U11",d1:"2027-05-21",d2:"2027-05-23",k:"nizza",t:"",vg:1,nt:"Sede e orari non ancora disponibili."}];
 const tv=x=>x.k?ven(x.k):{n:x.q,q:x.q,km:x.km,t:x.vt||0};
 const tdays=x=>Math.round((new Date(x.d2+"T12:00:00")-new Date(x.d1+"T12:00:00"))/864e5)+1;
 const ymd=d=>d.getFullYear()+pad(d.getMonth()+1)+pad(d.getDate());
@@ -509,10 +542,14 @@ function rTor(){
   $("tsm").textContent=VEH[S.veh].n+" · "+cons.toLocaleString("it-IT")+" km/l · gasolio "+S.price.toLocaleString("it-IT")+" €/l · partenza: "+S.origin;
   const L=T0.concat(S.tor).sort((a,b)=>a.d1<b.d1?-1:1);
   let km=0,cost=0,toll=0,html="",cur="",nd=false;
-  for(const x of L){
+  const ordT=L.filter(x=>x.d2>=today).concat(L.filter(x=>x.d2<today).reverse());let pastH=false;
+  for(const x of ordT){
+    if(x.d2<today&&!pastH){pastH=true;cur="";html+=`<h2 class="pst">Già giocati</h2>`}
     const v=tv(x),dd=tdays(x),nv=x.vg||dd,ar=v.km*2*nv,f=cons>0?ar/cons*S.price:0,tl=(v.t||0)*2*nv,c=f+tl,
       a=new Date(x.d1+"T12:00:00"),b=new Date(x.d2+"T12:00:00"),e=new Date(b.getTime());e.setDate(e.getDate()+1);
     km+=ar;cost+=c;toll+=tl;
+    const tm=TM().find(t=>t[10].tor===x.id),rs=S.res[mid(tm)]||{},gl=(tm[6]||[]).filter(o=>rs[o]&&rs[o][0]!==""&&rs[o][1]!==""),ag=agg(gl.map(o=>({a:rs[o][0],b:rs[o][1]}))),
+      rsum=gl.length?`Risultati: ${gl.length} ${gl.length>1?"partite":"partita"} · ${ag.w}V ${ag.n}N ${ag.p}P · gol ${ag.f}-${ag.s}`:"Nessun risultato inserito";
     const ym=a.getFullYear()+"-"+a.getMonth();
     if(ym!==cur){cur=ym;html+=`<h2>${mesi[a.getMonth()]} ${a.getFullYear()}</h2>`}
     const past=x.d2<today;let cls="m"+(past?" past":"");if(!past&&!nd){cls+=" next";nd=true}
@@ -522,8 +559,8 @@ function rTor(){
       <div class="d"><b>${a.getDate()}${dd>1?"–"+b.getDate():""}</b><span>${gg[a.getDay()]}${dd>1?"–"+gg[b.getDay()]:""}</span></div>
       <div class="i"><div class="v">${esc(x.n)}</div>
         <div class="s"><span class="tag">Torneo</span>${esc(v.n)} · ${dd} ${dd>1?"giorni":"giorno"} · ${x.t?"ore "+x.t:"orario da definire"}</div>
-        <div class="s">${ar} km totali (${nv} ${nv>1?"viaggi":"viaggio"} A/R) · gasolio ${eur(f)}${tl?" + pedaggi "+eur(tl):""}</div>${x.nt?`<div class="s">${esc(x.nt)}</div>`:""}</div>
-      <div class="a"><span class="c">${eur(c)}</span><span class="lk"><a href="${url}" target="_blank" rel="noopener">Percorso</a><a href="${gc}" target="_blank" rel="noopener">+ Calendario</a>${x.w?`<a href="${x.w}" target="_blank" rel="noopener">Sito</a>`:""}${T0.some(t=>t.id===x.id)?"":`<button class="x" data-d="${x.id}" aria-label="Elimina torneo">×</button>`}</span></div>
+        <div class="s">${ar} km totali (${nv} ${nv>1?"viaggi":"viaggio"} A/R) · gasolio ${eur(f)}${tl?" + pedaggi "+eur(tl):""}</div>${x.nt?`<div class="s">${esc(x.nt)}</div>`:""}<div class="s">${rsum}</div></div>
+      <div class="a"><span class="c">${eur(c)}</span><span class="lk"><a href="${url}" target="_blank" rel="noopener">Percorso</a><a href="${gc}" target="_blank" rel="noopener">+ Calendario</a><a href="#" data-tr="${x.id}">Risultati</a>${x.w?`<a href="${x.w}" target="_blank" rel="noopener">Sito</a>`:""}${T0.some(t=>t.id===x.id)?"":`<button class="x" data-d="${x.id}" aria-label="Elimina torneo">×</button>`}</span></div>
     </article>`}
   $("tlist").innerHTML=html;
   rSum()}
@@ -533,12 +570,15 @@ function tinit(){
   $("ta").onclick=()=>{const n=$("tn").value.trim(),d1=$("td1").value,d2=$("td2").value||d1,k=$("tk").value,m=$("tmsg");
     if(!n||!d1){m.textContent="Inserisci almeno il nome e la data di inizio.";return}
     if(d2<d1){m.textContent="La data di fine è precedente a quella di inizio.";return}
-    const e={id:"c"+Date.now(),n,d1,d2,t:$("tt").value,k,vg:parseInt($("tvg").value)||0};
+    const e={id:"c"+Date.now(),n,d1,d2,t:$("tt").value,k,c:$("tc").value,vg:parseInt($("tvg").value)||0};
     if(!k){e.q=$("tq").value.trim();e.km=parseFloat($("tkm").value)||0;e.vt=parseFloat($("tpe").value)||0;
       if(!e.q){m.textContent="Per un'altra sede scrivi cosa cercare su Maps.";return}}
     S.tor.push(e);save();["tn","td1","td2","tt","tvg","tq","tkm"].forEach(i=>$(i).value="");m.textContent="";rTor()};
-  $("tlist").onclick=e=>{const b=e.target.closest("button[data-d]");if(!b)return;S.tor=S.tor.filter(x=>x.id!==b.dataset.d);save();rTor()}}
-const goalsOf=(id,o)=>S.gol.filter(g=>g.id===id&&g.o===o).reduce((a,g)=>a+g.c,0);
+  $("tlist").onclick=e=>{const l=e.target.closest("[data-tr]");
+    if(l){e.preventDefault();resFocus=l.dataset.tr+"";const tm=TM().find(t=>t[10].tor===l.dataset.tr);resFocus=tm?mid(tm):"";tab("res");
+      setTimeout(()=>{const d=[...document.querySelectorAll("#resList details")].find(x=>x.dataset.i===resFocus);if(d)d.scrollIntoView({block:"start"});resFocus=""},60);return}
+    const b=e.target.closest("button[data-d]");if(!b)return;S.tor=S.tor.filter(x=>x.id!==b.dataset.d);save();rTor()}}
+const goalsOf=(id,o)=>rd("g").filter(g=>g.id===id&&g.o===o).reduce((a,g)=>a+g.c,0);
 function chips(){const today=new Date().toISOString().slice(0,10),
   nm=M.slice().sort((a,b)=>a[0]<b[0]?-1:1).find(m=>m[0]>=today),nt=T0.concat(S.tor).sort((a,b)=>a.d1<b.d1?-1:1).find(x=>x.d2>=today),
   dl=d=>{const n=Math.round((new Date(d+"T12:00:00")-new Date(today+"T12:00:00"))/864e5);return n<=0?"oggi":n===1?"domani":"tra "+n+" giorni"};
@@ -552,58 +592,70 @@ function rSum(){
   $("sumT").innerHTML=`<table class="pt"><thead><tr><th></th><th class="n">N.</th><th class="n">Km A/R</th><th class="n">Gasolio</th><th class="n">Pedaggi</th><th class="n">Totale</th></tr></thead><tbody>`+
     row("Raggruppamenti U10",a)+row("Raggruppamenti U12",b)+row("Tutti i raggruppamenti",r,1)+row("Tornei",tor,1)+row("Totale stagione",g,1)+`</tbody></table>`;chips()}
 function rRes(){
-  const op=new Set([...document.querySelectorAll("#resList details[open]")].map(d=>d.dataset.i)),first=!document.querySelector("#resList details");
-  const today=new Date().toISOString().slice(0,10),cm=srt().filter(m=>m[0]<=today).pop(),curId=cm?mid(cm):"";
-  $("resList").innerHTML=srt().map(m=>{const id=mid(m),r=S.res[id]||{};let done=0,bad=0;
+  const op=new Set([...document.querySelectorAll("#resList details[open]")].map(d=>d.dataset.i)),first=!document.querySelector("#resList details");if(resFocus)op.add(resFocus);
+  const today=new Date().toISOString().slice(0,10),cm=srt().filter(m=>m[0]<=today).pop(),curId=cm?mid(cm):"",ordR=()=>{const a=srt();return a.filter(m=>m[0]>=today).concat(a.filter(m=>m[0]<today).reverse())};let pastH=false;
+  $("resList").innerHTML=ordR().map(m=>{const id=mid(m),r=S.res[id]||{};let done=0,bad=0;
     const rows=m[6].map(o=>{const v=r[o]||["",""],has=v[0]!==""&&v[1]!=="",q=esc(o);let vnp="",warn="";
       if(has){done++;vnp=v[0]>v[1]?"V":v[0]<v[1]?"P":"N";const sg=goalsOf(id,o);
         if(sg!==v[0]&&(v[0]>0||sg>0)){bad++;warn="⚠ goal con marcatore: "+sg+" su "+v[0]}}
       return `<div class="rw2" data-i="${id}" data-o="${q}"><div class="rn">Real Torino – ${q}${vnp?` <span class="vnp ${vnp}">${vnp}</span>`:""}</div>
         <div class="stp"><button data-a="0-" aria-label="Meno un gol Real Torino">−</button><output>${has?v[0]:"–"}</output><button data-a="0+" aria-label="Più un gol Real Torino">+</button></div><span class="dash">–</span>
         <div class="stp"><button data-a="1-" aria-label="Meno un gol ${q}">−</button><output>${has?v[1]:"–"}</output><button data-a="1+" aria-label="Più un gol ${q}">+</button></div>
-        <button class="x" data-a="c" aria-label="Azzera risultato">×</button>${warn?`<div class="warn">${warn}</div>`:""}</div>`}).join("");
-    const n=m[6].length,st=done===n?`<span class="tag ok">✔ ${done}/${n}</span>`:`<span class="tag nz">${done}/${n}</span>`;
-    return `<details class="panel" data-i="${id}"${op.has(id)||(first&&id===curId)?" open":""}><summary>${fmt(m[0])} · ${m[2]} · ${esc(ven(m[4]).n)} <span class="tag${m[3]==1?"":" h"}">${m[3]==1?"andata":"ritorno"}</span> ${st}${bad?` <span class="tag h">⚠</span>`:""}</summary>${rows}</details>`}).join("")}
+        <button class="x" data-a="c" aria-label="Azzera risultato">×</button>${m[10]?`<button class="x" data-a="r" title="Rimuovi avversario" aria-label="Rimuovi avversario">⌫</button>`:""}${warn?`<div class="warn">${warn}</div>`:""}</div>`}).join("")+(m[10]?`${m[6].length?"":`<p class="note">Aggiungi gli avversari del torneo, poi inserisci i risultati con + e −.</p>`}<div class="rw2"><input data-top="${id}" placeholder="Aggiungi avversario" aria-label="Aggiungi avversario"><button class="btn" data-ta="${id}">Aggiungi</button></div><p class="note tmsg"></p>`:"");
+    const n=m[6].length,st=!n?`<span class="tag nz">da compilare</span>`:done===n?`<span class="tag ok">✔ ${done}/${n}</span>`:`<span class="tag nz">${done}/${n}</span>`;
+    return (m[0]<today&&!pastH?(pastH=true,`<h2 class="sh">Già giocate</h2>`):"")+`<details class="panel" data-i="${id}"${op.has(id)||(first&&id===curId)?" open":""}><summary>${fmt(m[0])} · ${m[2]} · ${esc(vnm(m))} <span class="tag${m[3]==1||m[10]?"":" h"}">${m[10]?"torneo":m[3]==1?"andata":"ritorno"}</span> ${st}${bad?` <span class="tag h">⚠</span>`:""}</summary>${rows}</details>`}).join("")}
 const ROSTER={U8:["Pellegrino Matteo"],U9:["D'Ambrosio Mattia","Liuzzi Leonida","Panfilov Yan","Rodrigue Ordonez Matteo","Serralunga Nicolò","Spataro Cesare","Vibrati Tommaso"],U11:["Inchingolo Tommaso","Panfilov Rostyslav"],U10:["Albertone Luca","Allio Tommaso","Famà Tommaso","Panfilov Mark","Parella Dario","Zumbo Luigi Stefano"],U12:["Beraud Tommaso Leone","Fantino Filippo","Fassino Mattia","Goosen Ianni Mackenzie","Mamone Sara"]};
 const OR={U10:["U10","U9","U8","U11","U12"],U12:["U12","U11","U10","U9","U8"]};
 let lastG=null,gMode="g";
 const KL={g:"goal",a:"assist",t:"TW",b:"BL",n:"AN"},TL={g:"Goal",a:"Assist",t:"TW",b:"BL",n:"AN"},KS=["g","a","t","b","n"];
 const arr=k=>k==="a"?S.ast:k==="t"?S.tw:k==="b"?S.bl:k==="n"?S.an:S.gol;
-const gCount=(id,o,n,k)=>arr(k||"g").filter(g=>g.id===id&&g.o===o&&(n===undefined||g.n===n)).reduce((a,g)=>a+g.c,0);
-function addG(n){const id=$("gM").value,o=$("gO").value,m=M.find(x=>mid(x)===id);if(!m||!o)return;
+const evG=()=>S.ev.filter(e=>e.k==="g"&&e.n);
+const rd=k=>k==="g"?S.gol.concat(evG().map(e=>({id:e.id,d:e.d,cat:e.cat,o:e.o,n:e.n,c:1}))):k==="a"?S.ast.concat(evG().flatMap(e=>[e.a1,e.a2].filter(Boolean).map(n=>({id:e.id,d:e.d,cat:e.cat,o:e.o,n,c:1})))):arr(k);
+const gCount=(id,o,n,k)=>rd(k||"g").filter(g=>g.id===id&&g.o===o&&(n===undefined||g.n===n)).reduce((a,g)=>a+g.c,0);
+function addG(n){const id=$("gM").value,o=$("gO").value,m=AM().find(x=>mid(x)===id);if(!m||!o)return;
   const A=arr(gMode),e=A.find(g=>g.id===id&&g.o===o&&g.n===n);
-  if(e)e.c++;else A.push({id,d:m[0],cat:m[2],n,c:1,o});
+  if(e)e.c++;else A.push({id,d:m[0],cat:mc(m),n,c:1,o});
   lastG={id,o,n,k:gMode};save();updG()}
 function undoG(){if(!lastG)return;
   const A=arr(lastG.k),e=A.find(g=>g.id===lastG.id&&g.o===lastG.o&&g.n===lastG.n);
   if(e){e.c--;if(e.c<1)A.splice(A.indexOf(e),1)}
   lastG=null;save();updG()}
 function updG(){
-  const id=$("gM").value,o=$("gO").value;
+  rEvL();const id=$("gM").value,o=$("gO").value;
   document.querySelectorAll("#gP .pl[data-n]").forEach(b=>{const n=b.dataset.n;
     const t=KS.map(k=>{const c=gCount(id,o,n,k);return c?c+(k==="g"?"G":k==="a"?"A":TL[k]):""}).filter(Boolean).join(" · ");
     b.classList.toggle("on",!!t);b.querySelector("b").textContent=t});
   const r=(S.res[id]||{})[o],has=r&&r[0]!==""&&r[1]!=="",sg=gCount(id,o),sa=gCount(id,o,undefined,"a");
   $("gInfo").textContent=(has?`Risultato: Real Torino ${r[0]}–${r[1]} ${o} · goal con marcatore: ${sg} su ${r[0]} ${sg===r[0]?"✔":"⚠"}`:`Risultato non ancora inserito · goal con marcatore: ${sg}`)+` · assist: ${sa}`;
-  $("gU").hidden=!lastG;if(lastG)$("gU").textContent="Annulla ultimo "+KL[lastG.k]+" ("+lastG.n+")";
+  if(!o)$("gInfo").textContent="Questa giornata non ha ancora avversari: aggiungili dalla pagina Risultati.";$("gU").hidden=!lastG;if(lastG)$("gU").textContent="Annulla ultimo "+KL[lastG.k]+" ("+lastG.n+")";
   const L=KS.flatMap(k=>arr(k).map((g,i)=>Object.assign({i,t:k},g))).sort((a,b)=>a.d<b.d?1:-1);
-  $("gList").innerHTML=L.length?`<section class="panel"><table><thead><tr><th>Data</th><th>Giocatore</th><th>Tipo</th><th>N.</th><th></th></tr></thead><tbody>`+
-    L.map(g=>`<tr><td>${fmt(g.d)} · ${g.cat}${g.o?" · vs "+esc(g.o):""}</td><td>${esc(g.n)}</td><td>${TL[g.t]}</td><td>${g.c}</td><td style="white-space:nowrap"><button class="x" data-m="${g.i}" data-t="${g.t}" aria-label="Uno in meno">−</button><button class="x" data-x="${g.i}" data-t="${g.t}" aria-label="Elimina">×</button></td></tr>`).join("")+`</tbody></table></section>`:`<p class="note">Nessun dato inserito.</p>`}
+  $("gList").innerHTML=L.length?`<section class="panel"><details data-k="g"${S.tbl.g?" open":""}><summary>Goal e assist rapidi (${L.length})</summary><div class="sc" style="margin-top:10px"><table><thead><tr><th>Data</th><th>Giocatore</th><th>Tipo</th><th>N.</th><th></th></tr></thead><tbody>`+
+    L.map(g=>`<tr><td>${fmt(g.d)} · ${g.cat}${g.o?" · vs "+esc(g.o):""}</td><td>${esc(g.n)}</td><td>${TL[g.t]}</td><td>${g.c}</td><td style="white-space:nowrap"><button class="x" data-m="${g.i}" data-t="${g.t}" aria-label="Uno in meno">−</button><button class="x" data-x="${g.i}" data-t="${g.t}" aria-label="Elimina">×</button></td></tr>`).join("")+`</tbody></table></div></details></section>`:`<p class="note">Nessun dato inserito.</p>`}
 function fillP(c){
-  const all=[].concat(...Object.values(ROSTER)),ex=[...new Set(KS.flatMap(k=>arr(k)).map(g=>g.n))].filter(n=>!all.includes(n));
+  const all=[].concat(...Object.values(ROSTER)),ex=[...new Set(KS.flatMap(k=>rd(k)).map(g=>g.n))].filter(n=>!all.includes(n));
   const btn=n=>`<button class="pl" data-n="${esc(n)}">${esc(n)}<b></b></button>`;
   const grp=(l,a)=>a.length?`<div class="gh">${l}</div><div class="pg">${a.map(btn).join("")}</div>`:"";
   const g=OR[c]||Object.keys(ROSTER);
   $("gP").innerHTML=grp(g[0],ROSTER[g[0]])+`<details><summary class="gh">Altre categorie</summary>${g.slice(1).map(x=>grp(x,ROSTER[x])).join("")}</details>`+grp("Altri",ex)+`<div class="pg" style="margin-top:12px"><button class="pl" id="gAltro" type="button">Altro (scrivi il nome)…</button></div>`;
-  updG()}
-function fillO(keep){const co=$("gO").value,m=M.find(x=>mid(x)===$("gM").value);
+  evOpt(c);updG()}
+let evEdit=-1;
+const TP={pn:"Parità numerica",su:"Superiorità numerica",in:"Inferiorità numerica",ri:"Rigore"};
+function evOpt(c){const g=OR[c]||Object.keys(ROSTER),h=`<option value="">–</option>`+g.map(x=>`<optgroup label="${x}">${ROSTER[x].map(n=>`<option value="${esc(n)}">${esc(n)}</option>`).join("")}</optgroup>`).join("");
+  for(const id of["eN","eA1","eA2"]){const e=$(id),v=e.value;e.innerHTML=h;if([...e.options].some(x=>x.value===v))e.value=v}}
+const evK=()=>{const g=$("eK").value==="g";["eNl","eA1l","eA2l"].forEach(i=>$(i).hidden=!g)};
+function evReset(){evEdit=-1;["eN","eA1","eA2","eP","eM","eT"].forEach(i=>$(i).value="");$("eK").value="g";evK();$("eS").textContent="Salva goal";$("eC").hidden=true}
+function rEvL(){const L=S.ev.map((e,i)=>Object.assign({i},e)).sort((a,b)=>a.d<b.d?1:-1);
+  $("evList").innerHTML=L.length?`<section class="panel"><details data-k="e"${S.tbl.e?" open":""}><summary>Goal dettagliati (${L.length})</summary><div class="sc" style="margin-top:10px"><table><thead><tr><th>Partita</th><th>Goal</th><th>Assist</th><th>Per.</th><th>Min.</th><th>Tipo</th><th></th></tr></thead><tbody>`+
+    L.map(e=>`<tr><td>${fmt(e.d)} · ${e.cat} · vs ${esc(e.o||"")}</td><td>${e.k==="g"?esc(e.n):"<i>subito</i>"}</td><td>${[e.a1,e.a2].filter(Boolean).map(esc).join(", ")||"–"}</td><td>${e.p?e.p+"°":"–"}</td><td>${e.mn===""||e.mn==null?"–":e.mn+"′"}</td><td>${TP[e.tp]||"–"}</td><td style="white-space:nowrap"><button class="x" data-ee="${e.i}" aria-label="Modifica">✎</button><button class="x" data-ed="${e.i}" aria-label="Elimina">×</button></td></tr>`).join("")+`</tbody></table></div></details></section>`:""}
+function fillO(keep){const co=$("gO").value,m=AM().find(x=>mid(x)===$("gM").value);
   $("gO").innerHTML=m?m[6].map(o=>`<option value="${esc(o)}">Real Torino – ${esc(o)}</option>`).join(""):"";
   if(keep&&[...$("gO").options].some(x=>x.value===co))$("gO").value=co;
-  fillP(m?m[2]:"U10")}
+  fillP(m?mc(m):"U10")}
 function rGol(){
   const cur=$("gM").value,today=new Date().toISOString().slice(0,10);
-  $("gM").innerHTML=srt().map(m=>`<option value="${mid(m)}">${fmt(m[0])} · ${m[2]} · ${esc(ven(m[4]).n)}</option>`).join("");
-  if(cur)$("gM").value=cur;else{const cm=srt().filter(m=>m[0]<=today).pop();if(cm)$("gM").value=mid(cm)}
+  const op=m=>`<option value="${mid(m)}">${fmt(m[0])} · ${m[2]} · ${esc(vnm(m))}</option>`,up=srt().filter(m=>m[0]>=today),pa=srt().filter(m=>m[0]<today).reverse();
+  $("gM").innerHTML=(up.length?`<optgroup label="Prossime">${up.map(op).join("")}</optgroup>`:"")+(pa.length?`<optgroup label="Già giocate">${pa.map(op).join("")}</optgroup>`:"");
+  if(cur)$("gM").value=cur;else{const nx=srt().find(m=>m[0]>=today)||srt().filter(m=>m[0]<today).pop();if(nx)$("gM").value=mid(nx)}
   fillO(true)}
 function chartG(gd){if(!gd.length)return"";
   const W=44,H=130,mx=Math.max(1,...gd.flatMap(x=>[x.gf,x.gs])),hh=v=>Math.round(v/mx*(H-20));
@@ -616,14 +668,15 @@ let sSort="p",bMet="p",eMet="tw";
 const rc=n=>Object.keys(ROSTER).find(c=>ROSTER[c].includes(n))||"–";
 const SK=[["g","G"],["a","A"],["p","P"],["pg","PG"],["pm","P/PG"],["tw","TW"],["bl","BL"],["an","AN"],["ct","%G"]];
 const ST={g:"Goal",a:"Assist",p:"Punti",tw:"TW · Takeaway",bl:"BL · Blocks",an:"AN · Unassisted"};
-const FL=()=>({c:$("sCat").value,f:$("sFase").value,o:$("sOpp").value,a:$("sDal").value,z:$("sAl").value,p:$("sPl").value});
-const okM=(f,m)=>(f.c==="all"||m[2]===f.c)&&(f.f==="all"||String(m[3])===f.f)&&(!f.a||m[0]>=f.a)&&(!f.z||m[0]<=f.z);
-const okEv=(f,g)=>{const m=M.find(x=>mid(x)===g.id);return !!m&&okM(f,m)&&(f.o==="all"||g.o===f.o)};
-const EV=()=>({g:S.gol,a:S.ast,tw:S.tw,bl:S.bl,an:S.an});
+const FL=()=>({c:$("sCat").value,f:$("sFase").value,o:$("sOpp").value,a:$("sDal").value,z:$("sAl").value,p:$("sPl").value,k:$("sKind").value});
+const okM=(f,m)=>(f.k!=="t"||!!m[10])&&(f.k!=="r"||!m[10])&&(f.c==="all"||(m[10]?m[10].cat:m[2])===f.c)&&(f.f==="all"||String(m[3])===f.f)&&(!f.a||m[0]>=f.a)&&(!f.z||m[0]<=f.z);
+const okEv=(f,g)=>{const m=AM().find(x=>mid(x)===g.id);return !!m&&okM(f,m)&&(f.o==="all"||g.o===f.o)};
+const EV=()=>({g:rd("g"),a:rd("a"),tw:S.tw,bl:S.bl,an:S.an});
 const pc=(a,b)=>a>b?"V":a<b?"P":"N",sdt=d=>+d.slice(8,10)+"/"+ +d.slice(5,7);
 const avg=(v,n)=>n?(v/n).toFixed(1).replace(".",","):"–",pct=(v,n)=>n?Math.round(v/n*100)+"%":"–";
 function games(f){const L=[];for(const m of srt()){if(!okM(f,m))continue;const r=S.res[mid(m)]||{};
-  for(const o of m[6]){if(f.o!=="all"&&o!==f.o)continue;const v=r[o];if(!v||v[0]===""||v[1]==="")continue;L.push({m,o,a:v[0],b:v[1]})}}return L}
+  for(const o of m[6]){if(f.o!=="all"&&o!==f.o)continue;const v=r[o];if(!v||v[0]===""||v[1]==="")continue;L.push({m,o,a:v[0],b:v[1],t:m[10]?1:0})}}
+  return L.sort((x,y)=>x.m[0]<y.m[0]?-1:x.m[0]>y.m[0]?1:0)}
 const agg=G=>{const t={g:0,w:0,n:0,p:0,f:0,s:0,sc:0,cs:0};for(const x of G){t.g++;t.f+=x.a;t.s+=x.b;if(x.a>x.b)t.w++;else if(x.a<x.b)t.p++;else t.n++;if(x.a>0)t.sc++;if(x.b===0)t.cs++}return t};
 function plRows(f){const P={},E=EV();
   for(const k in E)for(const g of E[k]){if(!okEv(f,g))continue;const r=P[g.n]=P[g.n]||{n:g.n,g:0,a:0,tw:0,bl:0,an:0};r[k]+=g.c}
@@ -636,13 +689,68 @@ function lineSvg(xs,ser,lab){
   const sp=Math.ceil(n/6);xs.forEach((x,i)=>{if(i%sp===0||i===n-1)o+=`<text class="ax" x="${X(i)}" y="${H-8}" text-anchor="middle">${esc(x)}</text>`});
   for(const s of ser)o+=`<polyline class="ln ${s.c}" points="${s.v.map((v,i)=>X(i)+","+Y(v)).join(" ")}"/>`+s.v.map((v,i)=>`<circle class="dot ${s.c}" cx="${X(i)}" cy="${Y(v)}" r="6" data-t="${esc(s.t(i))}"><title>${esc(s.t(i))}</title></circle>`).join("");
   return o+"</svg>"}
+function groupBars(cs,A,B,lab){const W=360,H=190,L=28,T=14,Bt=24,m0=Math.max(1,...A,...B),st=Math.ceil(m0/4),mx=st*Math.ceil(m0/st),Y=v=>H-Bt-v/mx*(H-Bt-T),bw=34;
+  let o=`<svg viewBox="0 0 ${W} ${H}" class="ch" role="img" aria-label="${esc(lab)}">`;
+  for(let v=0;v<=mx;v+=st)o+=`<line class="gl" x1="${L}" x2="${W-12}" y1="${Y(v)}" y2="${Y(v)}"/><text class="ax" x="${L-4}" y="${Y(v)+3}" text-anchor="end">${v}</text>`;
+  cs.forEach((c,i)=>{const x=L+24+i*((W-L-24)/cs.length);
+    [[A[i],"k0","segnati"],[B[i],"k1","subiti"]].forEach(([v,k,l],j)=>{const tt=c+" periodo: "+l+" "+v,xx=x+j*(bw+4);
+      o+=`<rect class="bar ${k}" x="${xx}" y="${Y(v)}" width="${bw}" height="${H-Bt-Y(v)}" data-t="${tt}"><title>${tt}</title></rect><text class="ax" x="${xx+bw/2}" y="${Y(v)-3}" text-anchor="middle">${v}</text>`});
+    o+=`<text class="ax" x="${x+bw+2}" y="${H-8}" text-anchor="middle">${c}</text>`});
+  return o+"</svg>"}
+function chartF(f,t){
+  const E=S.ev.filter(e=>e.p&&okEv(f,e)),sc=[1,2,3].map(p=>E.filter(e=>e.k==="g"&&e.p==p).length),su=[1,2,3].map(p=>E.filter(e=>e.k==="s"&&e.p==p).length),T=S.ev.filter(e=>e.tp&&okEv(f,e));
+  let h=`<section class="panel"><h2>Goal segnati e subiti per periodo</h2>`;
+  h+=E.length?groupBars(["1°","2°","3°"],sc,su,"Goal per periodo")+`<p class="note"><i class="lg k0"></i>segnati <i class="lg k1"></i>subiti · solo goal con periodo registrato: ${E.length} su ${t.f+t.s} nei risultati inseriti.</p><p class="note det">Tocca una barra per i dettagli.</p>`:`<p class="note">Nessun goal con il periodo registrato per questi filtri. Nella pagina Goal/Assist, sezione “Goal dettagliato”, scegli il periodo (facoltativo); per i goal subiti usa il tipo “Goal subito”.</p>`;
+  const rows=Object.entries(TP).map(([k,l])=>{const a=T.filter(e=>e.tp===k&&e.k==="g").length,b=T.filter(e=>e.tp===k&&e.k==="s").length;return a||b?`<tr><td>${l}</td><td class="n">${a||"–"}</td><td class="n">${b||"–"}</td></tr>`:""}).join("");
+  return h+(rows?`<table><thead><tr><th>Tipologia</th><th class="n">Segnati</th><th class="n">Subiti</th></tr></thead><tbody>${rows}</tbody></table>`:"")+`</section>`}
+const pe=s=>{let o="";for(const ch of String(s)){const c=ch.charCodeAt(0);o+=c<256?ch:({8211:"\x96",8212:"\x97",8217:"\x92",8226:"\x95"}[c]||"?")}return o.replace(/[\\()]/g,"\\$&")};
+function mkPdf(P){const O=[],add=x=>O.push(x);
+  add("<< /Type /Catalog /Pages 2 0 R >>");
+  add(`<< /Type /Pages /Kids [${P.map((_,i)=>(5+i*2)+" 0 R").join(" ")}] /Count ${P.length} >>`);
+  add("<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica /Encoding /WinAnsiEncoding >>");
+  add("<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica-Bold /Encoding /WinAnsiEncoding >>");
+  P.forEach((ops,i)=>{const st=ops.join("\n");
+    add(`<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 3 0 R /F2 4 0 R >> >> /Contents ${6+i*2} 0 R >>`);
+    add(`<< /Length ${st.length} >>\nstream\n${st}\nendstream`)});
+  let out="%PDF-1.4\n";const off=[];O.forEach((o,i)=>{off.push(out.length);out+=`${i+1} 0 obj\n${o}\nendobj\n`});
+  const x=out.length;out+=`xref\n0 ${O.length+1}\n0000000000 65535 f \n`+off.map(v=>String(v).padStart(10,"0")+" 00000 n \n").join("")+`trailer\n<< /Size ${O.length+1} /Root 1 0 R >>\nstartxref\n${x}\n%%EOF`;
+  return Uint8Array.from(out,c=>c.charCodeAt(0)&255)}
+async function pdfReport(){
+  const f=FL(),G=games(f),t=agg(G),R=plRows(f).sort((a,b)=>b.p-a.p||b.g-a.g||a.n.localeCompare(b.n)),P=[],RED="0.78 0.06 0.18",d=new Date().toISOString().slice(0,10);
+  let pg,y;const np=()=>{pg=[];P.push(pg);y=800};
+  const tx=(s,x,yy,z=10,b=0)=>pg.push(`BT /F${b?2:1} ${z} Tf 0 g ${x} ${yy} Td (${pe(s)}) Tj ET`);
+  const ln=(s,z=10,b=0)=>{if(y<50)np();tx(s,40,y,z,b);y-=z+6},need=h=>{if(y<h+40)np()};
+  np();ln("Real Torino Hockey Club",20,1);ln("Report stagionale 2026/27 · generato il "+fmt(d),10);
+  let l="";for(const q of fDesc(f).split(" · ")){if((l+q).length>88){ln(l,9);l=""}l+=(l?" · ":"")+q}ln(l+(f.p?" · Giocatore: "+f.p:""),9);
+  y-=8;ln("Riepilogo squadra",13,1);
+  if(t.g){ln(`Partite ${t.g} · V-N-P ${t.w}-${t.n}-${t.p} · Punti ${t.w*3+t.n} · Gol fatti-subiti ${t.f}-${t.s} (${t.f-t.s>0?"+":""}${t.f-t.s})`);
+    ln(`Media gol: ${avg(t.f,t.g)} fatti · ${avg(t.s,t.g)} subiti · Vittorie ${pct(t.w,t.g)} · Con almeno un goal ${pct(t.sc,t.g)} · Senza subire ${pct(t.cs,t.g)}`)}
+  else ln("Nessun risultato inserito per questi filtri.");
+  y-=8;ln("Statistiche giocatori",13,1);
+  const X=[40,215,255,290,325,360,395,430],row=(a,b)=>{if(y<50)np();a.forEach((v,i)=>tx(v,X[i],y,9,b));y-=13};
+  if(R.length){row(["Giocatore","Cat.","G","A","P","TW","BL","AN"],1);R.slice(0,30).forEach(r=>row([r.n,rc(r.n),r.g,r.a,r.p,r.tw||"-",r.bl||"-",r.an||"-"],0))}
+  else ln("Nessuna statistica registrata per questi filtri.");
+  const top=R.filter(r=>r.p>0).slice(0,10);
+  if(top.length){need(10+top.length*13);y-=8;ln("Classifica punti (goal + assist)",13,1);const mx=top[0].p;
+    top.forEach(r=>{tx(r.n,40,y,8);pg.push(`${RED} rg 170 ${y-1} ${Math.max(2,r.p/mx*300)} 8 re f`);tx(String(r.p),178+r.p/mx*300,y,8,1);y-=13})}
+  need(170);y-=8;ln("Goal fatti (nero) e subiti (rosso) partita per partita",13,1);
+  if(G.length){const x0=60,w=470,h=100,y0=y-h-10,n=G.length,mx=Math.max(1,...G.flatMap(g=>[g.a,g.b])),X2=i=>x0+(n<2?w/2:i*w/(n-1)),Y2=v=>y0+v/mx*h;
+    pg.push(`0.6 G 0.5 w ${x0} ${y0} m ${x0+w} ${y0} l S ${x0} ${y0} m ${x0} ${y0+h} l S`);
+    [["0 G",g=>g.a],[RED+" RG",g=>g.b]].forEach(([c,fn])=>{pg.push(`${c} 1.5 w `+G.map((g,i)=>X2(i)+" "+Y2(fn(g))+(i?" l":" m")).join(" ")+" S")});
+    tx("0",45,y0-3,8);tx(String(mx),45,y0+h-3,8);tx(sdt(G[0].m[0]),x0,y0-12,8);if(n>1)tx(sdt(G[n-1].m[0]),x0+w-20,y0-12,8);y=y0-26}
+  else ln("Nessun risultato inserito per questi filtri.");
+  const E=S.ev.filter(e=>e.p&&okEv(f,e));
+  if(E.length){need(40);y-=6;ln("Goal per periodo (solo goal con periodo registrato)",13,1);
+    [1,2,3].forEach(p=>ln(`${p}° periodo: segnati ${E.filter(e=>e.k==="g"&&e.p==p).length} · subiti ${E.filter(e=>e.k==="s"&&e.p==p).length}`))}
+  const ok=await saveFile("report-real-torino-"+d+".pdf",mkPdf(P),"application/pdf");
+  $("stMsg").textContent=ok?"Report PDF creato con i filtri attivi.":ok===null?"":"Salvataggio non riuscito: il download non è disponibile in questo ambiente."}
 function fillF(){
   const keep=(id,h)=>{const el=$(id),v=el.value;el.innerHTML=h;if([...el.options].some(o=>o.value===v))el.value=v};
-  const ops=[...new Set(M.flatMap(m=>m[6]))].sort(),all=[].concat(...Object.values(ROSTER)),
+  const ops=[...new Set(AM().flatMap(m=>m[6]))].sort(),all=[].concat(...Object.values(ROSTER)),
     ex=[...new Set(Object.values(EV()).flatMap(A=>A.map(g=>g.n)))].filter(n=>!all.includes(n));
   keep("sOpp",`<option value="all">Tutti</option>`+ops.map(o=>`<option value="${esc(o)}">${esc(o)}</option>`).join(""));
   keep("sPl",`<option value="">Nessuno</option>`+all.concat(ex).sort((a,b)=>a.localeCompare(b)).map(n=>`<option value="${esc(n)}">${esc(n)}</option>`).join(""))}
-const fDesc=f=>"Categoria: "+(f.c==="all"?"tutte":f.c)+" · Competizione: raggruppamenti"+(f.f==="all"?"":" (fase "+f.f+(f.f==="1"?" andata":" ritorno")+")")+" · Avversario: "+(f.o==="all"?"tutti":f.o)+" · Periodo: "+(f.a||f.z?(f.a?fmt(f.a):"inizio stagione")+" → "+(f.z?fmt(f.z):"oggi"):"tutta la stagione");
+const fDesc=f=>"Categoria: "+(f.c==="all"?"tutte":f.c)+" · Competizione: "+(f.k==="r"?"raggruppamenti":f.k==="t"?"tornei":"tutte")+(f.f==="all"?"":" (fase "+f.f+(f.f==="1"?" andata":" ritorno")+")")+" · Avversario: "+(f.o==="all"?"tutti":f.o)+" · Periodo: "+(f.a||f.z?(f.a?fmt(f.a):"inizio stagione")+" → "+(f.z?fmt(f.z):"oggi"):"tutta la stagione");
 function rSt(){
   fillF();
   const f=FL(),G=games(f),t=agg(G),R=plRows(f),E=EV(),df=t.f-t.s,tf=t.f;
@@ -666,8 +774,8 @@ function rSt(){
   const sel=R.find(r=>r.n===f.p);
   if(!f.p)h+=`<section class="panel" id="pc"><h2>Scheda giocatore</h2><p class="note">Seleziona un giocatore dal filtro “Giocatore”, dalla tabella o dalle classifiche.</p></section>`;
   else{const PGm={};for(const k in E)for(const g of E[k]){if(g.n!==f.p||!okEv(f,g))continue;const key=g.id+"|"+(g.o||"");const e=PGm[key]=PGm[key]||{d:g.d,cat:g.cat,o:g.o,g:0,a:0,tw:0,bl:0,an:0};e[k]+=g.c}
-    const L=Object.values(PGm).sort((a,b)=>a.d<b.d?-1:1),v=k=>sel?((k==="tw"||k==="bl"||k==="an")?(sel[k]||"–"):sel[k]):"–";
-    h+=`<section class="panel" id="pc"><h2>Scheda · ${esc(f.p)} <small style="color:var(--mut)">${rc(f.p)}</small></h2><div class="st">${c(v("g"),"goal")}${c(v("a"),"assist")}${c(v("p"),"punti")}${c("–","partite giocate")}${c("–","media punti/partita")}${c(v("tw"),"TW")}${c(v("bl"),"BL")}${c(v("an"),"AN")}${c(sel&&tf?Math.round(sel.g/tf*100)+"%":"–","% gol squadra")}</div>`+
+    const a1=S.ev.filter(e=>e.k==="g"&&e.a1===f.p&&okEv(f,e)).length,a2=S.ev.filter(e=>e.k==="g"&&e.a2===f.p&&okEv(f,e)).length,L=Object.values(PGm).sort((a,b)=>a.d<b.d?-1:1),v=k=>sel?((k==="tw"||k==="bl"||k==="an")?(sel[k]||"–"):sel[k]):"–";
+    h+=`<section class="panel" id="pc"><h2>Scheda · ${esc(f.p)} <small style="color:var(--mut)">${rc(f.p)}</small></h2><div class="st">${c(v("g"),"goal")}${c(v("a"),"assist")}${c(v("p"),"punti")}${c((a1||"–")+" / "+(a2||"–"),"1° / 2° assist (goal dettagliati)")}${c("–","partite giocate")}${c("–","media punti/partita")}${c(v("tw"),"TW")}${c(v("bl"),"BL")}${c(v("an"),"AN")}${c(sel&&tf?Math.round(sel.g/tf*100)+"%":"–","% gol squadra")}</div>`+
       (L.length?`<div class="sc"><table><thead><tr><th>Partita</th><th class="n">G</th><th class="n">A</th><th class="n">TW</th><th class="n">BL</th><th class="n">AN</th></tr></thead><tbody>${L.map(x=>`<tr><td>${fmt(x.d)} · ${x.cat}${x.o?" · vs "+esc(x.o):""}</td><td class="n">${x.g||"–"}</td><td class="n">${x.a||"–"}</td><td class="n">${x.tw||"–"}</td><td class="n">${x.bl||"–"}</td><td class="n">${x.an||"–"}</td></tr>`).join("")}</tbody></table></div>`:`<p class="note">Nessun evento registrato per questo giocatore con i filtri attivi.</p>`)+`</section>`}
   $("b2").innerHTML=h;
   /* 3 · grafici individuali e classifica */
@@ -691,18 +799,18 @@ function rSt(){
   $("b4").innerHTML=`<h2 class="sh">4 · Andamento della squadra</h2>
    <section class="panel"><h2>Goal fatti e subiti partita per partita</h2>${G.length?lineSvg(G.map(x=>sdt(x.m[0])),[{c:"k0",v:G.map(x=>x.a),t:tg},{c:"k1",v:G.map(x=>x.b),t:tg}],"Goal fatti e subiti per partita")+`<p class="note"><i class="lg k0"></i>fatti <i class="lg k1"></i>subiti</p><p class="note det">Tocca un punto per vedere il risultato.</p>`:`<p class="note">Nessun risultato inserito per questi filtri.</p>`}</section>
    <section class="panel"><h2>Ultime cinque partite</h2>${L5.length?L5.map(x=>`<div class="g5"><span class="vnp ${pc(x.a,x.b)}">${pc(x.a,x.b)}</span><span>${fmt(x.m[0])} · ${x.m[2]} · ${esc(x.o)}</span><b>${x.a}–${x.b}</b></div>`).join("")+`<p class="note">Media nel periodo: ${avg(a5.f,a5.g)} goal fatti · ${avg(a5.s,a5.g)} subiti a partita</p>`:`<p class="note">Nessun risultato inserito per questi filtri.</p>`}</section>
-   <section class="panel"><h2>Goal segnati e subiti per periodo</h2><p class="note">Il grafico sarà disponibile quando verrà registrato il periodo di gioco (1°, 2°, 3° periodo) per i goal: oggi l'app non salva questo dato e non lo stima.</p></section>
+   ${chartF(f,t)}
    ${Object.keys(gm).length?`<section class="panel"><h2>Goal per giornata</h2>${chartG(Object.values(gm))}</section>`:""}`;
   /* 5 · per partita e competizione */
-  const by=(fn)=>G.filter(fn),ops={};G.forEach(x=>{(ops[x.o]=ops[x.o]||[]).push(x)});
+  const by=(fn)=>G.filter(fn),ops={},tgm={};G.filter(x=>x.t).forEach(x=>{(tgm[x.m[2]]=tgm[x.m[2]]||[]).push(x)});G.forEach(x=>{(ops[x.o]=ops[x.o]||[]).push(x)});
   const bw=G.reduce((b,x)=>!b||x.a-x.b>b.a-b.b?x:b,null),ww=G.reduce((b,x)=>!b||x.a-x.b<b.a-b.b?x:b,null),rs=x=>x?`${fmt(x.m[0])} contro ${esc(x.o)}: ${x.a}–${x.b}`:"–";
   $("b5").innerHTML=`<h2 class="sh">5 · Per partita e per competizione</h2>`+(G.length?`<p class="note" style="margin-top:0">Miglior risultato: ${rs(bw)}<br>Peggior risultato: ${rs(ww)}</p>`:"")+
    tb("Andata e ritorno",tr("Fase 1 · andata",agg(by(x=>x.m[3]==1)))+tr("Fase 2 · ritorno",agg(by(x=>x.m[3]==2))))+
-   tb("In casa / in trasferta",tr("In casa",agg(by(x=>x.m[5])))+tr("In trasferta",agg(by(x=>!x.m[5]))))+
+   tb("In casa / in trasferta",tr("In casa",agg(by(x=>!x.t&&x.m[5])))+tr("In trasferta",agg(by(x=>!x.t&&!x.m[5]))))+tb("Per competizione",tr("Raggruppamenti",agg(by(x=>!x.t)))+Object.entries(tgm).map(([n,A])=>tr(n,agg(A))).join(""),"Competizione")+
    tb("Per avversario",Object.entries(ops).sort((a,b)=>b[1].length-a[1].length||a[0].localeCompare(b[0])).map(([n,A])=>tr(n,agg(A))).join("")||tr("–",agg([])),"Avversario")+
-   `<section class="panel"><h2>Tutte le partite</h2>${G.length?`<div class="sc"><table><thead><tr><th>Data</th><th>Avversario</th><th class="n">Risultato</th><th>Esito</th></tr></thead><tbody>${G.map(x=>`<tr><td>${fmt(x.m[0])} · ${x.m[2]}</td><td>${esc(x.o)}</td><td class="n">${x.a}–${x.b}</td><td><span class="vnp ${pc(x.a,x.b)}">${pc(x.a,x.b)}</span></td></tr>`).join("")}</tbody></table></div>`:`<p class="note">Nessun risultato inserito per questi filtri.</p>`}<p class="note">Competizione: i risultati dei tornei non sono ancora registrati nell'app, per questo qui compaiono solo i raggruppamenti del campionato.</p></section>`}
+   `<section class="panel"><h2>Tutte le partite</h2>${G.length?`<div class="sc"><table><thead><tr><th>Data</th><th>Avversario</th><th class="n">Risultato</th><th>Esito</th></tr></thead><tbody>${G.map(x=>`<tr><td>${fmt(x.m[0])} · ${x.m[2]}</td><td>${esc(x.o)}</td><td class="n">${x.a}–${x.b}</td><td><span class="vnp ${pc(x.a,x.b)}">${pc(x.a,x.b)}</span></td></tr>`).join("")}</tbody></table></div>`:`<p class="note">Nessun risultato inserito per questi filtri.</p>`}<p class="note">Competizione: i tornei compaiono qui quando inserisci i loro risultati nella pagina Tornei; restano separati dai raggruppamenti.</p></section>`}
 const cs=a=>a.map(v=>'"'+String(v??"").replace(/"/g,'""')+'"').join(",");
-async function csvOut(name,head,rows){const f=FL(),fx=[f.c==="all"?"Tutte":f.c,f.f==="all"?"Tutte":f.f,f.o==="all"?"Tutti":f.o,f.a,f.z,"Raggruppamenti"],
+async function csvOut(name,head,rows){const f=FL(),fx=[f.c==="all"?"Tutte":f.c,f.f==="all"?"Tutte":f.f,f.o==="all"?"Tutti":f.o,f.a,f.z,f.k==="r"?"Raggruppamenti":f.k==="t"?"Tornei":"Tutte"],
   txt="\ufeff"+[cs(head.concat(["Filtro categoria","Filtro fase","Filtro avversario","Dal","Al","Competizione"]))].concat(rows.map(r=>cs(r.concat(fx)))).join("\r\n"),
   ok=await saveFile(name+"-"+new Date().toISOString().slice(0,10)+".csv",txt,"text/csv");
   $("stMsg").textContent=ok?"File CSV esportato con i filtri attivi.":ok===null?"":"Salvataggio non riuscito: il download non è disponibile in questo ambiente."}
@@ -713,9 +821,17 @@ function exT(){csvOut("statistiche-squadra",["Data","Categoria","Fase","Sede","A
   games(FL()).map(x=>[x.m[0],x.m[2],x.m[3],x.m[5]?"In casa":"Trasferta",x.o,x.a,x.b,pc(x.a,x.b)]))}
 function wire(){
   document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>tab(b.dataset.t));
-  $("resList").onclick=e=>{const b=e.target.closest("button[data-a]");if(!b)return;
+  $("resList").onclick=e=>{const ta=e.target.closest("button[data-ta]");
+    if(ta){const id=ta.dataset.ta,tm=TM().find(t=>mid(t)===id),n=ta.parentNode.querySelector("input").value.trim(),msg=ta.closest("details").querySelector(".tmsg");
+      if(!tm||!n)return;const L=S.top[tm[10].tor]=S.top[tm[10].tor]||[];
+      if(L.some(x=>x.toLowerCase()===n.toLowerCase())){msg.textContent="Avversario già presente.";return}
+      L.push(n);save();rRes();return}
+    const b=e.target.closest("button[data-a]");if(!b)return;
     const w=b.closest(".rw2"),i=w.dataset.i,o=w.dataset.o,a=b.dataset.a,r=S.res[i]=S.res[i]||{},
       had=r[o]&&r[o][0]!==""&&r[o][1]!=="";
+    if(a==="r"){const tm=TM().find(t=>mid(t)===i);if(!tm)return;
+      if(KS.some(k=>rd(k).some(g=>g.id===i&&g.o===o))||S.ev.some(e=>e.id===i&&e.o===o)){w.closest("details").querySelector(".tmsg").textContent="Non posso rimuovere "+o+": ha goal o statistiche registrati.";return}
+      const L=S.top[tm[10].tor];L.splice(L.indexOf(o),1);delete r[o];save();rRes();return}
     if(a==="c")delete r[o];
     else{if(!had&&a[1]==="-")return;const v=r[o]=had?r[o]:[0,0],k=+a[0];v[k]=Math.max(0,v[k]+(a[1]==="+"?1:-1))}
     save();rRes()};
@@ -732,10 +848,23 @@ function wire(){
   $("gMode").onclick=e=>{const b=e.target.closest("button[data-md]");if(!b)return;gMode=b.dataset.md;
     document.querySelectorAll("#gMode button").forEach(x=>x.setAttribute("aria-pressed",x===b));
     $("gA").textContent="Aggiungi "+KL[gMode]};
-  $("cx").onclick=exportCal;$("dx").onclick=exportData;$("impf").onchange=e=>{const f=e.target.files[0];if(f)importData(f);e.target.value=""};["sCat","sFase","sOpp","sPl","sDal","sAl"].forEach(i=>$(i).onchange=rSt);
-  $("sRst").onclick=()=>{["sCat","sFase","sOpp"].forEach(i=>$(i).value="all");$("sPl").value="";$("sDal").value="";$("sAl").value="";rSt()};
+  $("eK").onchange=evK;$("eC").onclick=()=>{evReset();$("eMsg").textContent=""};
+  $("eS").onclick=()=>{const id=$("gM").value,o=$("gO").value,m=AM().find(x=>mid(x)===id),k=$("eK").value,n=$("eN").value,m1=$("eM").value;if(!m||!o)return;
+    const v={id,d:m[0],cat:mc(m),o,k,n:k==="g"?n:"",a1:k==="g"?$("eA1").value:"",a2:k==="g"?$("eA2").value:"",p:$("eP").value,mn:m1===""?"":Math.max(0,parseInt(m1)||0),tp:$("eT").value};
+    if(k==="g"&&!n){$("eMsg").textContent="Scegli il marcatore (oppure usa i pulsanti rapidi qui sopra).";return}
+    if((v.a1&&v.a1===v.n)||(v.a2&&(v.a2===v.n||v.a2===v.a1))){$("eMsg").textContent="Marcatore e assist devono essere giocatori diversi.";return}
+    if(evEdit>=0)S.ev[evEdit]=v;else S.ev.push(v);
+    save();evReset();updG();$("eMsg").textContent="Goal salvato."};
+  $("evList").onclick=e=>{const b=e.target.closest("button");if(!b)return;
+    if(b.dataset.ed!==undefined){S.ev.splice(+b.dataset.ed,1);save();evReset();updG()}
+    else if(b.dataset.ee!==undefined){const i=+b.dataset.ee,v=S.ev[i];$("gM").value=v.id;fillO(false);$("gO").value=v.o;
+      $("eK").value=v.k;evK();$("eN").value=v.n||"";$("eA1").value=v.a1||"";$("eA2").value=v.a2||"";$("eP").value=v.p||"";$("eM").value=v.mn;$("eT").value=v.tp||"";
+      evEdit=i;$("eS").textContent="Aggiorna goal";$("eC").hidden=false;$("evP").scrollIntoView({behavior:"smooth"})}};
+  ["gList","evList"].forEach(id=>$(id).addEventListener("toggle",e=>{const d=e.target;if(d.dataset&&d.dataset.k){S.tbl[d.dataset.k]=d.open;save()}},true));
+  $("cx").onclick=exportCal;$("dx").onclick=exportData;$("impf").onchange=e=>{const f=e.target.files[0];if(f)importData(f);e.target.value=""};["sCat","sFase","sOpp","sKind","sPl","sDal","sAl"].forEach(i=>$(i).onchange=rSt);
+  $("sRst").onclick=()=>{["sCat","sFase","sOpp","sKind"].forEach(i=>$(i).value="all");$("sPl").value="";$("sDal").value="";$("sAl").value="";rSt()};
   $("exP").onclick=exP;$("exT").onclick=exT;
-  $("prt").onclick=()=>{try{window.print()}catch(e){$("stMsg").textContent="La stampa non è disponibile in questo ambiente."}};
+  $("prt").onclick=pdfReport;
   $("p-st").onclick=e=>{const t=e.target;let b;
     if(b=t.closest("[data-s]")){sSort=b.dataset.s;rSt()}
     else if(b=t.closest("[data-bm]")){bMet=b.dataset.bm;rSt()}
@@ -753,13 +882,14 @@ function logoInit(){
         save();show()};
       im.src=r.result};r.readAsDataURL(f)};
   show()}
-init();render();wire();tinit();logoInit();tab(S.tab||"cal");
+migTr();init();render();wire();tinit();logoInit();tab(S.tab||"cal");
 </script>
 
 <script>
-// Registrazione PWA: il service worker aggiorna la cache senza modificare i dati locali.
 if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => { navigator.serviceWorker.register('./sw.js').catch(err => console.warn('PWA offline non disponibile:', err)); });
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(err => console.warn('PWA: service worker non registrato', err));
+  });
 }
 </script>
 </body>

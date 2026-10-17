@@ -1,20 +1,23 @@
 REAL TORINO HOCKEY CLUB — PWA
+================================
 
-CONTENUTO
-- index.html: pagina HTML originale aggiornata con supporto PWA
-- manifest.webmanifest: nome, icone e impostazioni installazione
-- sw.js: service worker e cache offline di base
-- icons/: icone dell'app
+Contenuto:
+- index.html: pagina originale, con aggiunta dei metadati PWA e registrazione del service worker
+- manifest.json: nome, colori, modalità standalone e icone dell'app
+- service-worker.js: cache dell'app per avvio offline dopo la prima visita
+- icons/: icone di avvio
 
-PUBBLICAZIONE SU GITHUB PAGES
-1. Estrai tutti i file dello ZIP.
-2. Carica index.html, manifest.webmanifest, sw.js e la cartella icons nella cartella principale (root) del repository.
-3. Mantieni GitHub Pages su Deploy from a branch, branch main, cartella /(root).
-4. Attendi la pubblicazione e apri il sito tramite HTTPS.
-5. Su Chrome/Edge usa l'icona Installa nella barra degli indirizzi o il menu > Installa app. Su iPhone/iPad apri in Safari e scegli Condividi > Aggiungi alla schermata Home.
+PUBBLICAZIONE CON GITHUB PAGES
+1. Estrai tutti i file mantenendo questa struttura.
+2. Carica index.html, manifest.json, service-worker.js e la cartella icons/ nella root del repository GitHub Pages (branch main, folder / (root)).
+3. In Settings > Pages verifica che GitHub Pages sia attivo.
+4. Apri il sito pubblicato tramite HTTPS.
+5. Visita la pagina una prima volta online; il service worker memorizzerà i file dell'app.
+6. Dal browser usa “Installa app” o “Aggiungi alla schermata Home”, se disponibile.
 
-IMPORTANTE SUI DATI
-Questa versione conserva la logica e il codice della pagina HTML originale. I dati salvati con localStorage restano nel singolo browser/dispositivo e non vengono sincronizzati automaticamente tra utenti o dispositivi. Prima di sostituire la versione online, esporta o fai una copia di sicurezza dei dati se la pagina offre tale funzione.
-
-NOTA
-L'installazione PWA richiede la pubblicazione tramite HTTPS (ad esempio GitHub Pages); l'apertura diretta del file HTML dal computer non è sufficiente per installare la PWA.
+NOTE IMPORTANTI
+- La PWA richiede un indirizzo HTTPS (GitHub Pages va bene); non è installabile aprendo il file HTML direttamente dal disco.
+- I dati applicativi originali continuano a essere salvati nel localStorage del browser e non si sincronizzano automaticamente tra dispositivi.
+- L'uso offline riguarda la pagina e i file locali; Google Maps e Google Calendar richiedono internet.
+- Per aggiornare la cache in futuro, incrementa CACHE_NAME in service-worker.js (es. real-torino-pwa-v2).
+- Le icone incluse sono un monogramma RT generico, non il logo ufficiale del club.

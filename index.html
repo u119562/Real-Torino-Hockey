@@ -2,16 +2,16 @@
 <html lang="it">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#081426">
-<meta name="description" content="Real Torino Hockey Club: calendario, trasferte, risultati e statistiche della stagione 2026/27.">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Real Torino">
-<link rel="manifest" href="./manifest.json">
-<link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
-<link rel="apple-touch-icon" href="./icons/icon-192.png">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0d1c30">
+ <meta name="description" content="Calendario, trasferte, risultati e statistiche del Real Torino Hockey Club.">
+ <meta name="application-name" content="Real Torino Hockey Club">
+ <meta name="apple-mobile-web-app-capable" content="yes">
+ <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+ <meta name="apple-mobile-web-app-title" content="Real Torino">
+ <link rel="manifest" href="./manifest.webmanifest">
+ <link rel="icon" href="./icons/icon.svg" type="image/svg+xml">
+ <link rel="apple-touch-icon" href="./icons/icon-192.png">
 <title>Real Torino – calendario e trasferte</title>
 <style>
 :root{--ink:#000;--ice:#f2f3f5;--card:#fff;--line:#dcdee3;--red:#c8102e;--mut:#676b73;--acc:#0a66c2}
@@ -21,16 +21,16 @@
 body{margin:0;background:var(--ice);color:var(--ink);font:16px/1.4 "Helvetica Neue",Arial,sans-serif}
 .rt,h2,.d b,.tot b,.st b,.tabs button,.seg button,.btn,.i .v,.a .c,.a a,.tag,th{font-family:"Arial Narrow","Roboto Condensed","Helvetica Neue",Arial,sans-serif;font-stretch:condensed;text-transform:uppercase;letter-spacing:.03em}
 .top{background:#000;color:#fff;position:sticky;top:0;z-index:5;border-bottom:4px solid var(--red)}
-.bar{max-width:860px;margin:0 auto;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+.bar{max-width:var(--mw,860px);margin:0 auto;padding:10px 14px;display:flex;align-items:center;justify-content:space-between;gap:12px}
 .brand{display:flex;flex-direction:column;line-height:1.1}
 .rt{font-size:1.7rem;font-weight:800}
 .sea{font-size:.7rem;opacity:.75;text-transform:uppercase;letter-spacing:.1em}
 .logo{width:54px;height:54px;border-radius:50%;background:#fff;color:var(--red);display:flex;align-items:center;justify-content:center;font:800 1.2rem "Arial Narrow",Arial,sans-serif;cursor:pointer;overflow:hidden;border:2px solid #fff;flex:none}
 .logo img{width:100%;height:100%;object-fit:contain;background:#fff}
-.tabs{max-width:860px;margin:0 auto;display:flex;padding:0 6px;overflow-x:auto}
+.tabs{max-width:var(--mw,860px);margin:0 auto;display:flex;padding:0 6px;overflow-x:auto}
 .tabs button{flex:1 0 auto;white-space:nowrap;background:none;border:0;border-bottom:3px solid transparent;color:#fff;opacity:.65;padding:10px 9px;font-size:.85rem;font-weight:700;cursor:pointer}
 .tabs button[aria-pressed=true]{opacity:1;border-bottom-color:#fff}
-main{max-width:860px;margin:0 auto;padding:16px 14px 60px}
+main{max-width:var(--mw,860px);margin:0 auto;padding:16px 14px 60px}
 .panel{background:var(--card);border:1px solid var(--line);border-radius:6px;padding:14px;margin-bottom:14px}
 .row{display:flex;flex-wrap:wrap;gap:12px}
 .row>label{flex:1 1 160px;display:flex;flex-direction:column;font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;color:var(--mut);gap:4px;font-weight:700}
@@ -139,7 +139,7 @@ body{background-image:radial-gradient(1100px 520px at 90% -8%,rgba(200,16,46,.10
 .chips b{color:#ff8a98}
 .logo{width:72px;height:72px;box-shadow:0 0 0 5px rgba(255,255,255,.12),0 10px 28px rgba(0,0,0,.45);transition:transform .2s}
 .logo:hover{transform:rotate(-6deg) scale(1.05)}
-.tabs{position:sticky;top:0;z-index:10;max-width:none;margin:0;gap:6px;padding:8px max(10px,calc((100vw - 860px)/2));background:rgba(6,10,16,.94);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.tabs{position:sticky;top:0;z-index:10;max-width:none;margin:0;gap:6px;padding:8px max(10px,env(safe-area-inset-left,0px),calc((100% - var(--mw,860px))/2));background:rgba(6,10,16,.94);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
 .tabs button{border:0;border-radius:99px;padding:9px 15px;opacity:.8;transition:background .2s,opacity .2s}
 .tabs button:hover{opacity:1;background:rgba(255,255,255,.12)}
 .tabs button[aria-pressed=true]{background:var(--red);opacity:1;border:0}
@@ -201,7 +201,7 @@ input:focus,select:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(10,10
 .g5{display:grid;grid-template-columns:30px 1fr auto;gap:10px;align-items:center;padding:8px 0;border-top:1px solid var(--line)}
 .pt tr[data-pl]{cursor:pointer}
 .det{min-height:1.2em;font-weight:600;color:var(--ink)}
-@media print{.tabs,.top,.foot,#stCtl,#stMsg,.sg,.btn,.seg2{display:none!important}#p-cal,#p-tor,#p-res,#p-gol,#p-set{display:none!important}body{background:#fff!important}.panel,.ld,.st div{box-shadow:none!important}}
+@media print{.mnav,.tabs,.top,.foot,#stCtl,#stMsg,.sg,.btn,.seg2{display:none!important}#p-cal,#p-tor,#p-res,#p-gol,#p-set{display:none!important}body{background:#fff!important}.panel,.ld,.st div{box-shadow:none!important}}
 .bar{cursor:pointer}.bar.k0{fill:var(--ink)}.bar.k1{fill:var(--red)}
 #list h2.pst,#tlist h2.pst{color:var(--mut);margin-top:46px}
 #list h2.pst::after,#tlist h2.pst::after{background:linear-gradient(90deg,var(--mut),transparent)}
@@ -216,9 +216,9 @@ input:focus,select:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(10,10
 .card{background:linear-gradient(160deg,#0f2342,#0a1a30);border:1px solid var(--line);border-radius:16px;padding:14px;min-width:0;box-shadow:0 4px 18px rgba(0,0,0,.35);color:var(--ink)}
 .card h2{font-size:1rem;margin:0 0 8px}
 .fb{margin-bottom:12px}.fbb{margin:14px 0 0}
-.dash{display:grid;grid-template-columns:repeat(12,1fr);gap:12px;margin-bottom:12px}
-.dash>*{grid-column:1/-1}
-.dash>.w3{grid-column:span 3}.dash>.w4{grid-column:span 4}.dash>.w5{grid-column:span 5}.dash>.w6{grid-column:span 6}.dash>.w7{grid-column:span 7}
+.dsh{display:grid;min-width:0;grid-template-columns:repeat(12,minmax(0,1fr));gap:14px;margin-bottom:14px;align-items:stretch}
+.dsh>*{grid-column:1/-1}
+.dsh>.w3{grid-column:span 3}.dsh>.w4{grid-column:span 4}.dsh>.w5{grid-column:span 5}.dsh>.w6{grid-column:span 6}.dsh>.w7{grid-column:span 7}
 .kprow{grid-column:1/-1;display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
 .kp{display:flex;gap:12px;align-items:center}
 .ico{width:48px;height:48px;border-radius:50%;display:grid;place-items:center;font-style:normal;font-size:1.3rem;color:#fff;flex:none}
@@ -246,17 +246,110 @@ input:focus,select:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(10,10
 #dash[data-v="pan"] .vv:not(.v-pan),#dash[data-v="gio"] .vv:not(.v-gio),#dash[data-v="gra"] .vv:not(.v-gra),#dash[data-v="sq"] .vv:not(.v-sq),#dash[data-v="par"] .vv:not(.v-par){display:none}
 #dash[data-v="gio"]>.w3,#dash[data-v="sq"]>.w3,#dash[data-v="gra"]>.w4{grid-column:span 6}
 #dash[data-v="gio"]>.w7,#dash[data-v="par"]>.w7,#dash[data-v="par"]>.w5,#dash[data-v="par"]>.w4{grid-column:1/-1}
-@media(max-width:900px){.dash>*{grid-column:1/-1!important}.kprow{grid-template-columns:repeat(2,1fr)}.kprow .kp:last-child{grid-column:1/-1}.dt{font-size:1.7rem}}
+@media(max-width:700px){.dsh>.vv{grid-column:1/-1!important}.dt{font-size:1.7rem}#p-st{padding:12px;border-radius:16px}.card{padding:12px}}
+body.wide{--mw:1240px}
+#p-st{container-type:inline-size;container-name:st}
+.card{display:flex;flex-direction:column;padding:16px}
+.card.kp,.kp{flex-direction:row}
+.ch2{min-height:34px;margin-bottom:12px;flex-wrap:wrap}
+#p-st{min-width:0;max-width:100%}
+#p-st .sg{flex-wrap:wrap;gap:6px}
+#p-st .sg button{flex:0 1 auto}
+.ch2>b{font:700 1.05rem/1.2 "Helvetica Neue",Arial,sans-serif;letter-spacing:0;text-transform:none}
+.card h2{font:700 1.05rem/1.2 "Helvetica Neue",Arial,sans-serif;letter-spacing:0;text-transform:none;margin:0 0 12px}
+.card .ch{max-width:none;width:100%;height:auto}
+.card .sg.sm{margin:0 0 10px}
+.card .note{margin:8px 0 0}
+.card>.sc,.card>.scr{flex:1}
+.kprow{grid-template-columns:repeat(5,minmax(0,1fr));gap:14px;min-width:0}
+.kp b{font-size:1.8rem}
+.kp>div{min-width:0}
+.mk{grid-template-columns:20px 34px minmax(0,1fr) auto;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.06)}
+.mk:last-of-type{border-bottom:0}
+.mk>span{color:var(--mut);font-weight:700;text-align:center}
+.mk>div{min-width:0}
+.mk b{display:block;font-size:.92rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mk em{min-width:26px}
+.tw{grid-template-columns:minmax(0,96px) minmax(0,1fr) 28px}
+.tw>span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.t5{width:100%;font-size:.88rem}
+.t5 td.n,.t5 th.n{white-space:nowrap;text-align:right}
+.t5 td:first-child{white-space:nowrap;color:var(--mut)}
+.card table{font-size:.88rem}
+.card th{font-size:.7rem;letter-spacing:.05em}
+@container st (max-width:1000px){
+ .dsh>.w3,.dsh>.w4{grid-column:span 6!important}
+ .dsh>.w5,.dsh>.w6,.dsh>.w7,.dsh>.lst{grid-column:1/-1!important}
+ .kprow{grid-template-columns:repeat(6,1fr)}
+ .kprow>.kp{grid-column:span 2}.kprow>.kp:nth-child(n+4){grid-column:span 3}
+}
+@container st (max-width:640px){
+ .dsh>.vv{grid-column:1/-1!important}
+ .kprow{grid-template-columns:repeat(2,1fr)}
+ .kprow>.kp,.kprow>.kp:nth-child(n+4){grid-column:auto}.kprow>.kp:last-child{grid-column:1/-1}
+}
+/* ===== adattamento computer / tablet / telefono ===== */
+html{-webkit-text-size-adjust:100%;text-size-adjust:100%;scroll-padding-top:72px}
+body{overflow-x:clip}
+body::before{content:"";position:fixed;top:0;left:0;right:0;height:env(safe-area-inset-top,0px);background:#05080d;z-index:30;pointer-events:none}
+.bar{padding-top:26px;padding-left:max(18px,env(safe-area-inset-left,0px));padding-right:max(18px,env(safe-area-inset-right,0px))}
+main{padding-left:max(14px,env(safe-area-inset-left,0px));padding-right:max(14px,env(safe-area-inset-right,0px));padding-bottom:calc(60px + env(safe-area-inset-bottom,0px))}
+.tabs{scrollbar-width:none;-webkit-overflow-scrolling:touch}.tabs::-webkit-scrollbar{display:none}
+.tabs button{scroll-snap-align:center}
+.x{min-width:38px;min-height:38px}
+td input[data-p=q]{min-width:160px}
+img,svg{max-width:100%}
+@media(max-width:520px){
+ .bar{padding-top:20px;padding-left:max(14px,env(safe-area-inset-left,0px));padding-right:max(14px,env(safe-area-inset-right,0px))}
+ .btn,.seg2{padding:11px 18px}
+ .row{gap:10px}
+ .panel{padding:12px}
+ .chips span{font-size:.75rem}
+}
+@media(min-width:1100px){html{font-size:17px}}
+@media(hover:none){
+ .m:hover,.btn:hover,.go:hover,.logo:hover{transform:none}
+ .m:hover{box-shadow:0 2px 12px rgba(10,25,45,.07)}
+ .a a:hover{background:transparent;color:var(--ink)}
+ .lk a:first-child:hover{background:var(--red);color:#fff}
+ .tabs button:hover{background:none}
+ .pl:hover{background:var(--card)}
+}
+.mnav{position:sticky;top:env(safe-area-inset-top,0px);margin-top:env(safe-area-inset-top,0px);z-index:40;background:rgba(6,10,16,.96);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);padding:8px max(10px,env(safe-area-inset-left,0px),calc((100% - var(--mw,860px))/2));border-bottom:1px solid rgba(255,255,255,.08)}
+.mwrap{position:relative;display:inline-block;max-width:100%}
+.mbtn{display:flex;align-items:center;gap:10px;max-width:100%;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.25);color:#fff;border-radius:99px;padding:9px 16px;font:700 .95rem "Arial Narrow","Roboto Condensed",Arial,sans-serif;font-stretch:condensed;text-transform:uppercase;letter-spacing:.05em;cursor:pointer;transition:background .15s}
+.mbtn:hover{background:rgba(255,255,255,.16)}
+.mbtn[aria-expanded=true]{background:var(--red);border-color:var(--red)}
+.mbtn .mi{font-style:normal;font-size:1.15rem;line-height:1}
+.mbtn .mc{font-style:normal;font-size:.8rem;transition:transform .2s}
+.mbtn[aria-expanded=true] .mc{transform:rotate(180deg)}
+.mlist{position:absolute;top:calc(100% + 8px);left:0;min-width:250px;max-width:calc(100vw - 20px);background:#0b1626;border:1px solid #1e3a66;border-radius:14px;padding:6px;box-shadow:0 18px 40px rgba(0,0,0,.5);display:flex;flex-direction:column;gap:2px;animation:rise .18s ease both}
+.mlist button{display:flex;align-items:center;text-align:left;min-height:48px;padding:10px 14px;border:0;border-radius:10px;background:none;color:#fff;font:600 1rem "Helvetica Neue",Arial,sans-serif;cursor:pointer}
+.mlist button:hover{background:rgba(255,255,255,.1)}
+.mlist button[aria-pressed=true]{background:var(--red);font-weight:800}
+@media(hover:none){.mbtn:hover{background:rgba(255,255,255,.08)}.mlist button:hover{background:none}.mlist button[aria-pressed=true]:hover{background:var(--red)}}
 </style>
 </head>
 <body>
+<nav class="mnav" aria-label="Pagine">
+ <div class="mwrap">
+  <button class="mbtn" id="menuBtn" aria-haspopup="true" aria-expanded="false" aria-controls="menuList"><i class="mi" aria-hidden="true">☰</i><span id="menuCur">Raggruppamenti</span><i class="mc" aria-hidden="true">▾</i></button>
+  <div class="mlist" id="menuList" role="menu" hidden>
+   <button role="menuitem" data-t="cal" aria-pressed="true">Raggruppamenti</button>
+   <button role="menuitem" data-t="tor" aria-pressed="false">Tornei</button>
+   <button role="menuitem" data-t="res" aria-pressed="false">Risultati</button>
+   <button role="menuitem" data-t="gol" aria-pressed="false">Goal/Assist</button>
+   <button role="menuitem" data-t="st" aria-pressed="false">Statistiche</button>
+   <button role="menuitem" data-t="set" aria-pressed="false">Impostazioni</button>
+  </div>
+ </div>
+</nav>
 <header class="top">
 <div class="bar">
  <div class="brand"><span class="sea">Stagione 2026/27</span><span class="rt">Real Torino<br>Hockey Club</span><span class="tg">Raggruppamenti, tornei, trasferte e statistiche · U10 · U12</span><div class="chips" id="chips"></div></div>
  <label class="logo" title="Clicca per caricare il logo del Real Torino Hockey Club"><img id="lg" alt="Logo Real Torino Hockey Club" hidden><span id="lgp">RT</span><input id="lgf" type="file" accept="image/*" hidden aria-label="Carica il logo del Real Torino Hockey Club"></label>
 </div>
 </header>
-<nav class="tabs" aria-label="Pagine"><button data-t="cal" aria-pressed="true">Raggruppamenti</button><button data-t="tor" aria-pressed="false">Tornei</button><button data-t="res" aria-pressed="false">Risultati</button><button data-t="gol" aria-pressed="false">Goal/Assist</button><button data-t="st" aria-pressed="false">Statistiche</button><button data-t="set" aria-pressed="false">Impostazioni</button></nav>
 <main>
 <div id="p-cal">
 <div id="nx"></div>
@@ -300,7 +393,7 @@ input:focus,select:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(10,10
 <section class="panel">
   <h2>Sedi: ricerca su Maps, km e pedaggio (solo andata)</h2>
   <p class="note" style="margin-top:0">I km sono stime da Vinovo. Controllali su Maps e correggili qui: pedaggi e costo sono calcolati su andata e ritorno. I pedaggi (auto classe A) sono stime: verificali sul sito della concessionaria.</p>
-  <table><thead><tr><th>Sede</th><th>Cerca su Maps</th><th>Km</th><th>Pedaggio €</th></tr></thead><tbody id="vt"></tbody></table>
+  <div class="sc"><table><thead><tr><th>Sede</th><th>Cerca su Maps</th><th>Km</th><th>Pedaggio €</th></tr></thead><tbody id="vt"></tbody></table></div>
 </section>
 <section class="panel">
   <h2>Dati</h2>
@@ -387,7 +480,7 @@ input:focus,select:focus{border-color:var(--acc);box-shadow:0 0 0 3px rgba(10,10
  </section>
  <p class="note" id="stFlt"></p>
  <p class="note" id="stMsg"></p>
- <div id="dash" class="dash" data-v="pan"></div>
+ <div id="dash" class="dsh" data-v="pan"></div>
  <section class="card" id="leg">
   <h2>Leggenda</h2>
   <p style="margin:6px 0"><b>G</b> goal · <b>A</b> assist · <b>P</b> punti (G + A) · <b>PG</b> partite giocate · <b>P/PG</b> media punti per partita · <b>%G</b> quota dei goal della squadra (dai risultati inseriti)</p>
@@ -519,9 +612,9 @@ const srt=()=>AM().sort((a,b)=>a[0]<b[0]?-1:1);
 function migTr(){let ch=0;for(const r of S.tr){if(r.mig)continue;const x=T0.concat(S.tor).find(t=>t.id===r.t);if(!x)continue;
   const id=x.d1+x.n,L=S.top[x.id]=S.top[x.id]||[],R=S.res[id]=S.res[id]||{};let o=r.o;if(R[o])o+=" (2)";
   if(!L.includes(o))L.push(o);R[o]=[r.a,r.b];r.mig=1;ch=1}if(ch)save()}
-function tab(t){S.tab=t;save();
+function tab(t){S.tab=t;save();if(document.body)document.body.classList.toggle("wide",t==="st");
   ["cal","tor","res","gol","st","set"].forEach(x=>$("p-"+x).hidden=x!==t);
-  document.querySelectorAll(".tabs button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.t===t));
+  document.querySelectorAll("#menuList button").forEach(b=>{const on=b.dataset.t===t;b.setAttribute("aria-pressed",on);if(on)$("menuCur").textContent=b.textContent});
   if(t==="tor")rTor();if(t==="res")rRes();if(t==="gol")rGol();if(t==="st")rSt()}
 const pgL=g=>g[0]+" · Campo "+g[1]+" · "+(g[3]?"Real Torino – "+g[2]:g[2]+" – Real Torino");
 const CAMPI="Campo A: verso bar · Campo B: centrale · Campo C: verso rolba";
@@ -838,7 +931,7 @@ function rSt(){
   const tw2=R.filter(r=>r.tw+r.bl>0).sort((a,b)=>(b.tw+b.bl)-(a.tw+a.bl)||a.n.localeCompare(b.n)).slice(0,+st2.nTW),mx2=Math.max(1,...tw2.flatMap(r=>[r.tw,r.bl]));
   const twbl=cd("w4","pan gra",`<b>TW e BL <small>(contributo difensivo)</small></b>${sel("nTW",[["5","Top 5"],["10","Top 10"]])}`,
     tw2.length?tw2.map(r=>`<div class="tw" data-pl="${esc(r.n)}" tabindex="0"><span>${esc(r.n)}</span><div><u><s class="k3" style="width:${r.tw/mx2*100}%"></s></u><u><s class="k1" style="width:${r.bl/mx2*100}%"></s></u></div><em>${r.tw||"–"}<br>${r.bl||"–"}</em></div>`).join("")+`<p class="note"><i class="lg k3"></i>TW <i class="lg k1"></i>BL</p>`:`<p class="note">Nessun TW o BL registrato per questi filtri.</p>`);
-  const per=cd("w4","pan gra","",chartF(f,t));
+  const per=cd("w4 lst","pan gra","",chartF(f,t));
   /* classifica giocatori */
   const th=(k,l)=>`<th class="n${sSort===k?" on":""}"><button data-s="${k}" aria-label="Ordina per ${l}">${l}${sSort===k?" ▼":""}</button></th>`,
     cell=(r,k)=>k==="ct"?(tf?Math.round(r.g/tf*100)+"%":"–"):(k==="tw"||k==="bl"||k==="an")?(r[k]||"–"):(r[k]??"–"),
@@ -855,7 +948,7 @@ function rSt(){
   const ind=cd("w12","sq",`<b>Indicatori di squadra</b>`,hv?`<div class="st">${c(t.w*3+t.n,"punti (3-1-0)")}${c((df>0?"+":"")+df,"differenza reti")}${c(avg(t.f,t.g),"gol fatti/partita")}${c(avg(t.s,t.g),"gol subiti/partita")}${c(pct(t.w,t.g),"vittorie")}${c(pct(t.sc,t.g),"con almeno un goal")}${c(pct(t.cs,t.g),"senza goal subiti")}</div><p class="note">Miglior risultato: ${rs(bw)}<br>Peggior risultato: ${rs(ww)}</p>`:nores);
   const tAR=cd("w4","sq","",tb("Andata e ritorno",tr("Fase 1 · andata",agg(by(x=>x.m[3]==1)))+tr("Fase 2 · ritorno",agg(by(x=>x.m[3]==2))))),
     tCT=cd("w4","sq","",tb("In casa / in trasferta",tr("In casa",agg(by(x=>!x.t&&x.m[5])))+tr("In trasferta",agg(by(x=>!x.t&&!x.m[5]))))),
-    tOP=cd("w4","sq par","",tb("Per avversario",Object.entries(ops).sort((a,b)=>b[1].length-a[1].length||a[0].localeCompare(b[0])).map(([n,A])=>tr(n,agg(A))).join("")||tr("–",agg([])),"Avversario")),
+    tOP=cd("w4 lst","sq par","",tb("Per avversario",Object.entries(ops).sort((a,b)=>b[1].length-a[1].length||a[0].localeCompare(b[0])).map(([n,A])=>tr(n,agg(A))).join("")||tr("–",agg([])),"Avversario")),
     gday=Object.keys(gm).length?cd("w6","gra sq","",chartG(Object.values(gm))):"";
   const allC=cd("w12","par",`<b>Tutte le partite</b>`,G.length?`<div class="sc"><table><thead><tr><th>Data</th><th>Avversario</th><th class="n">Risultato</th><th>Esito</th></tr></thead><tbody>${G.map(x=>`<tr><td>${fmt(x.m[0])} · ${x.m[2]}</td><td>${esc(x.o)}</td><td class="n">${x.a}–${x.b}</td><td><span class="vnp ${pc(x.a,x.b)}">${pc(x.a,x.b)}</span></td></tr>`).join("")}</tbody></table></div>`:nores);
   /* giocatori: primi cinque, scheda, andamento, distribuzione */
@@ -892,7 +985,12 @@ function exP(){const f=FL(),tf=agg(games(f)).f;
 function exT(){csvOut("statistiche-squadra",["Data","Categoria","Fase","Sede","Avversario","Gol fatti","Gol subiti","Esito"],
   games(FL()).map(x=>[x.m[0],x.m[2],x.m[3],x.m[5]?"In casa":"Trasferta",x.o,x.a,x.b,pc(x.a,x.b)]))}
 function wire(){
-  document.querySelectorAll(".tabs button").forEach(b=>b.onclick=()=>tab(b.dataset.t));
+  const menuOpen=o=>{$("menuList").hidden=!o;$("menuBtn").setAttribute("aria-expanded",String(o))};
+  $("menuBtn").onclick=e=>{e.stopPropagation();menuOpen($("menuList").hidden)};
+  $("menuList").onclick=e=>{const b=e.target.closest("button[data-t]");if(!b)return;tab(b.dataset.t);menuOpen(false);
+    const mn=document.querySelector("main");if(mn&&window.scrollY>mn.offsetTop-70)mn.scrollIntoView({block:"start"})};
+  document.addEventListener("click",e=>{if(!e.target.closest(".mwrap"))menuOpen(false)});
+  document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("menuList").hidden){menuOpen(false);$("menuBtn").focus()}});
   $("resList").onclick=e=>{const ta=e.target.closest("button[data-ta]");
     if(ta){const id=ta.dataset.ta,tm=TM().find(t=>mid(t)===id),n=ta.parentNode.querySelector("input").value.trim(),msg=ta.closest("details").querySelector(".tmsg");
       if(!tm||!n)return;const L=S.top[tm[10].tor]=S.top[tm[10].tor]||[];
@@ -962,12 +1060,9 @@ migTr();init();render();wire();tinit();logoInit();tab(S.tab||"cal");
 </script>
 
 <script>
-/* PWA: registra il service worker per installazione e uso offline. */
-if ("serviceWorker" in navigator) {
+if ("serviceWorker" in navigator && location.protocol !== "file:") {
   window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./service-worker.js").catch((err) => {
-      console.warn("Registrazione PWA non riuscita:", err);
-    });
+    navigator.serviceWorker.register("./sw.js").catch(err => console.warn("Service worker non registrato:", err));
   });
 }
 </script>

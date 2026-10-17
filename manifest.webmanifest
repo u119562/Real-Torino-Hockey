@@ -1,27 +1,33 @@
 {
   "id": "./",
-  "name": "Real Torino Hockey Club",
+  "name": "Real Torino Hockey Club – Calendario e trasferte",
   "short_name": "Real Torino",
-  "description": "Calendario, trasferte, tornei, risultati e statistiche del Real Torino Hockey Club.",
+  "description": "Calendario, trasferte, risultati e statistiche Real Torino Hockey Club.",
   "lang": "it-IT",
-  "start_url": "./",
+  "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "any",
-  "background_color": "#000000",
-  "theme_color": "#000000",
+  "background_color": "#07111f",
+  "theme_color": "#0d1c30",
   "icons": [
+    {
+      "src": "./icons/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    },
     {
       "src": "./icons/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     },
     {
       "src": "./icons/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
-      "purpose": "any maskable"
+      "purpose": "any"
     }
   ]
 }

@@ -3,15 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0d1c30">
- <meta name="description" content="Calendario, trasferte, risultati e statistiche del Real Torino Hockey Club.">
- <meta name="application-name" content="Real Torino Hockey Club">
- <meta name="apple-mobile-web-app-capable" content="yes">
- <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
- <meta name="apple-mobile-web-app-title" content="Real Torino">
- <link rel="manifest" href="./manifest.webmanifest">
- <link rel="icon" href="./icons/icon.svg" type="image/svg+xml">
- <link rel="apple-touch-icon" href="./icons/icon-192.png">
+<meta name="theme-color" content="#000000">
 <title>Real Torino – calendario e trasferte</title>
 <style>
 :root{--ink:#000;--ice:#f2f3f5;--card:#fff;--line:#dcdee3;--red:#c8102e;--mut:#676b73;--acc:#0a66c2}
@@ -329,6 +321,13 @@ img,svg{max-width:100%}
 .mlist button[aria-pressed=true]{background:var(--red);font-weight:800}
 @media(hover:none){.mbtn:hover{background:rgba(255,255,255,.08)}.mlist button:hover{background:none}.mlist button[aria-pressed=true]:hover{background:var(--red)}}
 </style>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Real Torino">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("service-worker.js").catch(e=>console.warn("SW non registrato",e)));}</script>
 </head>
 <body>
 <nav class="mnav" aria-label="Pagine">
@@ -857,34 +856,116 @@ function mkPdf(P){const O=[],add=x=>O.push(x);
   const x=out.length;out+=`xref\n0 ${O.length+1}\n0000000000 65535 f \n`+off.map(v=>String(v).padStart(10,"0")+" 00000 n \n").join("")+`trailer\n<< /Size ${O.length+1} /Root 1 0 R >>\nstartxref\n${x}\n%%EOF`;
   return Uint8Array.from(out,c=>c.charCodeAt(0)&255)}
 async function pdfReport(){
-  const f=FL(),G=games(f),t=agg(G),R=plRows(f).sort((a,b)=>b.p-a.p||b.g-a.g||a.n.localeCompare(b.n)),P=[],RED="0.78 0.06 0.18",d=new Date().toISOString().slice(0,10);
-  let pg,y;const np=()=>{pg=[];P.push(pg);y=800};
-  const tx=(s,x,yy,z=10,b=0)=>pg.push(`BT /F${b?2:1} ${z} Tf 0 g ${x} ${yy} Td (${pe(s)}) Tj ET`);
-  const ln=(s,z=10,b=0)=>{if(y<50)np();tx(s,40,y,z,b);y-=z+6},need=h=>{if(y<h+40)np()};
-  np();ln("Real Torino Hockey Club",20,1);ln("Report stagionale 2026/27 · generato il "+fmt(d),10);
-  let l="";for(const q of fDesc(f).split(" · ")){if((l+q).length>88){ln(l,9);l=""}l+=(l?" · ":"")+q}ln(l+(f.p?" · Giocatore: "+f.p:""),9);
-  y-=8;ln("Riepilogo squadra",13,1);
-  if(t.g){ln(`Partite ${t.g} · V-N-P ${t.w}-${t.n}-${t.p} · Punti ${t.w*3+t.n} · Gol fatti-subiti ${t.f}-${t.s} (${t.f-t.s>0?"+":""}${t.f-t.s})`);
-    ln(`Media gol: ${avg(t.f,t.g)} fatti · ${avg(t.s,t.g)} subiti · Vittorie ${pct(t.w,t.g)} · Con almeno un goal ${pct(t.sc,t.g)} · Senza subire ${pct(t.cs,t.g)}`)}
-  else ln("Nessun risultato inserito per questi filtri.");
-  y-=8;ln("Statistiche giocatori",13,1);
-  const X=[40,215,255,290,325,360,395,430],row=(a,b)=>{if(y<50)np();a.forEach((v,i)=>tx(v,X[i],y,9,b));y-=13};
-  if(R.length){row(["Giocatore","Cat.","G","A","P","TW","BL","AN"],1);R.slice(0,30).forEach(r=>row([r.n,rc(r.n),r.g,r.a,r.p,r.tw||"-",r.bl||"-",r.an||"-"],0))}
-  else ln("Nessuna statistica registrata per questi filtri.");
-  const top=R.filter(r=>r.p>0).slice(0,10);
-  if(top.length){need(10+top.length*13);y-=8;ln("Classifica punti (goal + assist)",13,1);const mx=top[0].p;
-    top.forEach(r=>{tx(r.n,40,y,8);pg.push(`${RED} rg 170 ${y-1} ${Math.max(2,r.p/mx*300)} 8 re f`);tx(String(r.p),178+r.p/mx*300,y,8,1);y-=13})}
-  need(170);y-=8;ln("Goal fatti (nero) e subiti (rosso) partita per partita",13,1);
-  if(G.length){const x0=60,w=470,h=100,y0=y-h-10,n=G.length,mx=Math.max(1,...G.flatMap(g=>[g.a,g.b])),X2=i=>x0+(n<2?w/2:i*w/(n-1)),Y2=v=>y0+v/mx*h;
-    pg.push(`0.6 G 0.5 w ${x0} ${y0} m ${x0+w} ${y0} l S ${x0} ${y0} m ${x0} ${y0+h} l S`);
-    [["0 G",g=>g.a],[RED+" RG",g=>g.b]].forEach(([c,fn])=>{pg.push(`${c} 1.5 w `+G.map((g,i)=>X2(i)+" "+Y2(fn(g))+(i?" l":" m")).join(" ")+" S")});
-    tx("0",45,y0-3,8);tx(String(mx),45,y0+h-3,8);tx(sdt(G[0].m[0]),x0,y0-12,8);if(n>1)tx(sdt(G[n-1].m[0]),x0+w-20,y0-12,8);y=y0-26}
-  else ln("Nessun risultato inserito per questi filtri.");
-  const E=S.ev.filter(e=>e.p&&okEv(f,e));
-  if(E.length){need(40);y-=6;ln("Goal per periodo (solo goal con periodo registrato)",13,1);
-    [1,2,3].forEach(p=>ln(`${p}° periodo: segnati ${E.filter(e=>e.k==="g"&&e.p==p).length} · subiti ${E.filter(e=>e.k==="s"&&e.p==p).length}`))}
+  const f0={c:"all",f:"all",o:"all",a:"",z:"",p:"",k:"all"},G=games(f0),t=agg(G),E=EV(),tf=t.f,d=new Date().toISOString().slice(0,10),
+    R=plRows(f0).sort((a,b)=>b.p-a.p||b.g-a.g||a.n.localeCompare(b.n)),df=t.f-t.s;
+  const BL="0.18 0.55 1",RD="0.91 0.09 0.23",IN="0.09 0.13 0.2",MU="0.45 0.5 0.58",LN="0.84 0.87 0.92",BG="0.94 0.96 0.99",P=[];let pg,y;
+  const np=()=>{pg=[];P.push(pg);y=790};
+  const tx=(s,x,yy,z=9,b=0,c=IN)=>pg.push(`BT /F${b?2:1} ${z} Tf ${c} rg ${x.toFixed?x.toFixed(1):x} ${yy.toFixed?yy.toFixed(1):yy} Td (${pe(s)}) Tj ET`);
+  const rc2=(x,yy,w,h,c)=>pg.push(`${c} rg ${x.toFixed(1)} ${yy.toFixed(1)} ${w.toFixed(1)} ${h.toFixed(1)} re f`);
+  const ln=(x1,y1,x2,y2,c=LN,w=0.6)=>pg.push(`${c} RG ${w} w ${x1.toFixed(1)} ${y1.toFixed(1)} m ${x2.toFixed(1)} ${y2.toFixed(1)} l S`);
+  const W=(s,z,b)=>String(s).length*z*(b?0.56:0.5),fit=(s,w,z)=>{s=String(s);const n=Math.floor(w/(z*0.5));return s.length>n?s.slice(0,Math.max(1,n-2))+"..":s};
+  const need=h=>{if(y-h<50)np()},sub=(s,h=90)=>{need(h);tx(s,40,y,10.5,1);y-=16},H=s=>{need(135);y-=12;rc2(40,y-3,4,14,RD);tx(s,50,y,13,1);y-=24},para=(s,z=9,c=MU)=>{need(16);tx(s,40,y,z,0,c);y-=z+5};
+  const table=(cols,rows)=>{const rh=13,x0=40;
+    const head=()=>{need(rh*3);rc2(x0,y-3,515,rh,BG);cols.forEach(c=>{const s=fit(c.h,c.w,8);tx(s,x0+c.x+(c.r?c.w-W(s,8,1):0),y,8,1,MU)});y-=rh};
+    head();rows.forEach((r,i)=>{if(y<62){np();head()}
+      const v=r.v||r,b=r.b;if(b)rc2(x0,y-3,515,rh,"0.88 0.93 1");else if(i%2)rc2(x0,y-3,515,rh,"0.975 0.98 0.99");
+      cols.forEach((c,j)=>{const s=fit(v[j],c.w,8.5);tx(s,x0+c.x+(c.r?c.w-W(s,8.5,b):0),y,8.5,b?1:0)});y-=rh});y-=8};
+  const hbars=(rows,col)=>{if(!rows.length){para("Nessun dato registrato.");return}const mx=Math.max(1,...rows.map(r=>r.v));
+    rows.forEach(r=>{need(14);const w=Math.max(2,r.v/mx*300);tx(fit(r.n,120,8.5),40,y,8.5);rc2(165,y-1,w,8,col);tx(String(r.v),170+w,y,8.5,1);y-=14});y-=6};
+  const pbars=rows=>{if(!rows.length){para("Nessun dato registrato.");return}const mx=Math.max(1,...rows.flatMap(r=>[r.a,r.b]));
+    rows.forEach(r=>{need(20);tx(fit(r.n,120,8.5),40,y-2,8.5);const wa=Math.max(1.5,r.a/mx*280),wb=Math.max(1.5,r.b/mx*280);
+      rc2(165,y+2,wa,6,BL);tx(String(r.a||"-"),169+wa,y+1,7.5,1);rc2(165,y-6,wb,6,RD);tx(String(r.b||"-"),169+wb,y-7,7.5,1);y-=20});y-=4};
+  const vbars=(cs,A,B,c0,c1,n0,n1)=>{const h=110,w=470,x0=60,slot=w/Math.max(1,cs.length),bw=Math.max(3,Math.min(18,slot/2-2)),mx=Math.max(1,...A,...B);need(h+62);const y0=y-h-14;
+    ln(x0,y0,x0+w,y0,MU,.8);ln(x0,y0,x0,y0+h,MU,.8);tx("0",50,y0-3,7,0,MU);tx(String(mx),50,y0+h-3,7,0,MU);
+    cs.forEach((c,i)=>{const x=x0+i*slot+slot/2-bw-1,ha=A[i]/mx*h,hb=B[i]/mx*h;rc2(x,y0,bw,Math.max(.5,ha),c0);rc2(x+bw+2,y0,bw,Math.max(.5,hb),c1);
+      if(A[i])tx(String(A[i]),x,y0+ha+2,6.5);if(B[i])tx(String(B[i]),x+bw+2,y0+hb+2,6.5);
+      if(cs.length<=14||i%Math.ceil(cs.length/14)===0)tx(c,x-2,y0-11,6.5,0,MU)});
+    rc2(x0,y0-28,8,8,c0);tx(n0,x0+12,y0-27,8);rc2(x0+90,y0-28,8,8,c1);tx(n1,x0+102,y0-27,8);y=y0-44};
+  const lchart=(xs,ser)=>{const h=120,w=470,x0=60,m0=Math.max(1,...ser.flatMap(s=>s.v)),st=Math.ceil(m0/4),mx=st*Math.ceil(m0/st),n=xs.length;need(h+60);
+    const y0=y-h-14,X=i=>x0+(n<2?w/2:i*w/(n-1)),Y=v=>y0+v/mx*h;
+    for(let v=0;v<=mx;v+=st){ln(x0,Y(v),x0+w,Y(v));tx(String(v),50,Y(v)-3,7,0,MU)}
+    ln(x0,y0,x0+w,y0,MU,.8);const sp=Math.ceil(n/12);xs.forEach((x,i)=>{if(i%sp===0||i===n-1)tx(x,X(i)-8,y0-11,6.5,0,MU)});
+    ser.forEach(s=>{pg.push(`${s.c} RG 1.6 w `+s.v.map((v,i)=>X(i).toFixed(1)+" "+Y(v).toFixed(1)+(i?" l":" m")).join(" ")+" S");
+      s.v.forEach((v,i)=>{rc2(X(i)-2,Y(v)-2,4,4,s.c);if(n<=14)tx(String(v),X(i)-3,Y(v)+4,6.5,0,s.c)})});
+    ser.forEach((s,k)=>{rc2(x0+k*90,y0-28,8,8,s.c);tx(s.n,x0+k*90+12,y0-27,8)});y=y0-44};
+  const top=(k,n=10)=>R.filter(r=>r[k]>0).sort((a,b)=>b[k]-a[k]||a.n.localeCompare(b.n)).slice(0,n).map(r=>({n:r.n,v:r[k]})),
+    pct2=(v,n)=>n?Math.round(v/n*100)+"%":"-",avg2=(v,n)=>n?(v/n).toFixed(1).replace(".",","):"-",res=x=>x.a+" - "+x.b,cmp=x=>x.t?x.m[2]:"Raggruppamenti "+x.m[2];
+  /* intestazione */
+  np();tx("Real Torino Hockey Club",40,y,22,1);y-=22;tx("Report stagionale 2026/27 · Statistiche complete",40,y,11,0,MU);y-=14;
+  tx("Generato il "+fmt(d)+" · comprende tutti i dati registrati, senza filtri",40,y,9,0,MU);y-=8;ln(40,y,555,y,RD,1.5);y-=10;
+  /* 1 riepilogo */
+  H("1 · Riepilogo squadra");
+  const hv=t.g>0,kp=[["Partite giocate",hv?t.g:"-",hv?"Raggr.: "+G.filter(x=>!x.t).length+" | Tornei: "+G.filter(x=>x.t).length:""],["Vittorie",hv?t.w:"-",pct2(t.w,t.g)],["Pareggi",hv?t.n:"-",pct2(t.n,t.g)],["Sconfitte",hv?t.p:"-",pct2(t.p,t.g)],["Goal fatti / subiti",hv?t.f+" / "+t.s:"-","Media "+avg2(t.f,t.g)+" / "+avg2(t.s,t.g)]];
+  need(60);kp.forEach((k,i)=>{const x=40+i*104.5;rc2(x,y-40,97,46,BG);rc2(x,y-40,3,46,i==3||i==4?RD:BL);tx(k[0].toUpperCase(),x+9,y-4,6.5,1,MU);tx(String(k[1]),x+9,y-22,16,1);tx(k[2],x+9,y-35,6.5,0,MU)});y-=58;
+  if(hv){const bw=G.reduce((b,x)=>!b||x.a-x.b>b.a-b.b?x:b,null),ww=G.reduce((b,x)=>!b||x.a-x.b<b.a-b.b?x:b,null);
+    table([{h:"Indicatore",x:4,w:300},{h:"Valore",x:330,w:180,r:1}],[["Punti (3-1-0)",t.w*3+t.n],["Differenza reti",(df>0?"+":"")+df],["Goal fatti a partita",avg2(t.f,t.g)],["Goal subiti a partita",avg2(t.s,t.g)],["Vittorie",pct2(t.w,t.g)],["Partite con almeno un goal",pct2(t.sc,t.g)],["Partite senza goal subiti",pct2(t.cs,t.g)],["Miglior risultato",fmt(bw.m[0])+" vs "+bw.o+" "+res(bw)],["Peggior risultato",fmt(ww.m[0])+" vs "+ww.o+" "+res(ww)]])}
+  else para("Nessun risultato inserito.");
+  /* 2 andamento */
+  H("2 · Andamento della squadra");
+  if(G.length)lchart(G.map(x=>sdt(x.m[0])),[{c:BL,v:G.map(x=>x.a),n:"Goal fatti"},{c:RD,v:G.map(x=>x.b),n:"Goal subiti"}]);else para("Nessun risultato inserito.");
+  const L5=G.slice(-5).reverse(),a5=agg(L5);
+  sub("Ultime 5 partite");
+  if(L5.length){table([{h:"Data",x:4,w:100},{h:"Competizione",x:108,w:130},{h:"Avversario",x:242,w:150},{h:"Risultato",x:396,w:60,r:1},{h:"Esito",x:470,w:40}],L5.map(x=>[fmt(x.m[0]),cmp(x),x.o,res(x),pc(x.a,x.b)]));para("Media nel periodo: "+avg2(a5.f,a5.g)+" goal fatti · "+avg2(a5.s,a5.g)+" subiti a partita",9,IN)}else para("Nessun risultato inserito.");
+  /* 3 marcatori */
+  H("3 · Classifica marcatori e assist");
+  sub("Goal");hbars(top("g"),RD);sub("Assist");hbars(top("a"),BL);sub("Punti (goal + assist)");hbars(top("p"),RD);
+  /* 4 goal e assist per partita */
+  H("4 · Goal e assist per partita");
+  const ids=[...new Set(E.g.concat(E.a).map(e=>e.id))].sort();
+  if(ids.length)vbars(ids.map(i=>sdt(i.slice(0,10))),ids.map(id=>E.g.filter(e=>e.id===id).reduce((a,e)=>a+e.c,0)),ids.map(id=>E.a.filter(e=>e.id===id).reduce((a,e)=>a+e.c,0)),BL,RD,"Goal","Assist");else para("Nessun goal o assist registrato.");
+  /* 5 TW BL AN */
+  H("5 · TW, BL e AN (contributo difensivo)");
+  sub("TW (blu) e BL (rosso) - primi 10 giocatori");
+  pbars(R.filter(r=>r.tw+r.bl>0).sort((a,b)=>(b.tw+b.bl)-(a.tw+a.bl)||a.n.localeCompare(b.n)).slice(0,10).map(r=>({n:r.n,a:r.tw,b:r.bl})));
+  sub("AN (goal senza assist)");hbars(top("an"),RD);
+  /* 6 periodi */
+  H("6 · Goal segnati e subiti per periodo");
+  const EP=S.ev.filter(e=>e.p);
+  if(EP.length){vbars(["1° periodo","2° periodo","3° periodo"],[1,2,3].map(p=>EP.filter(e=>e.k==="g"&&e.p==p).length),[1,2,3].map(p=>EP.filter(e=>e.k==="s"&&e.p==p).length),BL,RD,"Segnati","Subiti");
+    para("Solo goal con il periodo registrato: "+EP.length+" su "+(t.f+t.s)+" nei risultati inseriti.",8.5)}
+  else para("Nessun goal con il periodo registrato: il grafico sarà disponibile quando si inserisce il periodo (pagina Goal/Assist, Goal dettagliato).");
+  const TPe=S.ev.filter(e=>e.tp);
+  if(TPe.length)table([{h:"Tipologia",x:4,w:260},{h:"Segnati",x:300,w:90,r:1},{h:"Subiti",x:410,w:90,r:1}],Object.entries(TP).map(([k,l])=>[l,TPe.filter(e=>e.tp===k&&e.k==="g").length||"-",TPe.filter(e=>e.tp===k&&e.k==="s").length||"-"]));
+  /* 7 classifica giocatori */
+  H("7 · Classifica giocatori");
+  if(R.length)table([{h:"#",x:2,w:16},{h:"Giocatore",x:20,w:148},{h:"Cat.",x:170,w:30},{h:"G",x:204,w:26,r:1},{h:"A",x:234,w:26,r:1},{h:"P",x:264,w:26,r:1},{h:"PG",x:294,w:26,r:1},{h:"P/PG",x:324,w:34,r:1},{h:"TW",x:362,w:26,r:1},{h:"BL",x:392,w:26,r:1},{h:"AN",x:422,w:26,r:1},{h:"%G",x:452,w:56,r:1}],
+    R.map((r,i)=>[i+1,r.n,rc(r.n),r.g,r.a,r.p,"-","-",r.tw||"-",r.bl||"-",r.an||"-",tf?Math.round(r.g/tf*100)+"%":"-"]));
+  else para("Nessuna statistica registrata.");
+  para("PG e P/PG: presenze non registrate. %G: quota dei goal della squadra nei risultati inseriti.",8);
+  /* 8 competizioni e tabelle di squadra */
+  H("8 · Squadra e competizioni");
+  const tcol=[{h:"",x:4,w:200},{h:"PG",x:206,w:36,r:1},{h:"V",x:248,w:30,r:1},{h:"N",x:284,w:30,r:1},{h:"P",x:320,w:30,r:1},{h:"GF",x:356,w:40,r:1},{h:"GS",x:402,w:40,r:1},{h:"PT",x:448,w:50,r:1}],
+    tr2=(n,A,b)=>{const a=agg(A);return a.g?{v:[n,a.g,a.w,a.n,a.p,a.f,a.s,a.w*3+a.n],b}:{v:[n,"-","-","-","-","-","-","-"],b}};
+  const gr={};G.forEach(x=>{(gr[cmp(x)]=gr[cmp(x)]||[]).push(x)});
+  sub("Riepilogo per competizione");table(tcol,Object.entries(gr).map(([k,A])=>tr2(k,A)).concat([tr2("TOTALE",G,1)]));
+  sub("Andata e ritorno");table(tcol,[tr2("Fase 1 · andata",G.filter(x=>x.m[3]==1)),tr2("Fase 2 · ritorno",G.filter(x=>x.m[3]==2))]);
+  sub("In casa / in trasferta");table(tcol,[tr2("In casa",G.filter(x=>!x.t&&x.m[5])),tr2("In trasferta",G.filter(x=>!x.t&&!x.m[5]))]);
+  const op={};G.forEach(x=>{(op[x.o]=op[x.o]||[]).push(x)});
+  sub("Per avversario");table(tcol,Object.entries(op).sort((a,b)=>b[1].length-a[1].length||a[0].localeCompare(b[0])).map(([n,A])=>tr2(n,A)));
+  const gm={};G.forEach(x=>{const e=gm[mid(x.m)]=gm[mid(x.m)]||{d:x.m[0],gf:0,gs:0};e.gf+=x.a;e.gs+=x.b});
+  sub("Goal per giornata");
+  if(Object.keys(gm).length){const gv=Object.values(gm);vbars(gv.map(x=>sdt(x.d)),gv.map(x=>x.gf),gv.map(x=>x.gs),BL,RD,"Goal fatti","Goal subiti")}else para("Nessun risultato inserito.");
+  /* 9 tutte le partite */
+  H("9 · Tutte le partite");
+  if(G.length)table([{h:"Data",x:4,w:100},{h:"Competizione",x:108,w:130},{h:"Avversario",x:242,w:150},{h:"Risultato",x:396,w:60,r:1},{h:"Esito",x:470,w:40}],G.map(x=>[fmt(x.m[0]),cmp(x),x.o,res(x),pc(x.a,x.b)]));else para("Nessun risultato inserito.");
+  /* 10 schede giocatori */
+  H("10 · Schede dei giocatori (statistiche per partita)");
+  if(R.length){const rows=[];
+    R.slice().sort((a,b)=>a.n.localeCompare(b.n)).forEach(r=>{rows.push({v:[r.n,"Totale stagione",r.g,r.a,r.tw||"-",r.bl||"-",r.an||"-"],b:1});
+      const PGm={};for(const k in E)for(const g of E[k]){if(g.n!==r.n)continue;const key=g.id+"|"+(g.o||"");const e=PGm[key]=PGm[key]||{d:g.d,cat:g.cat,o:g.o,g:0,a:0,tw:0,bl:0,an:0};e[k]+=g.c}
+      Object.values(PGm).sort((a,b)=>a.d<b.d?-1:1).forEach(x=>rows.push(["",fmt(x.d)+" · "+x.cat+" · vs "+(x.o||""),x.g||"-",x.a||"-",x.tw||"-",x.bl||"-",x.an||"-"]))});
+    table([{h:"Giocatore",x:4,w:140},{h:"Partita",x:146,w:210},{h:"G",x:360,w:24,r:1},{h:"A",x:390,w:24,r:1},{h:"TW",x:420,w:28,r:1},{h:"BL",x:454,w:28,r:1},{h:"AN",x:488,w:24,r:1}],rows)}
+  else para("Nessuna statistica individuale registrata.");
+  /* 11 goal dettagliati */
+  if(S.ev.length){H("11 · Goal dettagliati");
+    table([{h:"Partita",x:4,w:128},{h:"Tipo",x:134,w:38},{h:"Marcatore",x:174,w:90},{h:"Assist",x:266,w:120},{h:"Per.",x:388,w:22,r:1},{h:"Min.",x:414,w:26,r:1},{h:"Tipologia",x:446,w:66}],
+      S.ev.slice().sort((a,b)=>a.d<b.d?-1:1).map(e=>[fmt(e.d)+" vs "+(e.o||""),e.k==="g"?"Goal":"Subito",e.k==="g"?e.n:"-",[e.a1,e.a2].filter(Boolean).join(", ")||"-",e.p||"-",e.mn===""||e.mn==null?"-":e.mn,TP[e.tp]||"-"]))}
+  /* leggenda */
+  H("Leggenda");
+  ["G goal · A assist · P punti (G + A) · PG partite giocate · P/PG media punti per partita · %G quota dei goal della squadra.","TW (takeaway): disco recuperato dal possesso avversario.","BL (blocks): recupero disco in extremis che potenzialmente impedisce un goal. Sostanzialmente davanti alla porta.","AN (unassisted): goal su azione personale.","Un trattino (-) indica un dato non registrato, non uno zero."].forEach(x=>para(x,9,IN));
+  P.forEach((q,i)=>{q.push(`BT /F1 8 Tf ${MU} rg 40 28 Td (Real Torino Hockey Club · Report stagionale 2026/27) Tj ET`);q.push(`BT /F1 8 Tf ${MU} rg 495 28 Td (Pagina ${i+1} di ${P.length}) Tj ET`)});
   const ok=await saveFile("report-real-torino-"+d+".pdf",mkPdf(P),"application/pdf");
-  $("stMsg").textContent=ok?"Report PDF creato con i filtri attivi.":ok===null?"":"Salvataggio non riuscito: il download non è disponibile in questo ambiente."}
+  $("stMsg").textContent=ok?"Report PDF completo creato (tutti i dati, senza filtri).":ok===null?"":"Salvataggio non riuscito: il download non è disponibile in questo ambiente."}
 function fillF(){
   const keep=(id,h)=>{const el=$(id),v=el.value;el.innerHTML=h;if([...el.options].some(o=>o.value===v))el.value=v};
   const ops=[...new Set(AM().flatMap(m=>m[6]))].sort(),all=[].concat(...Object.values(ROSTER)),
@@ -1058,14 +1139,5 @@ function logoInit(){
   show()}
 migTr();init();render();wire();tinit();logoInit();tab(S.tab||"cal");
 </script>
-
-<script>
-if ("serviceWorker" in navigator && location.protocol !== "file:") {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./sw.js").catch(err => console.warn("Service worker non registrato:", err));
-  });
-}
-</script>
-
 </body>
 </html>

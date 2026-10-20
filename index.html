@@ -320,14 +320,32 @@ img,svg{max-width:100%}
 .mlist button:hover{background:rgba(255,255,255,.1)}
 .mlist button[aria-pressed=true]{background:var(--red);font-weight:800}
 @media(hover:none){.mbtn:hover{background:rgba(255,255,255,.08)}.mlist button:hover{background:none}.mlist button[aria-pressed=true]:hover{background:var(--red)}}
+.s-s{display:none}
+.kp>div{overflow-wrap:anywhere}
+@container st (max-width:640px){
+ .s-l{display:none}.s-s{display:inline}
+ .kp{gap:10px;padding:12px}
+ .kp .ico{width:38px;height:38px;font-size:1.05rem}
+ .kp b{font-size:1.5rem}
+ .kp small{font-size:.62rem;letter-spacing:.04em}
+ .kp span{font-size:.7rem;line-height:1.3}
+}
+@media(max-width:700px){
+ .s-l{display:none}.s-s{display:inline}
+ .kp{gap:10px;padding:12px}
+ .kp .ico{width:38px;height:38px;font-size:1.05rem}
+ .kp b{font-size:1.5rem}
+ .kp small{font-size:.62rem;letter-spacing:.04em}
+ .kp span{font-size:.7rem;line-height:1.3}
+}
 </style>
+
 <link rel="manifest" href="manifest.webmanifest">
-<meta name="mobile-web-app-capable" content="yes">
+<link rel="icon" href="icons/icon-192.png" type="image/png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Real Torino">
 <link rel="apple-touch-icon" href="icons/icon-192.png">
-<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("service-worker.js").catch(e=>console.warn("SW non registrato",e)));}</script>
 </head>
 <body>
 <nav class="mnav" aria-label="Pagine">
@@ -515,7 +533,10 @@ const M=[
  [["12:00–12:27","B","Aosta",0],["12:32–12:59","A","Pinerolo",0],["13:04–13:31","B","Valpellice",0]],
  ["Spogliatoio Real Torino: lato SUD (insieme ad Aosta e Valpellice). Pinerolo e squadra femminile: lato nord","4 contro 4 · 2 tempi da 12 minuti, 3 minuti di pausa tra i tempi · 5 minuti di pausa tra una partita e l'altra","Cambi volanti ogni 60 secondi · In caso di penalità esce il giocatore per il cambio in corso","Ingaggio solo a inizio partita e dopo un goal","Partite senza classifica"],
  "Campo A e Campo B"],
-["2026-10-24","09:00","U12",1,"aosta",0,["Aosta","Varese","Torino Bulls"]],
+["2026-10-24","08:45","U12",1,"aosta",0,["Varese Mastini (andata)","Aosta Gladiators (andata)","Torino Bulls (andata)","Aosta Gladiators (ritorno)","Varese Mastini (ritorno)","Torino Bulls (ritorno)"],
+ [["8:45–9:00","B","Varese Mastini",1],["9:05–9:20","A","Aosta Gladiators",1],["9:35–9:50","B","Torino Bulls",0],["9:45–10:00","A","Aosta Gladiators",1],["10:15–10:30","B","Varese Mastini",1],["11:35–11:50","B","Torino Bulls",0]],
+ ["Squadre: Aosta Gladiators, Varese Mastini, Torino Bulls, Torino Real (Real Torino)","Partite da 15 minuti · andata e ritorno","Formula 3 contro 3 più portiere","No classifica · No ingaggio","Cambio linea completa ogni 60 secondi (nessun giocatore potrà svolgere 2 cambi consecutivi)","Pre game prima squadra alle 10:30"],
+ "Campo A e Campo B"],
 ["2026-10-31","15:00","U12",1,"real",1,["Como","Aosta","Torino Bulls"]],
 ["2026-11-07","18:00","U12",1,"como",0,["Como","Aosta","Pinerolo"]],
 ["2026-11-08","12:15","U10",1,"valpellice",0,["Valpellice","Aosta","Pinerolo"]],
@@ -620,7 +641,7 @@ const CAMPI="Campo A: verso bar · Campo B: centrale · Campo C: verso rolba";
 const pad=n=>String(n).padStart(2,"0");
 function ev(m){const [d,t,cat,ph,k,home,opp]=m,v=ven(k);let s,e;const all=!t;
   if(all){const n=new Date(d+"T12:00:00");n.setDate(n.getDate()+1);s=d.replace(/-/g,"");e=n.getFullYear()+pad(n.getMonth()+1)+pad(n.getDate())}
-  else{const [h,mi]=t.split(":").map(Number),b=new Date(+d.slice(0,4),+d.slice(5,7)-1,+d.slice(8,10),h,mi),f=new Date(b.getTime()+72e5);
+  else{const [h,mi]=t.split(":").map(Number),b=new Date(+d.slice(0,4),+d.slice(5,7)-1,+d.slice(8,10),h,mi),f=(()=>{const l=m[7]&&m[7].length?String(m[7][m[7].length-1][0]).split("–")[1]:"";if(l){const q=l.split(":").map(Number);return new Date(b.getFullYear(),b.getMonth(),b.getDate(),q[0],q[1])}return new Date(b.getTime()+72e5)})();
     const z=x=>x.getFullYear()+pad(x.getMonth()+1)+pad(x.getDate())+"T"+pad(x.getHours())+pad(x.getMinutes())+"00";s=z(b);e=z(f)}
   const url="https://www.google.com/maps/dir/?api=1&travelmode=driving&origin="+encodeURIComponent(S.origin)+"&destination="+encodeURIComponent(v.q);
   return {d,cat,all,s,e,t:"Real Torino "+cat+" – "+v.n,loc:v.q,det:(home?"In casa":"Trasferta")+" · Fase "+ph+" · Contro: "+opp.join(", ")+(m[7]?"\nProgramma: "+m[7].map(pgL).join("; "):"")+(m[8]?"\n"+m[8].join(" · "):"")+"\nPercorso: "+url}}
@@ -810,12 +831,13 @@ const SK=[["g","G"],["a","A"],["p","P"],["pg","PG"],["pm","P/PG"],["tw","TW"],["
 const ST={g:"Goal",a:"Assist",p:"Punti",tw:"TW · Takeaway",bl:"BL · Blocks",an:"AN · Unassisted"};
 const FL=()=>({c:$("sCat").value,f:$("sFase").value,o:$("sOpp").value,a:$("sDal").value,z:$("sAl").value,p:$("sPl").value,k:$("sKind").value});
 const okM=(f,m)=>(f.k!=="t"||!!m[10])&&(f.k!=="r"||!m[10])&&(f.c==="all"||(m[10]?m[10].cat:m[2])===f.c)&&(f.f==="all"||String(m[3])===f.f)&&(!f.a||m[0]>=f.a)&&(!f.z||m[0]<=f.z);
-const okEv=(f,g)=>{const m=AM().find(x=>mid(x)===g.id);return !!m&&okM(f,m)&&(f.o==="all"||g.o===f.o)};
+const okEv=(f,g)=>{const m=AM().find(x=>mid(x)===g.id);return !!m&&okM(f,m)&&(f.o==="all"||ob(g.o)===f.o)};
 const EV=()=>({g:rd("g"),a:rd("a"),tw:S.tw,bl:S.bl,an:S.an});
+const ob=o=>{const b=String(o||"").replace(/\s*\((?:andata|ritorno|\d)\)\s*$/,"");return {"Aosta Gladiators":"Aosta","Varese Mastini":"Varese"}[b]||b};
 const pc=(a,b)=>a>b?"V":a<b?"P":"N",sdt=d=>+d.slice(8,10)+"/"+ +d.slice(5,7);
 const avg=(v,n)=>n?(v/n).toFixed(1).replace(".",","):"–",pct=(v,n)=>n?Math.round(v/n*100)+"%":"–";
 function games(f){const L=[];for(const m of srt()){if(!okM(f,m))continue;const r=S.res[mid(m)]||{};
-  for(const o of m[6]){if(f.o!=="all"&&o!==f.o)continue;const v=r[o];if(!v||v[0]===""||v[1]==="")continue;L.push({m,o,a:v[0],b:v[1],t:m[10]?1:0})}}
+  for(const o of m[6]){if(f.o!=="all"&&ob(o)!==f.o)continue;const v=r[o];if(!v||v[0]===""||v[1]==="")continue;L.push({m,o,a:v[0],b:v[1],ob:ob(o),t:m[10]?1:0})}}
   return L.sort((x,y)=>x.m[0]<y.m[0]?-1:x.m[0]>y.m[0]?1:0)}
 const agg=G=>{const t={g:0,w:0,n:0,p:0,f:0,s:0,sc:0,cs:0};for(const x of G){t.g++;t.f+=x.a;t.s+=x.b;if(x.a>x.b)t.w++;else if(x.a<x.b)t.p++;else t.n++;if(x.a>0)t.sc++;if(x.b===0)t.cs++}return t};
 function plRows(f){const P={},E=EV();
@@ -940,7 +962,7 @@ async function pdfReport(){
   sub("Riepilogo per competizione");table(tcol,Object.entries(gr).map(([k,A])=>tr2(k,A)).concat([tr2("TOTALE",G,1)]));
   sub("Andata e ritorno");table(tcol,[tr2("Fase 1 · andata",G.filter(x=>x.m[3]==1)),tr2("Fase 2 · ritorno",G.filter(x=>x.m[3]==2))]);
   sub("In casa / in trasferta");table(tcol,[tr2("In casa",G.filter(x=>!x.t&&x.m[5])),tr2("In trasferta",G.filter(x=>!x.t&&!x.m[5]))]);
-  const op={};G.forEach(x=>{(op[x.o]=op[x.o]||[]).push(x)});
+  const op={};G.forEach(x=>{(op[x.ob]=op[x.ob]||[]).push(x)});
   sub("Per avversario");table(tcol,Object.entries(op).sort((a,b)=>b[1].length-a[1].length||a[0].localeCompare(b[0])).map(([n,A])=>tr2(n,A)));
   const gm={};G.forEach(x=>{const e=gm[mid(x.m)]=gm[mid(x.m)]||{d:x.m[0],gf:0,gs:0};e.gf+=x.a;e.gs+=x.b});
   sub("Goal per giornata");
@@ -968,7 +990,7 @@ async function pdfReport(){
   $("stMsg").textContent=ok?"Report PDF completo creato (tutti i dati, senza filtri).":ok===null?"":"Salvataggio non riuscito: il download non è disponibile in questo ambiente."}
 function fillF(){
   const keep=(id,h)=>{const el=$(id),v=el.value;el.innerHTML=h;if([...el.options].some(o=>o.value===v))el.value=v};
-  const ops=[...new Set(AM().flatMap(m=>m[6]))].sort(),all=[].concat(...Object.values(ROSTER)),
+  const ops=[...new Set(AM().flatMap(m=>m[6]).map(ob))].sort(),all=[].concat(...Object.values(ROSTER)),
     ex=[...new Set(Object.values(EV()).flatMap(A=>A.map(g=>g.n)))].filter(n=>!all.includes(n));
   keep("sOpp",`<option value="all">Tutti</option>`+ops.map(o=>`<option value="${esc(o)}">${esc(o)}</option>`).join(""));
   keep("sPl",`<option value="">Nessuno</option>`+all.concat(ex).sort((a,b)=>a.localeCompare(b)).map(n=>`<option value="${esc(n)}">${esc(n)}</option>`).join(""))}
@@ -993,7 +1015,7 @@ function rSt(){
   /* indicatori principali */
   const nR=G.filter(x=>!x.t).length,nv=n=>hv?n:"–",ps=n=>hv?pct(n,t.g):"–";
   const kp=(ic,cl,l,v,s2)=>`<div class="card kp"><i class="ico ${cl}">${ic}</i><div><small>${l}</small><b>${v}</b><span>${s2}</span></div></div>`;
-  const kpis=`<div class="kprow vv v-pan v-sq">`+kp("🏒","a","Partite giocate",nv(t.g),hv?`Raggruppamenti: ${nR} | Tornei: ${G.length-nR}`:"Nessun risultato")+kp("🏆","g","Vittorie",nv(t.w),ps(t.w))+kp("＝","n","Pareggi",nv(t.n),ps(t.n))+kp("✕","r","Sconfitte",nv(t.p),ps(t.p))+kp("◉","a","Goal fatti / subiti",hv?t.f+" / "+t.s:"–",`Media: ${avg(t.f,t.g)} / ${avg(t.s,t.g)}`)+`</div>`;
+  const kpis=`<div class="kprow vv v-pan v-sq">`+kp("🏒","a","Partite giocate",nv(t.g),hv?`<span class="s-l">Raggruppamenti: ${nR} | Tornei: ${G.length-nR}</span><span class="s-s">Raggr. ${nR} · Tornei ${G.length-nR}</span>`:"Nessun risultato")+kp("🏆","g","Vittorie",nv(t.w),ps(t.w))+kp("＝","n","Pareggi",nv(t.n),ps(t.n))+kp("✕","r","Sconfitte",nv(t.p),ps(t.p))+kp("◉","a","Goal fatti / subiti",hv?t.f+" / "+t.s:"–",`Media: ${avg(t.f,t.g)} / ${avg(t.s,t.g)}`)+`</div>`;
   /* andamento squadra e ultime 5 */
   const GN=st2.nTr==="all"?G:G.slice(-(+st2.nTr)),tg=i=>fmt(GN[i].m[0])+" · "+GN[i].m[2]+" vs "+GN[i].o+": "+GN[i].a+"–"+GN[i].b+" ("+pc(GN[i].a,GN[i].b)+")";
   const trend=cd("w6","pan gra sq",`<b>Andamento squadra</b>${sel("nTr",[["all","Tutte le partite"],["5","Ultime 5"],["10","Ultime 10"],["18","Ultime 18"]])}`,
@@ -1024,7 +1046,7 @@ function rSt(){
     gs=Object.entries(grp).filter(([k,v])=>st2.ct==="all"||(st2.ct==="t")===!!v.t);
   const compC=cd("w5","pan par",`<b>Riepilogo squadra per competizione</b>`,tabs("ct",st2.ct,[["all","Tutte"],["r","Raggruppamenti"],["t","Tornei"]])+(gs.length?`<div class="sc"><table><thead><tr><th>Competizione</th><th>PG</th><th>V</th><th>N</th><th>P</th><th>GF</th><th>GS</th><th>PT</th></tr></thead><tbody>${gs.map(([k,v])=>crow(k,v.A)).join("")}${crow("TOTALE",gs.flatMap(([k,v])=>v.A),1)}</tbody></table></div>`:nores));
   /* squadra */
-  const by=fn=>G.filter(fn),ops={},gm={};G.forEach(x=>{(ops[x.o]=ops[x.o]||[]).push(x);const e=gm[mid(x.m)]=gm[mid(x.m)]||{d:x.m[0],gf:0,gs:0};e.gf+=x.a;e.gs+=x.b});
+  const by=fn=>G.filter(fn),ops={},gm={};G.forEach(x=>{(ops[x.ob]=ops[x.ob]||[]).push(x);const e=gm[mid(x.m)]=gm[mid(x.m)]||{d:x.m[0],gf:0,gs:0};e.gf+=x.a;e.gs+=x.b});
   const bw=G.reduce((b,x)=>!b||x.a-x.b>b.a-b.b?x:b,null),ww=G.reduce((b,x)=>!b||x.a-x.b<b.a-b.b?x:b,null),rs=x=>x?`${fmt(x.m[0])} contro ${esc(x.o)}: ${x.a}–${x.b}`:"–";
   const ind=cd("w12","sq",`<b>Indicatori di squadra</b>`,hv?`<div class="st">${c(t.w*3+t.n,"punti (3-1-0)")}${c((df>0?"+":"")+df,"differenza reti")}${c(avg(t.f,t.g),"gol fatti/partita")}${c(avg(t.s,t.g),"gol subiti/partita")}${c(pct(t.w,t.g),"vittorie")}${c(pct(t.sc,t.g),"con almeno un goal")}${c(pct(t.cs,t.g),"senza goal subiti")}</div><p class="note">Miglior risultato: ${rs(bw)}<br>Peggior risultato: ${rs(ww)}</p>`:nores);
   const tAR=cd("w4","sq","",tb("Andata e ritorno",tr("Fase 1 · andata",agg(by(x=>x.m[3]==1)))+tr("Fase 2 · ritorno",agg(by(x=>x.m[3]==2))))),
@@ -1138,6 +1160,12 @@ function logoInit(){
       im.src=r.result};r.readAsDataURL(f)};
   show()}
 migTr();init();render();wire();tinit();logoInit();tab(S.tab||"cal");
+</script>
+
+<script>
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js').catch(err => console.warn('Service worker non registrato:', err)));
+}
 </script>
 </body>
 </html>

@@ -3,7 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#000000">
+<meta name="theme-color" content="#0b1626">
+<meta name="description" content="Real Torino Hockey Club: calendario, raggruppamenti, tornei, risultati, goal, assist e statistiche.">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icons/icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="./icons/icon-192.png">
 <title>Real Torino – calendario e trasferte</title>
 <style>
 :root{--ink:#000;--ice:#f2f3f5;--card:#fff;--line:#dcdee3;--red:#c8102e;--mut:#676b73;--acc:#0a66c2}
@@ -338,29 +345,55 @@ img,svg{max-width:100%}
  .kp small{font-size:.62rem;letter-spacing:.04em}
  .kp span{font-size:.7rem;line-height:1.3}
 }
+.mlist{min-width:280px;padding:10px;gap:6px;background:linear-gradient(180deg,#070b13,#04060b);border:1px solid #182234;border-radius:20px;box-shadow:0 22px 50px rgba(0,0,0,.65)}
+.mlist button{gap:16px;min-height:54px;padding:12px 18px;border-radius:16px;color:#8fb0d4;font:700 1.02rem "Helvetica Neue",Arial,sans-serif;transition:background .15s,color .15s}
+.mlist button:hover{background:rgba(143,176,212,.1);color:#d6e6ff}
+.mlist svg{width:26px;height:26px;flex:none;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.mlist button[aria-pressed=true]{color:#fff;font-weight:800;background:linear-gradient(90deg,#e8173b 0%,#a30d27 55%,#3a0912 100%);box-shadow:0 0 0 1px rgba(232,23,59,.55),0 8px 24px rgba(232,23,59,.35)}
+@media(hover:none){.mlist button:hover{background:none;color:#8fb0d4}.mlist button[aria-pressed=true]:hover{background:linear-gradient(90deg,#e8173b 0%,#a30d27 55%,#3a0912 100%);color:#fff}}
+/* ===== barra laterale sempre visibile ===== */
+:root{--sbw:248px}
+body.sbc{--sbw:78px}
+body{padding-left:var(--sbw);transition:padding-left .2s}
+.sb{position:fixed;left:0;top:0;bottom:0;width:var(--sbw);z-index:60;display:flex;flex-direction:column;gap:6px;padding:calc(12px + env(safe-area-inset-top,0px)) 10px calc(12px + env(safe-area-inset-bottom,0px)) max(10px,env(safe-area-inset-left,0px));background:linear-gradient(180deg,#05070c 0%,#090e18 60%,#1a0810 100%);border-right:1px solid #1a2436;overflow-y:auto;overflow-x:hidden;transition:width .2s}
+.sbt{display:grid;place-items:center;width:48px;height:48px;margin:0 0 14px 2px;flex:none;border:1px solid #1d2a42;border-radius:14px;background:#0e1522;color:#e8f0ff;cursor:pointer}
+.sbt:hover{background:#16213a}
+.sbt svg{width:24px;height:24px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round}
+.sbn{display:flex;flex-direction:column;gap:6px}
+.sbn button{display:flex;align-items:center;gap:16px;min-height:54px;padding:12px 16px;border:0;border-radius:16px;background:none;color:#8fb0d4;font:700 1rem "Helvetica Neue",Arial,sans-serif;text-align:left;cursor:pointer;white-space:nowrap;transition:background .15s,color .15s}
+.sbn button:hover{background:rgba(143,176,212,.1);color:#d6e6ff}
+.sbn svg{width:26px;height:26px;flex:none;fill:none;stroke:currentColor;stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+.sbn button[aria-pressed=true]{color:#fff;font-weight:800;background:linear-gradient(90deg,#e8173b 0%,#a30d27 55%,#3a0912 100%);box-shadow:0 0 0 1px rgba(232,23,59,.55),0 8px 24px rgba(232,23,59,.35)}
+body.sbc .sbn span{display:none}
+body.sbc .sbn button{justify-content:center;padding:12px 0}
+@media(max-width:760px){
+ :root,body.sbc{--sbw:58px}
+ .sb{padding-left:max(6px,env(safe-area-inset-left,0px));padding-right:6px}
+ .sbt{width:46px;height:46px;margin-left:0}
+ .sbn span{display:none}
+ .sbn button{justify-content:center;padding:12px 0}
+ body.sbx .sb{width:250px;padding-left:max(10px,env(safe-area-inset-left,0px));padding-right:10px;box-shadow:0 0 60px rgba(0,0,0,.7)}
+ body.sbx .sbn span{display:inline}
+ body.sbx .sbn button{justify-content:flex-start;padding:12px 16px}
+ body.sbx::after{content:"";position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:55}
+}
+html{scroll-padding-top:12px}
+@media print{.sb{display:none!important}body{padding-left:0!important}}
+@media(hover:none){.sbn button:hover{background:none;color:#8fb0d4}.sbn button[aria-pressed=true]:hover{background:linear-gradient(90deg,#e8173b 0%,#a30d27 55%,#3a0912 100%);color:#fff}}
 </style>
-
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="icon" href="icons/icon-192.png" type="image/png">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Real Torino">
-<link rel="apple-touch-icon" href="icons/icon-192.png">
 </head>
 <body>
-<nav class="mnav" aria-label="Pagine">
- <div class="mwrap">
-  <button class="mbtn" id="menuBtn" aria-haspopup="true" aria-expanded="false" aria-controls="menuList"><i class="mi" aria-hidden="true">☰</i><span id="menuCur">Raggruppamenti</span><i class="mc" aria-hidden="true">▾</i></button>
-  <div class="mlist" id="menuList" role="menu" hidden>
-   <button role="menuitem" data-t="cal" aria-pressed="true">Raggruppamenti</button>
-   <button role="menuitem" data-t="tor" aria-pressed="false">Tornei</button>
-   <button role="menuitem" data-t="res" aria-pressed="false">Risultati</button>
-   <button role="menuitem" data-t="gol" aria-pressed="false">Goal/Assist</button>
-   <button role="menuitem" data-t="st" aria-pressed="false">Statistiche</button>
-   <button role="menuitem" data-t="set" aria-pressed="false">Impostazioni</button>
-  </div>
- </div>
-</nav>
+<aside class="sb" id="sb" aria-label="Pagine">
+ <button class="sbt" id="sbT" aria-label="Apri o chiudi il menu" aria-expanded="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
+ <nav class="sbn" id="menuList" role="menu">
+  <button role="menuitem" data-t="cal" aria-pressed="true" aria-label="Raggruppamenti"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg><span>Raggruppamenti</span></button>
+  <button role="menuitem" data-t="tor" aria-pressed="false" aria-label="Tornei"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 21h8M12 17v4"/><path d="M7 4h10v5a5 5 0 0 1-10 0V4z"/><path d="M17 5h3v2a3 3 0 0 1-3 3M7 5H4v2a3 3 0 0 0 3 3"/></svg><span>Tornei</span></button>
+  <button role="menuitem" data-t="res" aria-pressed="false" aria-label="Risultati"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 14l2 2 4-4"/></svg><span>Risultati</span></button>
+  <button role="menuitem" data-t="gol" aria-pressed="false" aria-label="Goal/Assist"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg><span>Goal/Assist</span></button>
+  <button role="menuitem" data-t="st" aria-pressed="false" aria-label="Statistiche"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="14" width="4" height="7" rx="1"/><rect x="10" y="9" width="4" height="12" rx="1"/><rect x="17" y="3" width="4" height="18" rx="1"/></svg><span>Statistiche</span></button>
+  <button role="menuitem" data-t="set" aria-pressed="false" aria-label="Impostazioni"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg><span>Impostazioni</span></button>
+ </nav>
+</aside>
 <header class="top">
 <div class="bar">
  <div class="brand"><span class="sea">Stagione 2026/27</span><span class="rt">Real Torino<br>Hockey Club</span><span class="tg">Raggruppamenti, tornei, trasferte e statistiche · U10 · U12</span><div class="chips" id="chips"></div></div>
@@ -634,7 +667,7 @@ function migTr(){let ch=0;for(const r of S.tr){if(r.mig)continue;const x=T0.conc
   if(!L.includes(o))L.push(o);R[o]=[r.a,r.b];r.mig=1;ch=1}if(ch)save()}
 function tab(t){S.tab=t;save();if(document.body)document.body.classList.toggle("wide",t==="st");
   ["cal","tor","res","gol","st","set"].forEach(x=>$("p-"+x).hidden=x!==t);
-  document.querySelectorAll("#menuList button").forEach(b=>{const on=b.dataset.t===t;b.setAttribute("aria-pressed",on);if(on)$("menuCur").textContent=b.textContent});
+  document.querySelectorAll("#menuList button").forEach(b=>{const on=b.dataset.t===t;b.setAttribute("aria-pressed",on);b.setAttribute("aria-current",on?"page":"false")});
   if(t==="tor")rTor();if(t==="res")rRes();if(t==="gol")rGol();if(t==="st")rSt()}
 const pgL=g=>g[0]+" · Campo "+g[1]+" · "+(g[3]?"Real Torino – "+g[2]:g[2]+" – Real Torino");
 const CAMPI="Campo A: verso bar · Campo B: centrale · Campo C: verso rolba";
@@ -1088,12 +1121,13 @@ function exP(){const f=FL(),tf=agg(games(f)).f;
 function exT(){csvOut("statistiche-squadra",["Data","Categoria","Fase","Sede","Avversario","Gol fatti","Gol subiti","Esito"],
   games(FL()).map(x=>[x.m[0],x.m[2],x.m[3],x.m[5]?"In casa":"Trasferta",x.o,x.a,x.b,pc(x.a,x.b)]))}
 function wire(){
-  const menuOpen=o=>{$("menuList").hidden=!o;$("menuBtn").setAttribute("aria-expanded",String(o))};
-  $("menuBtn").onclick=e=>{e.stopPropagation();menuOpen($("menuList").hidden)};
-  $("menuList").onclick=e=>{const b=e.target.closest("button[data-t]");if(!b)return;tab(b.dataset.t);menuOpen(false);
-    const mn=document.querySelector("main");if(mn&&window.scrollY>mn.offsetTop-70)mn.scrollIntoView({block:"start"})};
-  document.addEventListener("click",e=>{if(!e.target.closest(".mwrap"))menuOpen(false)});
-  document.addEventListener("keydown",e=>{if(e.key==="Escape"&&!$("menuList").hidden){menuOpen(false);$("menuBtn").focus()}});
+  const phone=()=>window.matchMedia&&window.matchMedia("(max-width:760px)").matches,bd=document.body;
+  if(S.sbc)bd.classList.add("sbc");
+  $("sbT").onclick=()=>{if(phone()){bd.classList.toggle("sbx");$("sbT").setAttribute("aria-expanded",String(bd.classList.contains("sbx")))}else{const c=!bd.classList.contains("sbc");bd.classList.toggle("sbc",c);S.sbc=c;save();$("sbT").setAttribute("aria-expanded",String(!c))}};
+  $("menuList").onclick=e=>{const b=e.target.closest("button[data-t]");if(!b)return;tab(b.dataset.t);bd.classList.remove("sbx");
+    const mn=document.querySelector("main");if(mn&&window.scrollY>mn.offsetTop-20)mn.scrollIntoView({block:"start"})};
+  document.addEventListener("click",e=>{if(bd.classList.contains("sbx")&&!e.target.closest("#sb"))bd.classList.remove("sbx")});
+  document.addEventListener("keydown",e=>{if(e.key==="Escape")bd.classList.remove("sbx")});
   $("resList").onclick=e=>{const ta=e.target.closest("button[data-ta]");
     if(ta){const id=ta.dataset.ta,tm=TM().find(t=>mid(t)===id),n=ta.parentNode.querySelector("input").value.trim(),msg=ta.closest("details").querySelector(".tmsg");
       if(!tm||!n)return;const L=S.top[tm[10].tor]=S.top[tm[10].tor]||[];
@@ -1161,10 +1195,9 @@ function logoInit(){
   show()}
 migTr();init();render();wire();tinit();logoInit();tab(S.tab||"cal");
 </script>
-
 <script>
-if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
-  window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js').catch(err => console.warn('Service worker non registrato:', err)));
+if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(err => console.warn("Service worker non registrato:", err)));
 }
 </script>
 </body>

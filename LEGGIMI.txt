@@ -1,0 +1,15 @@
+REAL TORINO — PWA
+
+Contenuto:
+- index.html: applicazione originale
+- manifest.webmanifest: nome, icone e impostazioni installazione
+- sw.js: cache offline essenziale
+- icons/: icone PWA
+
+INSTALLAZIONE:
+1. Estrai lo ZIP.
+2. Pubblica i file mantenendo la stessa struttura su un hosting HTTPS (es. GitHub Pages o Netlify).
+3. Apri l'indirizzo in Chrome/Edge e usa l'opzione Installa app / Aggiungi alla schermata Home.
+
+Nota: per motivi di sicurezza, le funzioni PWA (service worker e installazione) richiedono HTTPS oppure localhost. Aprire index.html direttamente come file locale non abilita tutte le funzioni PWA.
+I dati dell'applicazione continuano a dipendere dal meccanismo di salvataggio già presente nel file originale.

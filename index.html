@@ -3,9 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#0b1626">
-<meta name="description" content="Real Torino Hockey Club: calendario, raggruppamenti, tornei, risultati, goal, assist e statistiche.">
-<meta name="mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#080d16">
+<meta name="description" content="Real Torino Hockey Club: calendario, trasferte, tornei e statistiche.">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="manifest" href="./manifest.webmanifest">
@@ -380,6 +379,50 @@ body.sbc .sbn button{justify-content:center;padding:12px 0}
 html{scroll-padding-top:12px}
 @media print{.sb{display:none!important}body{padding-left:0!important}}
 @media(hover:none){.sbn button:hover{background:none;color:#8fb0d4}.sbn button[aria-pressed=true]:hover{background:linear-gradient(90deg,#e8173b 0%,#a30d27 55%,#3a0912 100%);color:#fff}}
+#p-gol{--ink:#eaf2ff;--ice:#07111f;--card:#0d1f38;--line:#1c3a66;--mut:#8ea6c6;--acc:#4da3ff;--red:#e8173b;background:radial-gradient(900px 420px at 100% 0,rgba(232,23,59,.16),transparent 60%),linear-gradient(180deg,#061223,#040b16);border:1px solid #17305a;border-radius:22px;padding:18px;color:var(--ink);container-type:inline-size;container-name:gl;min-width:0;max-width:100%}
+#p-gol .card,#p-gol .panel{background:linear-gradient(160deg,#0f2342,#0a1a30);border:1px solid var(--line);border-radius:16px;padding:16px;box-shadow:0 4px 18px rgba(0,0,0,.35);margin-bottom:14px;min-width:0}
+#p-gol .sg button{border-color:var(--line);background:#0a1a30;color:var(--ink)}
+#p-gol .sg button[aria-pressed=true]{background:var(--red);border-color:var(--red);color:#fff}
+.gban{position:relative;overflow:hidden;border-radius:18px;padding:28px 22px;margin-bottom:14px;background:linear-gradient(120deg,#08162b 0%,#0b1020 55%,#3a0a18 100%);border:1px solid #1c3a66}
+.gban::before{content:"";position:absolute;inset:0;background:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 260'><g fill='none' stroke-width='3'><rect x='6' y='6' width='588' height='248' rx='70' stroke='%23ffffff'/><line x1='300' y1='6' x2='300' y2='254' stroke='%23c8102e'/><line x1='200' y1='6' x2='200' y2='254' stroke='%234da3ff'/><line x1='400' y1='6' x2='400' y2='254' stroke='%234da3ff'/><circle cx='300' cy='130' r='38' stroke='%23c8102e'/><circle cx='110' cy='130' r='30' stroke='%23c8102e'/><circle cx='490' cy='130' r='30' stroke='%23c8102e'/></g></svg>") center/cover no-repeat;opacity:.2}
+.gban>*{position:relative}
+.gban h2{margin:0;font:italic 800 clamp(2rem,6vw,3.1rem)/1 "Arial Narrow","Roboto Condensed",Arial,sans-serif;font-stretch:condensed;text-transform:uppercase;letter-spacing:.02em;color:#fff}
+.gban h2 i{font-style:normal;color:var(--red);padding:0 .12em}
+.gban p{margin:10px 0 0;font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;color:#9fb8d8}
+.gk{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px;margin-bottom:14px}
+#p-gol .gk .card{margin:0}
+.gk .kp b.g{color:#ff3b5c}.gk .kp b.a{color:#59adff}.gk .kp b.p{color:#fff}.gk .kp b.d{color:#31d6e8}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px;margin-bottom:14px}
+.g2b{display:grid;grid-template-columns:minmax(0,3fr) minmax(0,2fr);gap:14px;margin-bottom:14px}
+#p-gol .g2 .card,#p-gol .g2b .card{margin:0}
+.tp{width:100%;border-collapse:separate;border-spacing:0 6px;font-size:.9rem}
+.tp th{font-size:.68rem;color:var(--mut);letter-spacing:.06em;border:0;padding:0 10px}
+.tp td{padding:8px 10px;background:rgba(255,255,255,.04);border:0}
+.tp td:first-child{width:30px;border-radius:12px 0 0 12px;text-align:center;color:var(--mut);font-weight:700}
+.tp td:last-child{border-radius:0 12px 12px 0}
+.tp tr.fg td{background:linear-gradient(90deg,rgba(232,23,59,.38),rgba(232,23,59,.1));box-shadow:inset 0 1px 0 rgba(232,23,59,.7),inset 0 -1px 0 rgba(232,23,59,.7)}
+.tp tr.fa td{background:linear-gradient(90deg,rgba(47,139,255,.35),rgba(47,139,255,.1));box-shadow:inset 0 1px 0 rgba(47,139,255,.7),inset 0 -1px 0 rgba(47,139,255,.7)}
+.tp .pn{display:flex;align-items:center;gap:10px;min-width:0}
+.tp .pn b{font-weight:700;display:block}
+.tp small{display:block;color:var(--mut);font-size:.7rem}
+.vb{display:inline-grid;place-items:center;min-width:38px;height:34px;border-radius:10px;background:rgba(255,255,255,.08);font:800 1.15rem "Arial Narrow",Arial,sans-serif;font-stretch:condensed}
+.pill{display:inline-block;padding:3px 10px;border-radius:6px;font-size:.68rem;font-weight:800;letter-spacing:.05em;color:#fff}
+.pill.g{background:#e8173b}.pill.a{background:#2f8bff}
+.dn{display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+.dn svg{width:150px;height:150px;flex:none}
+.dl{display:grid;gap:14px}
+.dl>div{padding-left:12px}.dl .dg{border-left:4px solid #e8173b}.dl .da{border-left:4px solid #2f8bff}
+.dl small{display:block;color:var(--mut);font-size:.7rem;letter-spacing:.06em}
+.dl b{font:800 1.5rem "Arial Narrow",Arial,sans-serif;font-stretch:condensed}
+.dl span{color:var(--mut);font-size:.8rem}
+.ldp{margin-top:16px;display:flex;align-items:center;gap:12px;padding:12px;border-radius:14px;border:1px solid rgba(232,23,59,.65);background:linear-gradient(90deg,rgba(232,23,59,.28),transparent)}
+.ldp>div{flex:1;min-width:0}.ldp small{display:block;color:var(--mut);font-size:.65rem;letter-spacing:.08em}
+.ldp b{display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ldp em{font:800 1.6rem/1 "Arial Narrow",Arial,sans-serif;font-style:normal;text-align:center}
+.ldp em small{font-size:.6rem}
+.lnk{background:none;border:0;color:#7fb5ff;font:inherit;font-size:.82rem;cursor:pointer;padding:4px}
+@container gl (max-width:760px){.gk{grid-template-columns:repeat(2,minmax(0,1fr))}.g2,.g2b{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:700px){#p-gol{padding:12px;border-radius:16px}#p-gol .card,#p-gol .panel{padding:12px}.gban{padding:20px 16px}.gk .kp .ico{width:38px;height:38px}.gk .kp b{font-size:1.5rem}}
 </style>
 </head>
 <body>
@@ -481,7 +524,10 @@ html{scroll-padding-top:12px}
  <div id="resList"></div>
 </div>
 <div id="p-gol" hidden>
- <section class="panel">
+ <div class="gban"><h2>Goal <i>/</i> Assist</h2><p>Real Torino Hockey Club</p></div>
+ <div class="gk" id="gK"></div>
+ <section class="card" id="gEntry">
+  <div class="ch2"><b>Registra goal, assist, TW, BL e AN</b></div>
   <div class="row">
    <label>Giornata<select id="gM"></select></label>
    <label>Partita<select id="gO"></select></label>
@@ -495,7 +541,9 @@ html{scroll-padding-top:12px}
    <button class="btn" id="gA">Aggiungi goal</button>
   </div>
  </section>
- <section class="panel" id="evP">
+ <div class="g2"><section class="card" id="gTopG"></section><section class="card" id="gTopA"></section></div>
+ <div class="g2b"><section class="card" id="gLast"></section><section class="card" id="gDon"></section></div>
+ <section class="card" id="evP">
  <h2>Goal dettagliato (facoltativo)</h2>
  <p class="note" style="margin-top:0">Usa la giornata e la partita scelte sopra. Sono obbligatori solo il tipo e, per i goal di Real Torino, il marcatore: assist, periodo, minuto e tipologia si possono lasciare vuoti. “Goal subito” serve per il grafico dei periodi.</p>
  <div class="row">
@@ -665,7 +713,7 @@ const srt=()=>AM().sort((a,b)=>a[0]<b[0]?-1:1);
 function migTr(){let ch=0;for(const r of S.tr){if(r.mig)continue;const x=T0.concat(S.tor).find(t=>t.id===r.t);if(!x)continue;
   const id=x.d1+x.n,L=S.top[x.id]=S.top[x.id]||[],R=S.res[id]=S.res[id]||{};let o=r.o;if(R[o])o+=" (2)";
   if(!L.includes(o))L.push(o);R[o]=[r.a,r.b];r.mig=1;ch=1}if(ch)save()}
-function tab(t){S.tab=t;save();if(document.body)document.body.classList.toggle("wide",t==="st");
+function tab(t){S.tab=t;save();if(document.body)document.body.classList.toggle("wide",t==="st"||t==="gol");
   ["cal","tor","res","gol","st","set"].forEach(x=>$("p-"+x).hidden=x!==t);
   document.querySelectorAll("#menuList button").forEach(b=>{const on=b.dataset.t===t;b.setAttribute("aria-pressed",on);b.setAttribute("aria-current",on?"page":"false")});
   if(t==="tor")rTor();if(t==="res")rRes();if(t==="gol")rGol();if(t==="st")rSt()}
@@ -804,7 +852,8 @@ let lastG=null,gMode="g";
 const KL={g:"goal",a:"assist",t:"TW",b:"BL",n:"AN"},TL={g:"Goal",a:"Assist",t:"TW",b:"BL",n:"AN"},KS=["g","a","t","b","n"];
 const arr=k=>k==="a"?S.ast:k==="t"?S.tw:k==="b"?S.bl:k==="n"?S.an:S.gol;
 const evG=()=>S.ev.filter(e=>e.k==="g"&&e.n);
-const rd=k=>k==="g"?S.gol.concat(evG().map(e=>({id:e.id,d:e.d,cat:e.cat,o:e.o,n:e.n,c:1}))):k==="a"?S.ast.concat(evG().flatMap(e=>[e.a1,e.a2].filter(Boolean).map(n=>({id:e.id,d:e.d,cat:e.cat,o:e.o,n,c:1})))):arr(k);
+const evU=k=>S.ev.filter(e=>e.k===k&&e.n).map(e=>({id:e.id,d:e.d,cat:e.cat,o:e.o,n:e.n,c:1}));
+const rd=k=>k==="g"?S.gol.concat(evG().map(e=>({id:e.id,d:e.d,cat:e.cat,o:e.o,n:e.n,c:1}))):k==="a"?S.ast.concat(evG().flatMap(e=>[e.a1,e.a2].filter(Boolean).map(n=>({id:e.id,d:e.d,cat:e.cat,o:e.o,n,c:1}))),evU("a")):arr(k).concat(evU(k));
 const gCount=(id,o,n,k)=>rd(k||"g").filter(g=>g.id===id&&g.o===o&&(n===undefined||g.n===n)).reduce((a,g)=>a+g.c,0);
 function addG(n){const id=$("gM").value,o=$("gO").value,m=AM().find(x=>mid(x)===id);if(!m||!o)return;
   const A=arr(gMode),e=A.find(g=>g.id===id&&g.o===o&&g.n===n);
@@ -814,8 +863,23 @@ function undoG(){if(!lastG)return;
   const A=arr(lastG.k),e=A.find(g=>g.id===lastG.id&&g.o===lastG.o&&g.n===lastG.n);
   if(e){e.c--;if(e.c<1)A.splice(A.indexOf(e),1)}
   lastG=null;save();updG()}
+function rGS(){
+  const gG=rd("g"),aA=rd("a"),sm=a=>a.reduce((x,e)=>x+e.c,0),ng=sm(gG),na=sm(aA),np=ng+na,
+    t=agg(games({c:"all",f:"all",o:"all",a:"",z:"",p:"",k:"all"})),df=t.f-t.s,P={};
+  gG.forEach(e=>{(P[e.n]=P[e.n]||{n:e.n,g:0,a:0}).g+=e.c});aA.forEach(e=>{(P[e.n]=P[e.n]||{n:e.n,g:0,a:0}).a+=e.c});
+  const R2=Object.values(P).map(r=>Object.assign(r,{p:r.g+r.a}));
+  const kp=(ic,cl,l,v,vc)=>`<div class="card kp"><i class="ico ${cl}">${ic}</i><div><small>${l}</small><b class="${vc}">${v}</b></div></div>`;
+  $("gK").innerHTML=kp("●","r","Goal totali",ng,"g")+kp("⇄","a","Assist totali",na,"a")+kp("★","n","Punti totali",np,"p")+kp("▥","a","+/- squadra",t.g?(df>0?"+":"")+df:"–","d");
+  const top=k=>R2.filter(r=>r[k]>0).sort((a,b)=>b[k]-a[k]||b.p-a.p||a.n.localeCompare(b.n)).slice(0,5);
+  const tbl=(k,l)=>{const L=top(k);return `<div class="ch2"><b>Top 5 ${l}</b><button class="lnk" data-go="1">Vedi tutti →</button></div>`+(L.length?`<table class="tp"><thead><tr><th>#</th><th>Giocatore</th><th class="n">${l}</th></tr></thead><tbody>${L.map((r,i)=>`<tr${i?"":` class="f${k}"`}><td>${i+1}</td><td><div class="pn"><i class="av">${ini(r.n)}</i><div><b>${esc(r.n)}</b><small>${rc(r.n)}</small></div></div></td><td class="n"><span class="vb">${r[k]}</span></td></tr>`).join("")}</tbody></table>`:`<p class="note">Nessun dato registrato.</p>`)};
+  $("gTopG").innerHTML=tbl("g","Goal");$("gTopA").innerHTML=tbl("a","Assist");
+  const lt=[...gG.map((e,i)=>Object.assign({t:"g",i},e)),...aA.map((e,i)=>Object.assign({t:"a",i},e))].sort((a,b)=>a.d<b.d?1:a.d>b.d?-1:b.i-a.i).slice(0,6),
+    dd=d=>d.slice(8,10)+"/"+d.slice(5,7)+"/"+d.slice(0,4);
+  $("gLast").innerHTML=`<div class="ch2"><b>Ultimi goal / assist</b></div>`+(lt.length?`<div class="sc"><table><thead><tr><th>Data</th><th>Avversario</th><th>Tipo</th><th>Giocatore</th></tr></thead><tbody>${lt.map(e=>`<tr><td>${dd(e.d)}</td><td>${esc(e.o||"–")}</td><td><span class="pill ${e.t}">${e.t==="g"?"GOAL":"ASSIST"}</span></td><td>${esc(e.n)}${e.c>1?" ×"+e.c:""}</td></tr>`).join("")}</tbody></table></div>`:`<p class="note">Nessun goal o assist registrato.</p>`);
+  const C=2*Math.PI*52,ga=np?C*ng/np:0,pp=n=>np?(n/np*100).toFixed(1).replace(".",",")+"%":"–",ld=R2.slice().sort((a,b)=>b.p-a.p||b.g-a.g||a.n.localeCompare(b.n))[0];
+  $("gDon").innerHTML=`<div class="ch2"><b>Distribuzione punti</b></div>`+(np?`<div class="dn"><svg viewBox="0 0 140 140" role="img" aria-label="Distribuzione punti: ${ng} goal, ${na} assist"><circle cx="70" cy="70" r="52" fill="none" stroke="#2f8bff" stroke-width="20"/><circle cx="70" cy="70" r="52" fill="none" stroke="#e8173b" stroke-width="20" stroke-dasharray="${ga.toFixed(1)} ${(C-ga).toFixed(1)}" transform="rotate(-90 70 70)"/><text x="70" y="68" text-anchor="middle" font-size="26" font-weight="800" fill="#fff">${np}</text><text x="70" y="86" text-anchor="middle" font-size="10" fill="#8ea6c6">PUNTI</text></svg><div class="dl"><div class="dg"><small>GOAL</small><b>${ng}</b> <span>${pp(ng)}</span></div><div class="da"><small>ASSIST</small><b>${na}</b> <span>${pp(na)}</span></div></div></div>`+(ld?`<div class="ldp"><i class="av">${ini(ld.n)}</i><div><small>LEADER PUNTI</small><b>${esc(ld.n)}</b></div><em>${ld.p}<small>PUNTI</small></em></div>`:""):`<p class="note">Nessun dato registrato.</p>`)}
 function updG(){
-  rEvL();const id=$("gM").value,o=$("gO").value;
+  rEvL();rGS();const id=$("gM").value,o=$("gO").value;
   document.querySelectorAll("#gP .pl[data-n]").forEach(b=>{const n=b.dataset.n;
     const t=KS.map(k=>{const c=gCount(id,o,n,k);return c?c+(k==="g"?"G":k==="a"?"A":TL[k]):""}).filter(Boolean).join(" · ");
     b.classList.toggle("on",!!t);b.querySelector("b").textContent=t});
@@ -840,7 +904,7 @@ const evK=()=>{const g=$("eK").value==="g";["eNl","eA1l","eA2l"].forEach(i=>$(i)
 function evReset(){evEdit=-1;["eN","eA1","eA2","eP","eM","eT"].forEach(i=>$(i).value="");$("eK").value="g";evK();$("eS").textContent="Salva goal";$("eC").hidden=true}
 function rEvL(){const L=S.ev.map((e,i)=>Object.assign({i},e)).sort((a,b)=>a.d<b.d?1:-1);
   $("evList").innerHTML=L.length?`<section class="panel"><details data-k="e"${S.tbl.e?" open":""}><summary>Goal dettagliati (${L.length})</summary><div class="sc" style="margin-top:10px"><table><thead><tr><th>Partita</th><th>Goal</th><th>Assist</th><th>Per.</th><th>Min.</th><th>Tipo</th><th></th></tr></thead><tbody>`+
-    L.map(e=>`<tr><td>${fmt(e.d)} · ${e.cat} · vs ${esc(e.o||"")}</td><td>${e.k==="g"?esc(e.n):"<i>subito</i>"}</td><td>${[e.a1,e.a2].filter(Boolean).map(esc).join(", ")||"–"}</td><td>${e.p?e.p+"°":"–"}</td><td>${e.mn===""||e.mn==null?"–":e.mn+"′"}</td><td>${TP[e.tp]||"–"}</td><td style="white-space:nowrap"><button class="x" data-ee="${e.i}" aria-label="Modifica">✎</button><button class="x" data-ed="${e.i}" aria-label="Elimina">×</button></td></tr>`).join("")+`</tbody></table></div></details></section>`:""}
+    L.map(e=>`<tr><td>${fmt(e.d)} · ${e.cat} · vs ${esc(e.o||"")}</td><td>${e.k==="s"?"<i>subito</i>":e.k==="g"?esc(e.n):esc(e.n)+" <small>("+({a:"assist",t:"TW",b:"BL",n:"AN"}[e.k]||e.k)+")</small>"}</td><td>${[e.a1,e.a2].filter(Boolean).map(esc).join(", ")||"–"}</td><td>${e.p?e.p+"°":"–"}</td><td>${e.mn===""||e.mn==null?"–":(typeof e.mn==="number"?e.mn+"′":esc(e.mn))}</td><td>${TP[e.tp]||"–"}</td><td style="white-space:nowrap">${e.k==="g"||e.k==="s"?`<button class="x" data-ee="${e.i}" aria-label="Modifica">✎</button>`:""}<button class="x" data-ed="${e.i}" aria-label="Elimina">×</button></td></tr>`).join("")+`</tbody></table></div></details></section>`:""}
 function fillO(keep){const co=$("gO").value,m=AM().find(x=>mid(x)===$("gM").value);
   $("gO").innerHTML=m?m[6].map(o=>`<option value="${esc(o)}">Real Torino – ${esc(o)}</option>`).join(""):"";
   if(keep&&[...$("gO").options].some(x=>x.value===co))$("gO").value=co;
@@ -865,7 +929,7 @@ const ST={g:"Goal",a:"Assist",p:"Punti",tw:"TW · Takeaway",bl:"BL · Blocks",an
 const FL=()=>({c:$("sCat").value,f:$("sFase").value,o:$("sOpp").value,a:$("sDal").value,z:$("sAl").value,p:$("sPl").value,k:$("sKind").value});
 const okM=(f,m)=>(f.k!=="t"||!!m[10])&&(f.k!=="r"||!m[10])&&(f.c==="all"||(m[10]?m[10].cat:m[2])===f.c)&&(f.f==="all"||String(m[3])===f.f)&&(!f.a||m[0]>=f.a)&&(!f.z||m[0]<=f.z);
 const okEv=(f,g)=>{const m=AM().find(x=>mid(x)===g.id);return !!m&&okM(f,m)&&(f.o==="all"||ob(g.o)===f.o)};
-const EV=()=>({g:rd("g"),a:rd("a"),tw:S.tw,bl:S.bl,an:S.an});
+const EV=()=>({g:rd("g"),a:rd("a"),tw:rd("t"),bl:rd("b"),an:rd("n")});
 const ob=o=>{const b=String(o||"").replace(/\s*\((?:andata|ritorno|\d)\)\s*$/,"");return {"Aosta Gladiators":"Aosta","Varese Mastini":"Varese"}[b]||b};
 const pc=(a,b)=>a>b?"V":a<b?"P":"N",sdt=d=>+d.slice(8,10)+"/"+ +d.slice(5,7);
 const avg=(v,n)=>n?(v/n).toFixed(1).replace(".",","):"–",pct=(v,n)=>n?Math.round(v/n*100)+"%":"–";
@@ -1012,9 +1076,9 @@ async function pdfReport(){
     table([{h:"Giocatore",x:4,w:140},{h:"Partita",x:146,w:210},{h:"G",x:360,w:24,r:1},{h:"A",x:390,w:24,r:1},{h:"TW",x:420,w:28,r:1},{h:"BL",x:454,w:28,r:1},{h:"AN",x:488,w:24,r:1}],rows)}
   else para("Nessuna statistica individuale registrata.");
   /* 11 goal dettagliati */
-  if(S.ev.length){H("11 · Goal dettagliati");
-    table([{h:"Partita",x:4,w:128},{h:"Tipo",x:134,w:38},{h:"Marcatore",x:174,w:90},{h:"Assist",x:266,w:120},{h:"Per.",x:388,w:22,r:1},{h:"Min.",x:414,w:26,r:1},{h:"Tipologia",x:446,w:66}],
-      S.ev.slice().sort((a,b)=>a.d<b.d?-1:1).map(e=>[fmt(e.d)+" vs "+(e.o||""),e.k==="g"?"Goal":"Subito",e.k==="g"?e.n:"-",[e.a1,e.a2].filter(Boolean).join(", ")||"-",e.p||"-",e.mn===""||e.mn==null?"-":e.mn,TP[e.tp]||"-"]))}
+  if(S.ev.length){H("11 · Eventi dettagliati");
+    table([{h:"Partita",x:4,w:128},{h:"Tipo",x:134,w:38},{h:"Giocatore",x:174,w:90},{h:"Assist",x:266,w:120},{h:"Per.",x:388,w:22,r:1},{h:"Min.",x:414,w:26,r:1},{h:"Tipologia",x:446,w:66}],
+      S.ev.slice().sort((a,b)=>a.d<b.d?-1:1).map(e=>[fmt(e.d)+" vs "+(e.o||""),({g:"Goal",s:"Subito",a:"Assist",t:"TW",b:"BL",n:"AN"})[e.k]||"-",e.n||"-",(e.k==="a"?(e.sc?"su goal di "+e.sc:""):[e.a1,e.a2].filter(Boolean).join(", "))||"-",e.p||"-",e.mn===""||e.mn==null?"-":e.mn,TP[e.tp]||"-"]))}
   /* leggenda */
   H("Leggenda");
   ["G goal · A assist · P punti (G + A) · PG partite giocate · P/PG media punti per partita · %G quota dei goal della squadra.","TW (takeaway): disco recuperato dal possesso avversario.","BL (blocks): recupero disco in extremis che potenzialmente impedisce un goal. Sostanzialmente davanti alla porta.","AN (unassisted): goal su azione personale.","Un trattino (-) indica un dato non registrato, non uno zero."].forEach(x=>para(x,9,IN));
@@ -1168,6 +1232,7 @@ function wire(){
       $("eK").value=v.k;evK();$("eN").value=v.n||"";$("eA1").value=v.a1||"";$("eA2").value=v.a2||"";$("eP").value=v.p||"";$("eM").value=v.mn;$("eT").value=v.tp||"";
       evEdit=i;$("eS").textContent="Aggiorna goal";$("eC").hidden=false;$("evP").scrollIntoView({behavior:"smooth"})}};
   ["gList","evList"].forEach(id=>$(id).addEventListener("toggle",e=>{const d=e.target;if(d.dataset&&d.dataset.k){S.tbl[d.dataset.k]=d.open;save()}},true));
+  $("p-gol").addEventListener("click",e=>{if(e.target.closest("[data-go]")){dv="gio";tab("st")}});
   $("cx").onclick=exportCal;$("dx").onclick=exportData;$("impf").onchange=e=>{const f=e.target.files[0];if(f)importData(f);e.target.value=""};["sCat","sFase","sOpp","sKind","sPl","sDal","sAl"].forEach(i=>$(i).onchange=rSt);
   $("sRst").onclick=()=>{["sCat","sFase","sOpp","sKind"].forEach(i=>$(i).value="all");$("sPl").value="";$("sDal").value="";$("sAl").value="";rSt()};
   $("exP").onclick=exP;$("exT").onclick=exT;
@@ -1195,10 +1260,14 @@ function logoInit(){
   show()}
 migTr();init();render();wire();tinit();logoInit();tab(S.tab||"cal");
 </script>
+
 <script>
-if ("serviceWorker" in navigator && (location.protocol === "https:" || location.hostname === "localhost")) {
-  window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(err => console.warn("Service worker non registrato:", err)));
+if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(err => console.warn('Service worker non registrato:', err));
+  });
 }
 </script>
+
 </body>
 </html>

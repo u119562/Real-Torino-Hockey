@@ -1,8 +1,8 @@
 {
   "id": "./",
-  "name": "Real Torino – Calendario e trasferte",
+  "name": "Real Torino – calendario e trasferte",
   "short_name": "Real Torino",
-  "description": "Calendario, trasferte, tornei e statistiche del Real Torino Hockey Club.",
+  "description": "Calendario, trasferte, tornei e statistiche del Real Torino.",
   "lang": "it-IT",
   "start_url": "./",
   "scope": "./",

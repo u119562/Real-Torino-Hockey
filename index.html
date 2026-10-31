@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#080d16">
-<meta name="description" content="Real Torino Hockey Club: calendario, trasferte, tornei e statistiche.">
+<meta name="description" content="Real Torino: calendario, trasferte, tornei e statistiche.">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <link rel="manifest" href="./manifest.webmanifest">
@@ -618,7 +618,10 @@ const M=[
  [["8:45–9:00","B","Varese Mastini",1],["9:05–9:20","A","Aosta Gladiators",1],["9:35–9:50","B","Torino Bulls",0],["9:45–10:00","A","Aosta Gladiators",1],["10:15–10:30","B","Varese Mastini",1],["11:35–11:50","B","Torino Bulls",0]],
  ["Squadre: Aosta Gladiators, Varese Mastini, Torino Bulls, Torino Real (Real Torino)","Partite da 15 minuti · andata e ritorno","Formula 3 contro 3 più portiere","No classifica · No ingaggio","Cambio linea completa ogni 60 secondi (nessun giocatore potrà svolgere 2 cambi consecutivi)","Pre game prima squadra alle 10:30"],
  "Campo A e Campo B"],
-["2026-10-31","15:00","U12",1,"real",1,["Como","Aosta","Torino Bulls"]],
+["2026-10-31","15:00","U12",1,"real",1,["Torino Bulls (andata)","Como (andata)","Torino Bulls (ritorno)","Como (ritorno)"],
+ [["15:20–15:35","A","Torino Bulls",1],["15:40–15:55","A","Como",1],["16:20–16:35","A","Torino Bulls",1],["16:40–16:55","A","Como",1]],
+ ["Giornata promozionale senza classifica","3 contro 3 · partite da 15 minuti · andata e ritorno","Cambio volante delle linee ogni minuto al suono della sirena (nessun giocatore potrà svolgere due cambi consecutivi)","Ingaggio a centro campo solo a inizio partita","Programma completo, Campo A: 15:00 Bulls – Como · 15:20 Real – Bulls · 15:40 Real – Como · 16:00 Bulls – Como · 16:20 Real – Bulls · 16:40 Real – Como"],
+ "Campo A"],
 ["2026-11-07","18:00","U12",1,"como",0,["Como","Aosta","Pinerolo"]],
 ["2026-11-08","12:15","U10",1,"valpellice",0,["Valpellice","Aosta","Pinerolo"]],
 ["2026-11-21","15:00","U12",1,"bulls",0,["Torino Bulls","Valpellice","Pinerolo"]],
@@ -1262,12 +1265,13 @@ migTr();init();render();wire();tinit();logoInit();tab(S.tab||"cal");
 </script>
 
 <script>
-if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
+if ('serviceWorker' in navigator &&
+    (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js').catch(err => console.warn('Service worker non registrato:', err));
+    navigator.serviceWorker.register('./sw.js')
+      .catch(error => console.warn('Registrazione PWA non riuscita:', error));
   });
 }
 </script>
-
-</body>
+\n</body>
 </html>

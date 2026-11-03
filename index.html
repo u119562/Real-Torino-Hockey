@@ -4,12 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#080d16">
-<meta name="description" content="Real Torino: calendario, trasferte, tornei e statistiche.">
+<meta name="description" content="Calendario, trasferte, risultati e statistiche del Real Torino Hockey Club.">
+<meta name="application-name" content="Real Torino Hockey Club">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Real Torino">
 <link rel="manifest" href="./manifest.webmanifest">
-<link rel="icon" href="./icons/icon.svg" type="image/svg+xml">
-<link rel="apple-touch-icon" href="./icons/icon-192.png">
+<link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="./icons/icon-512.png">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
 <title>Real Torino – calendario e trasferte</title>
 <style>
 :root{--ink:#000;--ice:#f2f3f5;--card:#fff;--line:#dcdee3;--red:#c8102e;--mut:#676b73;--acc:#0a66c2}
@@ -600,7 +603,7 @@ pinerolo:{n:"Pinerolo",q:"Palazzetto del ghiaccio Pinerolo",km:27,t:0},
 valpellice:{n:"Valpellice",q:"Palaghiaccio Torre Pellice",km:45,t:0},
 real:{n:"Torino (Real Torino)",q:"Palaghiaccio Tazzoli Torino",km:15,t:0},
 bulls:{n:"Torino (Bulls)",q:"Palaghiaccio Tazzoli Torino",km:15,t:0},
-como:{n:"Como",q:"Palaghiaccio Como",km:175,t:24},
+como:{n:"Como",q:"Hockey Como, Via Virgilio 16, 22100 Como",km:175,t:24},
 chiavenna:{n:"Chiavenna",q:"Palaghiaccio Chiavenna",km:295,t:22},
 varese:{n:"Varese",q:"Palaghiaccio Varese",km:155,t:22},
 rho:{n:"Rho Fiera Ice Arena",q:"Rho Fiera Ice Arena",km:155,t:20},
@@ -622,7 +625,10 @@ const M=[
  [["15:20–15:35","A","Torino Bulls",1],["15:40–15:55","A","Como",1],["16:20–16:35","A","Torino Bulls",1],["16:40–16:55","A","Como",1]],
  ["Giornata promozionale senza classifica","3 contro 3 · partite da 15 minuti · andata e ritorno","Cambio volante delle linee ogni minuto al suono della sirena (nessun giocatore potrà svolgere due cambi consecutivi)","Ingaggio a centro campo solo a inizio partita","Programma completo, Campo A: 15:00 Bulls – Como · 15:20 Real – Bulls · 15:40 Real – Como · 16:00 Bulls – Como · 16:20 Real – Bulls · 16:40 Real – Como"],
  "Campo A"],
-["2026-11-07","18:00","U12",1,"como",0,["Como","Aosta","Pinerolo"]],
+["2026-11-07","18:00","U12",1,"como",0,["Hockey Como","Aosta Gladiators","HC Pinerolo"],
+ [["18:00–18:30","A","Hockey Como",0],["18:35–19:05","B","Aosta Gladiators",1],["19:10–19:40","B","HC Pinerolo",1]],
+ ["Attività Under 12 organizzata da Hockey Como · Squadre: Hockey Como, Real Torino, HC Pinerolo, Aosta Gladiators","Spogliatoi: Real Torino e HC Pinerolo verde · Hockey Como new · Aosta Gladiators giallo","3 giocatori di movimento, nati nel 2015 e più giovani · porte regolamentari","2 tempi da 15 minuti · pausa tra le partite di 5 minuti (senza rientro negli spogliatoi)","Cambi volanti obbligatori ogni 60 secondi al suono della sirena","Fair-play per tutti: rispetto delle regole, degli avversari e degli arbitri","Programma completo: 18:00 Como – Real Torino (A) e Pinerolo – Aosta (B) · 18:35 Como – Pinerolo (A) e Real Torino – Aosta (B) · 19:10 Como – Aosta (A) e Real Torino – Pinerolo (B)"],
+ "Campo A (lato bar) e Campo B"],
 ["2026-11-08","12:15","U10",1,"valpellice",0,["Valpellice","Aosta","Pinerolo"]],
 ["2026-11-21","15:00","U12",1,"bulls",0,["Torino Bulls","Valpellice","Pinerolo"]],
 ["2026-11-29","09:00","U10",1,"real",1,["Aosta","Pinerolo","Valpellice"]],
@@ -933,7 +939,7 @@ const FL=()=>({c:$("sCat").value,f:$("sFase").value,o:$("sOpp").value,a:$("sDal"
 const okM=(f,m)=>(f.k!=="t"||!!m[10])&&(f.k!=="r"||!m[10])&&(f.c==="all"||(m[10]?m[10].cat:m[2])===f.c)&&(f.f==="all"||String(m[3])===f.f)&&(!f.a||m[0]>=f.a)&&(!f.z||m[0]<=f.z);
 const okEv=(f,g)=>{const m=AM().find(x=>mid(x)===g.id);return !!m&&okM(f,m)&&(f.o==="all"||ob(g.o)===f.o)};
 const EV=()=>({g:rd("g"),a:rd("a"),tw:rd("t"),bl:rd("b"),an:rd("n")});
-const ob=o=>{const b=String(o||"").replace(/\s*\((?:andata|ritorno|\d)\)\s*$/,"");return {"Aosta Gladiators":"Aosta","Varese Mastini":"Varese"}[b]||b};
+const ob=o=>{const b=String(o||"").replace(/\s*\((?:andata|ritorno|\d)\)\s*$/,"");return {"Aosta Gladiators":"Aosta","Varese Mastini":"Varese","HC Pinerolo":"Pinerolo","Hockey Como":"Como"}[b]||b};
 const pc=(a,b)=>a>b?"V":a<b?"P":"N",sdt=d=>+d.slice(8,10)+"/"+ +d.slice(5,7);
 const avg=(v,n)=>n?(v/n).toFixed(1).replace(".",","):"–",pct=(v,n)=>n?Math.round(v/n*100)+"%":"–";
 function games(f){const L=[];for(const m of srt()){if(!okM(f,m))continue;const r=S.res[mid(m)]||{};
@@ -1265,11 +1271,11 @@ migTr();init();render();wire();tinit();logoInit();tab(S.tab||"cal");
 </script>
 
 <script>
-if ('serviceWorker' in navigator &&
-    (location.protocol === 'https:' || location.hostname === 'localhost' || location.hostname === '127.0.0.1')) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js')
-      .catch(error => console.warn('Registrazione PWA non riuscita:', error));
+/* Registrazione PWA: richiede HTTPS (GitHub Pages lo supporta). */
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./service-worker.js")
+      .catch(err => console.warn("Registrazione PWA non riuscita:", err));
   });
 }
 </script>

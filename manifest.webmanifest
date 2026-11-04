@@ -2,14 +2,14 @@
   "id": "./",
   "name": "Real Torino Hockey Club – Calendario e trasferte",
   "short_name": "Real Torino",
-  "description": "Calendario, trasferte, risultati e statistiche del Real Torino Hockey Club.",
+  "description": "Calendario, trasferte e statistiche del Real Torino Hockey Club.",
   "lang": "it-IT",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
   "orientation": "any",
-  "background_color": "#080d16",
-  "theme_color": "#080d16",
+  "background_color": "#07152f",
+  "theme_color": "#07152f",
   "icons": [
     {
       "src": "./icons/icon-192.png",

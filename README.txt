@@ -1,23 +1,18 @@
-REAL TORINO HOCKEY CLUB — PWA
-================================
+REAL TORINO PWA – CALENDARIO E TRASFERTE
 
-Contenuto:
-- index.html: pagina originale, con aggiunta dei metadati PWA e registrazione del service worker
-- manifest.json: nome, colori, modalità standalone e icone dell'app
-- service-worker.js: cache dell'app per avvio offline dopo la prima visita
-- icons/: icone di avvio
+PUBBLICAZIONE SU GITHUB PAGES
+1. Estrai lo ZIP.
+2. Carica TUTTI i file e la cartella icons nella root del repository GitHub.
+3. In Settings > Pages seleziona Deploy from a branch, branch main e cartella /(root).
+4. Apri il sito GitHub Pages. La prima apertura richiede Internet; poi l'app shell viene memorizzata per l'uso offline.
 
-PUBBLICAZIONE CON GITHUB PAGES
-1. Estrai tutti i file mantenendo questa struttura.
-2. Carica index.html, manifest.json, service-worker.js e la cartella icons/ nella root del repository GitHub Pages (branch main, folder / (root)).
-3. In Settings > Pages verifica che GitHub Pages sia attivo.
-4. Apri il sito pubblicato tramite HTTPS.
-5. Visita la pagina una prima volta online; il service worker memorizzerà i file dell'app.
-6. Dal browser usa “Installa app” o “Aggiungi alla schermata Home”, se disponibile.
+INSTALLAZIONE
+- Android/Chrome: menu del browser > Installa app / Aggiungi a schermata Home.
+- PC/Chrome o Edge: usa l'icona Installa nella barra indirizzi o il menu del browser.
+- iPhone/iPad: Safari > Condividi > Aggiungi alla schermata Home.
 
-NOTE IMPORTANTI
-- La PWA richiede un indirizzo HTTPS (GitHub Pages va bene); non è installabile aprendo il file HTML direttamente dal disco.
-- I dati applicativi originali continuano a essere salvati nel localStorage del browser e non si sincronizzano automaticamente tra dispositivi.
-- L'uso offline riguarda la pagina e i file locali; Google Maps e Google Calendar richiedono internet.
-- Per aggiornare la cache in futuro, incrementa CACHE_NAME in service-worker.js (es. real-torino-pwa-v2).
-- Le icone incluse sono un monogramma RT generico, non il logo ufficiale del club.
+NOTE
+- Il file HTML originale è stato mantenuto, aggiungendo solo l'integrazione PWA.
+- I dati in localStorage restano sul dispositivo/browser e non si sincronizzano automaticamente.
+- Collegamenti esterni (mappe/calendari) possono richiedere Internet.
+- GitHub Pages serve il sito in HTTPS, requisito per installazione e service worker.

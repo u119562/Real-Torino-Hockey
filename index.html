@@ -3,16 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#080d16">
-<meta name="description" content="Calendario, trasferte, risultati e statistiche del Real Torino Hockey Club.">
-<meta name="application-name" content="Real Torino Hockey Club">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Real Torino">
-<link rel="manifest" href="./manifest.webmanifest">
-<link rel="icon" type="image/png" sizes="192x192" href="./icons/icon-192.png">
-<link rel="icon" type="image/png" sizes="512x512" href="./icons/icon-512.png">
-<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+<meta name="theme-color" content="#000000">
 <title>Real Torino – calendario e trasferte</title>
 <style>
 :root{--ink:#000;--ice:#f2f3f5;--card:#fff;--line:#dcdee3;--red:#c8102e;--mut:#676b73;--acc:#0a66c2}
@@ -427,6 +418,15 @@ html{scroll-padding-top:12px}
 @container gl (max-width:760px){.gk{grid-template-columns:repeat(2,minmax(0,1fr))}.g2,.g2b{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:700px){#p-gol{padding:12px;border-radius:16px}#p-gol .card,#p-gol .panel{padding:12px}.gban{padding:20px 16px}.gk .kp .ico{width:38px;height:38px}.gk .kp b{font-size:1.5rem}}
 </style>
+
+<meta name="theme-color" content="#07152f">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Real Torino">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
+
 </head>
 <body>
 <aside class="sb" id="sb" aria-label="Pagine">
@@ -629,7 +629,10 @@ const M=[
  [["18:00–18:30","A","Hockey Como",0],["18:35–19:05","B","Aosta Gladiators",1],["19:10–19:40","B","HC Pinerolo",1]],
  ["Attività Under 12 organizzata da Hockey Como · Squadre: Hockey Como, Real Torino, HC Pinerolo, Aosta Gladiators","Spogliatoi: Real Torino e HC Pinerolo verde · Hockey Como new · Aosta Gladiators giallo","3 giocatori di movimento, nati nel 2015 e più giovani · porte regolamentari","2 tempi da 15 minuti · pausa tra le partite di 5 minuti (senza rientro negli spogliatoi)","Cambi volanti obbligatori ogni 60 secondi al suono della sirena","Fair-play per tutti: rispetto delle regole, degli avversari e degli arbitri","Programma completo: 18:00 Como – Real Torino (A) e Pinerolo – Aosta (B) · 18:35 Como – Pinerolo (A) e Real Torino – Aosta (B) · 19:10 Como – Aosta (A) e Real Torino – Pinerolo (B)"],
  "Campo A (lato bar) e Campo B"],
-["2026-11-08","12:15","U10",1,"valpellice",0,["Valpellice","Aosta","Pinerolo"]],
+["2026-11-08","09:45","U10",1,"valpellice",0,["Valpellice","Mista","Pinerolo"],
+ [["9:50–10:23","A","Valpellice",0],["10:30–11:03","B","Mista",0],["11:20–11:53","A","Pinerolo",0]],
+ ["Squadre: Valpellice, Real Torino, Pinerolo, Mista · Luogo: Torre Pellice","Riscaldamento in campo alle 9:45: 2/5 minuti senza disco prima delle partite","4 contro 4 a tempo continuato, cambi volanti ogni 60 secondi al suono della sirena","Partite da 2 tempi da 15 minuti (pausa di 3 minuti tra un tempo e l'altro)","In caso di penalità esce il giocatore dal campo per il cambio in corso","Partite senza classifica · Ingaggio solo a inizio partita e in caso di goal","Pausa alle 11:10 · fine raggruppamento previsto per le 12:00","Programma completo: 9:50 Valpe – Real (A) e Mista – Pinerolo (B) · 10:30 Valpe – Pinerolo (A) e Mista – Real (B) · 11:20 Pinerolo – Real (A) e Valpe – Mista (B)"],
+ "Campo A e Campo B"],
 ["2026-11-21","15:00","U12",1,"bulls",0,["Torino Bulls","Valpellice","Pinerolo"]],
 ["2026-11-29","09:00","U10",1,"real",1,["Aosta","Pinerolo","Valpellice"]],
 ["2026-12-05","15:15","U12",1,"real",1,["Milano","Aosta","Torino Bulls"]],
@@ -1271,13 +1274,8 @@ migTr();init();render();wire();tinit();logoInit();tab(S.tab||"cal");
 </script>
 
 <script>
-/* Registrazione PWA: richiede HTTPS (GitHub Pages lo supporta). */
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./service-worker.js")
-      .catch(err => console.warn("Registrazione PWA non riuscita:", err));
-  });
-}
+if ("serviceWorker" in navigator) { window.addEventListener("load", () => navigator.serviceWorker.register("./service-worker.js").catch(err => console.warn("Service worker:", err))); }
 </script>
-\n</body>
+
+</body>
 </html>

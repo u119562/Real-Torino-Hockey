@@ -4,6 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#000000">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png" sizes="192x192">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
 <title>Real Torino – calendario e trasferte</title>
 <style>
 :root{--ink:#000;--ice:#f2f3f5;--card:#fff;--line:#dcdee3;--red:#c8102e;--mut:#676b73;--acc:#0a66c2}
@@ -418,15 +424,6 @@ html{scroll-padding-top:12px}
 @container gl (max-width:760px){.gk{grid-template-columns:repeat(2,minmax(0,1fr))}.g2,.g2b{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:700px){#p-gol{padding:12px;border-radius:16px}#p-gol .card,#p-gol .panel{padding:12px}.gban{padding:20px 16px}.gk .kp .ico{width:38px;height:38px}.gk .kp b{font-size:1.5rem}}
 </style>
-
-<meta name="theme-color" content="#07111f">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Real Torino">
-<link rel="manifest" href="./manifest.webmanifest">
-<link rel="apple-touch-icon" href="./icons/apple-touch-icon.png">
-
 </head>
 <body>
 <aside class="sb" id="sb" aria-label="Pagine">
@@ -635,7 +632,7 @@ const M=[
  "Campo A e Campo B"],
 ["2026-11-21","15:00","U12",1,"bulls",0,["Torino Bulls","Valpellice","Pinerolo"]],
 ["2026-11-29","09:00","U10",1,"real",1,["Aosta","Pinerolo","Valpellice"]],
-["2026-12-05","15:15","U12",1,"real",1,["Milano","Aosta","Torino Bulls"]],
+["2026-12-05","11:00","U12",1,"valpellice",0,["Valpellice","Varese","Pinerolo"]],
 ["2026-12-06","10:00","U10",1,"aosta",0,["Aosta","Valpellice","Pinerolo"]],
 ["2027-01-17","11:00","U10",2,"chiavenna",0,["Chiavenna","Pinerolo","Varese"]],
 ["2027-01-23","15:00","U12",2,"bulls",0,["Torino Bulls","Aosta","Varese"]],
@@ -1273,16 +1270,10 @@ function logoInit(){
   show()}
 migTr();init();render();wire();tinit();logoInit();tab(S.tab||"cal");
 </script>
-
 <script>
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("./service-worker.js").catch(error =>
-      console.warn("Service worker non disponibile:", error)
-    );
-  });
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => navigator.serviceWorker.register('./sw.js').catch(console.warn));
 }
 </script>
-
 </body>
 </html>

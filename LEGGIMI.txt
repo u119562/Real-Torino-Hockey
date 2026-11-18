@@ -1,21 +1,8 @@
-REAL TORINO — PACCHETTO PWA
+REAL TORINO – PWA
 
-Questa versione parte dal file HTML caricato più recentemente.
+1. Estrai lo ZIP mantenendo la struttura delle cartelle.
+2. Pubblica i file su un hosting HTTPS (oppure usa localhost per i test).
+3. Apri il sito con Chrome o Edge e scegli “Installa app” dal menu del browser.
 
-Contenuto:
-- index.html: applicazione Real Torino originale
-- manifest.webmanifest: configurazione installazione
-- sw.js: service worker e cache delle risorse principali
-- icons/: icone installabili
-- LEGGIMI.txt: queste istruzioni
-
-INSTALLAZIONE:
-1. Estrai tutti i file mantenendo la struttura delle cartelle.
-2. Pubblica la cartella su un hosting HTTPS (ad esempio GitHub Pages o Netlify).
-3. Apri l'indirizzo con Chrome/Edge e scegli Installa app.
-   Su smartphone puoi usare Aggiungi alla schermata Home.
-
-NOTA:
-Le PWA richiedono HTTPS o localhost. Aprire index.html direttamente dal disco
-non abilita installazione e service worker. La cache rende disponibili offline
-le risorse principali dell'app; eventuali servizi esterni richiedono connessione.
+La PWA include manifest, icone e service worker con cache delle risorse same-origin.
+Google Maps, Google Calendar e altri servizi esterni richiedono internet.

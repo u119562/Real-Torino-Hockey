@@ -1,14 +1,8 @@
-REAL TORINO PWA
+REAL TORINO – PWA
 
-Pubblicazione:
-1. Estrai lo ZIP.
-2. Carica index.html, manifest.webmanifest, service-worker.js e la cartella icons nella root del repository.
-3. GitHub Settings > Pages > Deploy from a branch > main > /(root).
-4. Apri la pagina pubblicata HTTPS.
+1) Estrai il contenuto dello ZIP.
+2) Carica tutti i file e la cartella icons nella root del repository GitHub (sovrascrivendo index.html se necessario).
+3) GitHub: Settings > Pages > Deploy from branch > main > /(root).
+4) Apri l'indirizzo GitHub Pages e installa: Chrome (Android/Desktop) menu Install app; Safari iOS Condividi > Aggiungi alla schermata Home.
 
-Installazione:
-- Android/Chrome: menu o prompt Install app.
-- iOS: Safari > Condividi > Aggiungi alla schermata Home.
-- PC: icona di installazione nella barra indirizzi, se disponibile.
-
-La prima apertura richiede Internet per la cache iniziale. Mappe e calendari esterni possono richiedere Internet.
+La PWA include cache offline. Per aggiornamenti, incrementa CACHE nel service-worker.js (es. v2) quando modifichi i file.

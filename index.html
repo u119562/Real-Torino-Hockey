@@ -3,7 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="theme-color" content="#000000">
+<meta name="theme-color" content="#0d1c30">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <title>Real Torino – calendario e trasferte</title>
 <style>
 :root{--ink:#000;--ice:#f2f3f5;--card:#fff;--line:#dcdee3;--red:#c8102e;--mut:#676b73;--acc:#0a66c2}
@@ -418,14 +420,6 @@ html{scroll-padding-top:12px}
 @container gl (max-width:760px){.gk{grid-template-columns:repeat(2,minmax(0,1fr))}.g2,.g2b{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:700px){#p-gol{padding:12px;border-radius:16px}#p-gol .card,#p-gol .panel{padding:12px}.gban{padding:20px 16px}.gk .kp .ico{width:38px;height:38px}.gk .kp b{font-size:1.5rem}}
 </style>
-
-<meta name="theme-color" content="#071a36">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="Real Torino">
-<link rel="manifest" href="manifest.webmanifest">
-<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
-
 </head>
 <body>
 <aside class="sb" id="sb" aria-label="Pagine">
@@ -568,7 +562,7 @@ html{scroll-padding-top:12px}
  <div class="stt" id="stTabs" role="group" aria-label="Sezioni"><button data-vw="pan" aria-pressed="true">Panoramica</button><button data-vw="gio" aria-pressed="false">Giocatori</button><button data-vw="gra" aria-pressed="false">Grafici</button><button data-vw="sq" aria-pressed="false">Squadra</button><button data-vw="par" aria-pressed="false">Partite e competizioni</button></div>
  <section class="card fb" id="stCtl">
   <div class="row">
-   <label>Categoria<select id="sCat"><option value="all">Tutte</option><option value="U10">U10</option><option value="U11">U11</option><option value="U12">U12</option></select></label>
+   <label>Categoria<select id="sCat"><option value="all">Tutte</option><option value="U10">U10</option><option value="U12">U12</option></select></label>
    <label>Giocatore<select id="sPl"></select></label>
    <label>Competizione<select id="sKind"><option value="all">Tutte</option><option value="r">Raggruppamenti</option><option value="t">Tornei</option></select></label>
    <label>Fase<select id="sFase"><option value="all">Tutte</option><option value="1">Fase 1 · andata</option><option value="2">Fase 2 · ritorno</option></select></label>
@@ -636,7 +630,10 @@ const M=[
  [["14:00–14:27","B","Torino Bulls",0],["14:32–14:59","A","Valpellice",0],["15:04–15:31","B","Aosta",0],["16:17–16:44","B","Pinerolo",1]],
  ["Squadre: Torino Bulls, Real Torino, Valpellice, Pinerolo, Aosta · Palaghiaccio Tazzoli, Torino","3 minuti di riscaldamento prima dell'inizio partita","3 contro 3 a tempo continuato, cambi volanti ogni 60 secondi al suono della sirena","Partite di 2 tempi da 12 minuti con 3 minuti di intervallo","In caso di penalità espulsione del giocatore dal campo per il cambio in corso","Ingaggi solo a inizio partita e in caso di goal · Il raggruppamento non prevede classifica","Spogliatoi: Real Torino n. 37 · Valpellice e Pinerolo n. 42 · Torino Bulls e Aosta n. 47 · Femminile n. 13","Real Torino a riposo alle 15:45 · rifacimento ghiaccio dalle 15:34 alle 15:44","Programma completo: 14:00 Valpellice – Aosta (A) e Bulls – Real (B), riposo Pinerolo · 14:32 Valpellice – Real (A) e Aosta – Pinerolo (B), riposo Bulls · 15:04 Bulls – Pinerolo (A) e Aosta – Real (B), riposo Valpellice · 15:45 Valpellice – Pinerolo (A) e Aosta – Bulls (B), riposo Real · 16:17 Bulls – Valpellice (A) e Real – Pinerolo (B), riposo Aosta"],
  "Campo A e Campo B"],
-["2026-11-29","09:00","U10",1,"real",1,["Aosta","Pinerolo","Valpellice"]],
+["2026-11-29","09:00","U10",1,"real",1,["Aosta (andata)","Pinerolo (andata)","Valpellice (andata)","Aosta (ritorno)","Pinerolo (ritorno)","Valpellice (ritorno)"],
+ [["9:00–9:15","A","Aosta",1],["9:20–9:35","A","Pinerolo",1],["9:40–9:55","A","Valpellice",1],["10:00–10:15","A","Aosta",1],["10:20–10:35","A","Pinerolo",1],["10:40–10:55","A","Valpellice",1]],
+ ["Raggruppamento U10 Torino · giornata promozionale senza classifica","4 contro 4 · partite da 15 minuti · andata e ritorno","Cambio volante delle linee ogni 60 secondi al suono della sirena (nessun giocatore potrà svolgere due cambi consecutivi)","Ingaggio a centro campo solo a inizio partita","Spogliatoi: Real Torino e Aosta n. 3 e 7 · Pinerolo e Valpellice n. 42 · Femmine n. 13","Programma completo, Campo B: 9:00 Pinerolo – Valpellice · 9:20 Valpellice – Aosta · 9:40 Pinerolo – Aosta · 10:00 Pinerolo – Valpellice · 10:20 Valpellice – Aosta · 10:40 Pinerolo – Aosta"],
+ "Campo A (Real Torino) e Campo B"],
 ["2026-12-05","11:00","U12",1,"valpellice",0,["Valpellice","Varese","Pinerolo"]],
 ["2026-12-06","10:00","U10",1,"aosta",0,["Aosta","Valpellice","Pinerolo"]],
 ["2027-01-17","11:00","U10",2,"chiavenna",0,["Chiavenna","Pinerolo","Varese"]],
@@ -943,7 +940,9 @@ const SK=[["g","G"],["a","A"],["p","P"],["pg","PG"],["pm","P/PG"],["tw","TW"],["
 const ST={g:"Goal",a:"Assist",p:"Punti",tw:"TW · Takeaway",bl:"BL · Blocks",an:"AN · Unassisted"};
 const FL=()=>({c:$("sCat").value,f:$("sFase").value,o:$("sOpp").value,a:$("sDal").value,z:$("sAl").value,p:$("sPl").value,k:$("sKind").value});
 const okM=(f,m)=>(f.k!=="t"||!!m[10])&&(f.k!=="r"||!m[10])&&(f.c==="all"||(m[10]?m[10].cat:m[2])===f.c)&&(f.f==="all"||String(m[3])===f.f)&&(!f.a||m[0]>=f.a)&&(!f.z||m[0]<=f.z);
-const okEv=(f,g)=>{const m=AM().find(x=>mid(x)===g.id);return !!m&&okM(f,m)&&(f.o==="all"||ob(g.o)===f.o)};
+const CATG={U10:["U10","U9"],U12:["U12","U11","U10"]};
+const okP=(f,n)=>{const G=CATG[f.c];if(!G)return true;const c=Object.keys(ROSTER).find(k=>ROSTER[k].includes(n));return !c||G.includes(c)};
+const okEv=(f,g)=>{const m=AM().find(x=>mid(x)===g.id);return !!m&&okM(f,m)&&(f.o==="all"||ob(g.o)===f.o)&&okP(f,g.n)};
 const EV=()=>({g:rd("g"),a:rd("a"),tw:rd("t"),bl:rd("b"),an:rd("n")});
 const ob=o=>{const b=String(o||"").replace(/\s*\((?:andata|ritorno|\d)\)\s*$/,"");return {"Aosta Gladiators":"Aosta","Varese Mastini":"Varese","HC Pinerolo":"Pinerolo","Hockey Como":"Como"}[b]||b};
 const pc=(a,b)=>a>b?"V":a<b?"P":"N",sdt=d=>+d.slice(8,10)+"/"+ +d.slice(5,7);
@@ -1106,7 +1105,7 @@ function fillF(){
     ex=[...new Set(Object.values(EV()).flatMap(A=>A.map(g=>g.n)))].filter(n=>!all.includes(n));
   keep("sOpp",`<option value="all">Tutti</option>`+ops.map(o=>`<option value="${esc(o)}">${esc(o)}</option>`).join(""));
   keep("sPl",`<option value="">Nessuno</option>`+all.concat(ex).sort((a,b)=>a.localeCompare(b)).map(n=>`<option value="${esc(n)}">${esc(n)}</option>`).join(""))}
-const fDesc=f=>"Categoria: "+(f.c==="all"?"tutte":f.c)+" · Competizione: "+(f.k==="r"?"raggruppamenti":f.k==="t"?"tornei":"tutte")+(f.f==="all"?"":" (fase "+f.f+(f.f==="1"?" andata":" ritorno")+")")+" · Avversario: "+(f.o==="all"?"tutti":f.o)+" · Periodo: "+(f.a||f.z?(f.a?fmt(f.a):"inizio stagione")+" → "+(f.z?fmt(f.z):"oggi"):"tutta la stagione");
+const fDesc=f=>"Categoria: "+(f.c==="all"?"tutte":f.c+" (giocatori "+CATG[f.c].join(", ")+")")+" · Competizione: "+(f.k==="r"?"raggruppamenti":f.k==="t"?"tornei":"tutte")+(f.f==="all"?"":" (fase "+f.f+(f.f==="1"?" andata":" ritorno")+")")+" · Avversario: "+(f.o==="all"?"tutti":f.o)+" · Periodo: "+(f.a||f.z?(f.a?fmt(f.a):"inizio stagione")+" → "+(f.z?fmt(f.z):"oggi"):"tutta la stagione");
 let dv="pan";const st2={nTr:"all",nGA:"10",nTW:"5",pc:"all",ct:"all"};
 const ini=n=>n.split(" ").slice(0,2).map(w=>w[0]).join("").toUpperCase();
 function rSt(){
@@ -1275,12 +1274,6 @@ function logoInit(){
   show()}
 migTr();init();render();wire();tinit();logoInit();tab(S.tab||"cal");
 </script>
-
-<script>
-if ("serviceWorker" in navigator) {
- window.addEventListener("load", () => navigator.serviceWorker.register("./service-worker.js").catch(console.warn));
-}
-</script>
-
+<script>if("serviceWorker" in navigator){window.addEventListener("load",()=>navigator.serviceWorker.register("./service-worker.js"));}</script>
 </body>
 </html>
